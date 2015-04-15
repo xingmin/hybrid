@@ -1,0 +1,89 @@
+<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
+<editdlg module-name="用户" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
+	<div class="form-group" >
+		<label  for="id" class="col-md-3 control-label">用户ID</label>
+		<div class="col-md-4" >
+		<span  name="id" >{{currentedit.newval.id}}</span>
+		</div>
+	</div>	
+	<div class="form-group" >
+		<label  for="name" class="col-md-3 control-label">姓名<span class="star">*</span></label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.name.$invalid) || (dlgform.name.$invalid && !dlgform.name.$pristine)}">
+		<input type="text" class="form-control" id="name"  name="name" ng-model="currentedit.newval.name" required placeholder="请输入姓名"/>
+		<p ng-show="( dlgform.name.$invalid) || (dlgform.name.$invalid && !dlgform.name.$pristine)" class="help-block">姓名必填。</p>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="loginid" class="col-md-3 control-label">登录名<span class="star">*</span></label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.loginid.$invalid) || (dlgform.loginid.$invalid && !dlgform.loginid.$pristine)}">
+		<input type="text" class="form-control" id="loginid"  name="loginid" ng-model="currentedit.newval.loginid" required placeholder="请输入登录名称"/>
+		<p ng-show="( dlgform.loginid.$invalid) || (dlgform.loginid.$invalid && !dlgform.loginid.$pristine)" class="help-block">登录名必填。</p>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="pwd" class="col-md-3 control-label">密码</label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.pwd.$invalid) || (dlgform.pwd.$invalid && !dlgform.pwd.$pristine)}">
+		<input type="password" class="form-control" id="pwd"  name="pwd" ng-model="currentedit.newval.pwd"  />		 
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="empcode" class="col-md-3 control-label">用户编号</label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.empcode.$invalid) || (dlgform.empcode.$invalid && !dlgform.empcode.$pristine)}">
+		<input type="text" class="form-control" id="empcode"  name="empcode" ng-model="currentedit.newval.empcode"  />		 
+		</div>
+	</div>
+</editdlg>
+</form>
+
+<div class="title control-group">	
+	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
+	<h3>用户</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>用户ID</th>
+		<th>姓名</th>
+		<th>登录名</th>
+		<th>用户编号</th>
+    	<th></th>
+    </tr>
+    <tr ng-repeat="user in users">
+        <td>
+    		{{user.id}}
+        </td>
+    	<td>
+    		{{user.name}}
+        </td>
+       <td>
+    		{{user.loginid}}
+        </td>
+    	<td>
+    		{{user.empcode}}
+        </td>
+        <td>
+        	<edit ng-Model="user"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
+          | <delete ng-Model="user" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+		</td>
+	</tr>
+</table>
+<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
+	<table class="table table-bordered table-hover">
+	    <tr>
+		    <td>ID</td>
+		     <td>
+		 		{{currentedit.newval.id}}
+		     </td>
+	    </tr>
+	    <tr>
+		    <td>名称</td>
+		 	<td>
+		 		{{currentedit.newval.name}}
+		     </td>
+	    </tr>
+	</table>
+</deletedlg>
+
+
+
+

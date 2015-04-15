@@ -1,0 +1,121 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>查询当天的消费金额</title>
+<script type="text/javascript" src="/javascripts/jquery-1.11.1.min.js"></script>
+<script language="JavaScript" type="text/javascript">
+String.prototype.trim = function() {
+  var str = this,
+  str = str.replace(/^\s\s*/, ''),
+  ws = /\s/,
+  i = str.length;
+  while (ws.test(str.charAt(--i)));
+  return str.slice(0, i + 1);
+}
+//------------->沂水射频卡使用<------begin---------------
+function initIcCard(){
+	cis_ocx.initIcCard();
+}
+
+function freeIcCard(){
+	cis_ocx.freeIcCard();
+}
+
+
+
+function readIcCard(){
+	cis_ocx.initIcCard('C:\\WINDOWS\\system32\\');
+	
+	var ret= cis_ocx.readIcCard();
+	
+	cis_ocx.freeIcCard();
+	
+	return ret;
+	
+}
+//------------->沂水射频卡使用<-------end--------------
+
+function readcard(){
+$("#patname").html('');
+$("#patid").html('');
+$("#patcos").html('');
+$("#patdate").html('');
+
+$("#test").val(readIcCard())
+var pcardid = $("#test").val();
+pcardid = pcardid.trim();
+
+var re=/^\d{10}$/;
+if (! re.test(pcardid)){
+	alert("输入的卡号错误!");
+	return;
+}
+
+var turl = "patient/queryconsume/"+pcardid;
+$.ajax({
+	type:"GET",
+	url:turl,
+	dataType:"json",
+	success:function(result){
+	$("#patname").html(result.name);
+	$("#patid").html(result.id);
+	$("#patcos").html(result.total);
+	$("#patdate").html(result.currdate);}
+});
+/*
+$.getJSON(turl, function(result){
+	$("#patname").html(result.name);
+	$("#patid").html(result.id);
+	$("#patcos").html(result.total);
+	$("#patdate").html(result.currdate);
+});*/
+}
+</script>
+<style>
+#box {
+	width:300px;
+	border-style:solid;
+	border-width:1px; 
+	border-color:#0e99c4;
+	}
+.drawer {
+	width:100%;
+	border-style:solid;
+	border-width:1px; 
+	border-color:#0e99c4;
+}
+#queryres{
+	height:400px;
+}
+.consumeinfo{
+	list-style-type: none;
+}
+.consumeinfo li {
+	height:40px;
+	font-size: 20px;
+	font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div id="box">
+	<div class="drawer">
+		<input id="test" type="text"/>
+		<input type="button" onclick="readcard();" value="读卡查询"/>
+	</div>
+	<div id="queryres" class="drawer">
+		<ul class="consumeinfo">
+			<li>姓名:<span id="patname"></span></li>
+			<li>ID号:<span id="patid"></span></li>
+			<li>金额:<span id="patcos"></span></li>
+			<li>日期:<span id="patdate"></span></li>
+		</ul>
+
+	</div>
+</div>
+<OBJECT id="cis_ocx" classid="clsid:C20D9C74-702C-461F-BAA2-E817EB3BFA6B" codebase="cis_local.ocx#version=1,0,0,0" width=0 height=0 align=center hspace=0 vspace=0>
+	<param name="Visible" value="0">
+</OBJECT>
+
+</body>
+</html>

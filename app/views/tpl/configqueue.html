@@ -1,0 +1,25 @@
+
+<link rel="stylesheet" href="styles/configqueue.css">
+<div class="title control-group">
+	<label>队列列表</label>
+</div>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>队列名称</th>
+		<th>最大呼叫次数/人</th>
+    	<th></th>
+    </tr>
+    <tr ng-repeat="queue in queues">
+    	<td>
+    		<input type="text" id='txt_name_{{queue.id}}' ng-model="queue.name" class="inactive " readonly />
+        </td>
+        <td> <input type="text" id='txt_maxcalltimes_{{queue.id}}'  ng-model="queue.maxcalltimes" class="inactive" readonly /></td>
+        <td>
+        	<edit ng-Model="queue" ng-show="showEdit"><a>编辑</a></edit>
+            <update ng-Model="queue" ng-show="!showEdit"><a>保存</a></update> 
+            <cancel ng-Model="queue" ng-show="!showEdit"> | <a>取消</a></cancel>
+          | <delete ng-Model="queue"><a>删除</a></delete>
+		</td>
+	</tr>
+</table>
+

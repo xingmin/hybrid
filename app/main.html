@@ -1,0 +1,53 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>hybrid</title>
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" href="bower_components/bootstrap-toggle/css/bootstrap2-toggle.css">
+<link rel="stylesheet" href="bower_components/bootstrap-modal-carousel/dist/css/bootstrap-modal-carousel.css">
+<link rel="stylesheet" href="styles/main.css">
+<script type='text/javascript' src='scripts/lib/require.js' data-main='scripts/main.js'></script>
+</head>
+<body>
+
+<div class="wrap">
+	<div class="header">
+	
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#/">Home</a></li>
+			<li><a href="#/register">注册OA帐号</a></li>
+			<li><a href="#">SVN</a></li>
+			
+			  
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown">
+				杂项<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#/queuesys/externalsys">外部系统定义</a></li>
+					<li><a href="#/queuesys/queueclass">队列类别定义</a></li>
+					<li><a href="#/queuesys/queue">队列定义</a></li>
+					<li><a href="#/queuesys/window">呼叫窗口定义</a></li>
+					<li><a href="#/queuesys/user">用户</a></li>
+					<li><a href="#/queuesys/userwindow">用户可登录窗口</a></li>
+					<li><a href="#/queuesys/user/choosewindow">选择当前登录窗口</a></li>
+					<li><a href="#/queuesys/queue/userqueue">用户可呼叫队列</a></li>
+					<li><a href="#/queuesys/user/login">Login</a></li>
+					<li><a href="#/queuesys/queue/fetchqueue">取号</a></li>
+					<li><a href="#/queuesys/queue/callperson">叫号</a></li>
+					<li><a href="#/register">注册OA帐号</a></li>
+				</ul>			
+			</li>
+			 
+		</ul>		
+		
+		<div id="content" class="content container" ng-view></div>
+	</div>
+</div>
+<div class="footer">
+	<div class="container">
+		<p>version 1.0</p>
+	</div>
+</div> 
+</body>
+</html>

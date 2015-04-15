@@ -1,0 +1,14 @@
+<div class="col-md-7 col-md-offset-3" style="margin-top:20px;">
+	<div class="title control-group">	
+	<button type="button"  class="btn btn-primary pull-right" ng-click="saveActiveWindow()">保存</button>
+		<h3>请选择窗口--[{{currentWindow.name}}]</h3>
+	</div>
+	<msgbox messages="msgs"></msgbox>
+	<div class="list-group" >
+		<a ng-repeat="callwindow in callWindows" class="list-group-item " ng-class="{true:'active',false:''}[callwindow.isactive]" ng-click="activeWindow(callwindow)">
+		{{callwindow.name}}
+		</a>
+	</div>
+
+</div>
+

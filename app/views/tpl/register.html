@@ -1,0 +1,112 @@
+<link rel="stylesheet" href="styles/register.css">
+<div id="register">	
+	<form name="formregister" class="form-horizontal" ng-submit="submitRegister(formregister.$valid)" role="form" novalidate>
+		<div class="form-group title control-group">
+			<label for="username">注册</label>
+		</div>
+	
+		<div class="form-group" >
+			<label  for="username" class="col-md-2 control-label">姓名<span class="star">*</span></label>
+			<div class="col-md-3 controls" ng-class="{'has-error': (submitInvalid && formregister.username.$invalid) || (formregister.username.$invalid && !formregister.username.$pristine)}">
+			<input type="text" class="form-control" id="username"  name="username" ng-model="formData.username" required placeholder="请输入姓名"/>
+			<p ng-show="(submitInvalid && formregister.username.$invalid) || (formregister.username.$invalid && !formregister.username.$pristine)" class="help-block">姓名必填。</p>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="userloginid"  class="col-md-2 control-label">用户名<span class="star">*</span></label>
+			<div class="col-md-3 controls" ng-class="{'has-error': (submitInvalid && (formregister.userloginid.$invalid || formregister.userloginid.$error.minlength || formregister.userloginid.$error.maxlength)) || ((formregister.userloginid.$invalid && !formregister.userloginid.$pristine) || formregister.userloginid.$error.minlength || formregister.userloginid.$error.maxlength)}">
+			<input type="text" class="form-control" id="userloginid" name="userloginid" ng-model="formData.userloginid" required ng-minlength="2" ng-maxlength="8" placeholder="请输入登录用户名"/>
+			<p ng-show="(submitInvalid && (formregister.userloginid.$invalid || formregister.userloginid.$error.minlength || formregister.userloginid.$error.maxlength)) || ((formregister.userloginid.$invalid && !formregister.userloginid.$pristine)  || formregister.userloginid.$error.minlength || formregister.userloginid.$error.maxlength)" class="help-block">用户名必填，且 2&lt;=字符长度&lt;=8。</p>
+			</div>
+		</div>
+		
+		<div class="form-group">	
+			<label for="name"  class="control-label col-md-2">性别</label>
+			<div class="col-md-3 controls">
+				<label class="radio-inline">
+					<input type="radio" id="usersex1" name="usersex" value="1" ng-checked="formData.usersex==1" ng-model="formData.usersex"/>
+					男
+				</label>
+				<label class="radio-inline">
+					<input type="radio" id="usersex0"  name="usersex" value="0"  ng-checked="formData.usersex==0"  ng-model="formData.usersex"/>
+					女
+				</label>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="usercode"  class="col-md-2 control-label">工资号</label>
+			<div class="col-md-3 controls">
+			<input type="text" class="form-control" id="usercode" name="usercode" ng-model="formData.usercode" placeholder="请输入工资号"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="useremail"  class="col-md-2 control-label">邮箱</label>
+			<div class="col-md-3 controls">
+			<input type="email" class="form-control"   id="useremail" name="useremail" ng-model="formData.useremail" placeholder="请输入邮箱"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="usermobile"  class="col-md-2 control-label">联系电话、手机</label>
+			<div class="col-md-3 controls">
+			<input type="text" class="form-control" id="usermobile" name="usermobile" ng-model="formData.usermobile" placeholder="联系电话or手机"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="usersocialno"  class="col-md-2 control-label">身份证号<span class="star">*</span></label>
+			<div class="col-md-3 controls" ng-class="{'has-error': (submitInvalid && formregister.usersocialno.$invalid) || (formregister.usersocialno.$invalid && !formregister.usersocialno.$pristine)}">
+			<input type="text" class="form-control" id="usersocialno" name="usersocialno" ng-model="formData.usersocialno" required placeholder="身份证号"/>
+			<p ng-show="(submitInvalid && formregister.usersocialno.$invalid) || (formregister.usersocialno.$invalid && !formregister.usersocialno.$pristine)" class="help-block">身份证号必填。</p>
+			</div>
+		</div>
+		<div class="form-group" ng-hide="true">
+			<label for="userdeptid"  class="col-md-2 control-label">科室ID</label>
+			<div class="col-md-3 controls">
+			<input type="text" class="form-control" id="userdeptid" name="userdeptid" ng-model="formData.userdeptid" placeholder="科室ID" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="userdept"  class="col-md-2 control-label">科室<span class="star">*</span></label>
+			<div class="col-md-3 controls" ng-class="{'has-error': (submitInvalid && formregister.userdept.$invalid) || (formregister.userdept.$invalid && !formregister.userdept.$pristine)}">
+			<input type="text" class="form-control dropdown-toggle" data-toggle="dropdown" id="userdept" name="userdept" required ng-model="formData.userdept" placeholder="科室" ng-change="dropDownDeptsMenu(formData.userdept)"/>
+			<ul class="dropdown-menu" role="menu" id="deptsmenu" name="deptsmenu">
+		      <li ng-repeat="item in menuItmes">
+		      	<a href="javascript:void(0);" ng-click="selectMenuItem($index)">{{item.name}}</a>
+		      </li>		   
+ 			</ul>
+ 			<p ng-show="(submitInvalid && formregister.userdept.$invalid) || (formregister.userdept.$invalid && !formregister.userdept.$pristine)" class="help-block">科室必填。</p>
+			</div>
+			
+		</div>
+		
+		<div class="form-group">
+			<label for="introducername"  class="col-md-2 control-label">介绍人<span class="star">*</span></label>
+			<div class="col-md-3 controls" ng-class="{'has-error': (submitInvalid && formregister.introducername.$invalid) || (formregister.introducername.$invalid && !formregister.introducername.$pristine)}">
+			<input type="text" class="form-control" id="introducername" name="introducername" ng-model="formData.introducername" required placeholder="介绍人登录名"/>
+			<p ng-show="(submitInvalid && formregister.introducername.$invalid) || (formregister.introducername.$invalid && !formregister.introducername.$pristine)" class="help-block">介绍人必填。</p>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="introducerpwd"  class="col-md-2 control-label">介绍人密码<span class="star">*</span></label>
+			<div class="col-md-3 controls">
+			<input type="password" class="form-control" id="introducerpwd" name="introducerpwd" ng-model="formData.introducerpwd"  placeholder="介绍人密码"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-3 controls">
+			<button type="submit" class="btn btn-primary">注册</button>
+			</div>
+		</div>
+	</form>
+	<div class="alert alert-danger"  ng-repeat="msg in errorinfo">
+		<a class="close" data-dismiss="alert">x</a>
+		<strong>Error! {{msg}}</strong>
+	</div>
+</div>
+

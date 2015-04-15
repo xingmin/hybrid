@@ -1,0 +1,62 @@
+<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
+<editdlg module-name="呼叫窗口" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
+	<div class="form-group" >
+		<label  for="id" class="col-md-3 control-label">呼叫窗口ID</label>
+		<div class="col-md-4" >
+		<span  name="id" >{{currentedit.newval.id}}</span>
+		</div>
+	</div>	
+	<div class="form-group" >
+		<label  for="name" class="col-md-3 control-label">呼叫窗口<span class="star">*</span></label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.name.$invalid) || (dlgform.name.$invalid && !dlgform.name.$pristine)}">
+		<input type="text" class="form-control" id="name"  name="name" ng-model="currentedit.newval.name" required placeholder="请输入呼叫窗口"/>
+		<p ng-show="( dlgform.name.$invalid) || (dlgform.name.$invalid && !dlgform.name.$pristine)" class="help-block">呼叫窗口必填。</p>
+		</div>
+	</div>
+</editdlg>
+</form>
+
+<div class="title control-group">	
+	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
+	<h3>呼叫窗口</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>呼叫窗口ID</th>
+		<th>呼叫窗口名称</th>
+    	<th></th>
+    </tr>
+    <tr ng-repeat="callwindow in callWindows">
+        <td>
+    		{{callwindow.id}}
+        </td>
+    	<td>
+    		{{callwindow.name}}
+        </td>
+        <td>
+        	<edit ng-Model="callwindow"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
+          | <delete ng-Model="callwindow" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+		</td>
+	</tr>
+</table>
+<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
+	<table class="table table-bordered table-hover">
+	    <tr>
+		    <td>ID</td>
+		     <td>
+		 		{{currentedit.newval.id}}
+		     </td>
+	    </tr>
+	    <tr>
+		    <td>名称</td>
+		 	<td>
+		 		{{currentedit.newval.name}}
+		     </td>
+	    </tr>
+	</table>
+</deletedlg>
+
+
+
+

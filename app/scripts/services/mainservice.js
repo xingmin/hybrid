@@ -1,0 +1,10 @@
+define(['./queueservicex',
+        './queueclassservicex',
+        './windowservice',
+        './userservice',
+        './socketservice',
+        './indexedDbService',
+        './externalSysService',
+        './ticketService',
+        './dictService',
+        './personService'],function(){});

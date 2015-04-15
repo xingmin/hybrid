@@ -1,0 +1,83 @@
+<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
+<editdlg module-name="外部系统" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
+	<div class="form-group" >
+		<label  for="id" class="col-md-3 control-label">外部系统ID</label>
+		<div class="col-md-4" >
+		<span  name="id" >{{currentedit.newval.id}}</span>
+		</div>
+	</div>	
+	<div class="form-group" >
+		<label  for="name" class="col-md-3 control-label">系统名称</label>
+		<div class="col-md-4 controls">
+		<input type="text" class="form-control" id="name"  name="name" ng-model="currentedit.newval.name" required placeholder="请输入外部系统"/>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="pinyin" class="col-md-3 control-label">拼音</label>
+		<div class="col-md-4 controls">
+		<input type="text" class="form-control" id="pinyin"  name="pinyin" ng-model="currentedit.newval.pinyin" placeholder="请输入名称拼音首字母"/>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="easyid" class="col-md-3 control-label">EasyId</label>
+		<div class="col-md-4 controls">
+		<input type="text" class="form-control" id="easyid"  name="easyid" ng-model="currentedit.newval.easyId" required placeholder="easyid"/>
+		</div>
+	</div>
+</editdlg>
+</form>
+
+<div class="title control-group">	
+	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
+	<h3>外部系统</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>系统ID</th>
+		<th>系统名称</th>
+		<th>EasyId</th>
+    	<th></th>
+    </tr>
+    <tr ng-repeat="externalsys in externalSyses">
+        <td>
+    		{{externalsys.id}}
+        </td>
+    	<td>
+    		{{externalsys.name}}
+        </td>
+        <td>
+    		{{externalsys.easyId}}
+        </td>
+        <td>
+        	<edit ng-Model="externalsys"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
+          | <delete ng-Model="externalsys" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+		</td>
+	</tr>
+</table>
+<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
+	<table class="table table-bordered table-hover">
+	    <tr>
+		    <td>ID</td>
+		     <td>
+		 		{{currentedit.newval.id}}
+		     </td>
+	    </tr>
+	    <tr>
+		    <td>名称</td>
+		 	<td>
+		 		{{currentedit.newval.name}}
+		     </td>
+	    </tr>
+	     <tr>
+		    <td>EasyId</td>
+		 	<td>
+		 		{{currentedit.newval.easyId}}
+		     </td>
+	    </tr>
+	</table>
+</deletedlg>
+
+
+
+

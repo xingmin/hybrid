@@ -1,0 +1,95 @@
+<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
+<editdlg module-name="队列" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
+	<div class="form-group" >
+		<label  for="queueid" class="col-md-3 control-label">队列ID</label>
+		<div class="col-md-5" >
+		<span  name="queueid" >{{currentedit.newval.id}}</span>
+		</div>
+	</div>	
+	<div class="form-group" >
+		<label  for="queuename" class="col-md-3 control-label">队列名称<span class="star">*</span></label>
+		<div class="col-md-5 controls" ng-class="{'has-error': (submitInvalid && dlgform.queuename.$invalid) || (dlgform.queuename.$invalid && !dlgform.queuename.$pristine)}">
+		<input type="text" class="form-control" id="queuename"  name="queuename" ng-model="currentedit.newval.name" required placeholder="请输入队列名称"/>
+		<p ng-show="(submitInvalid && dlgform.queuename.$invalid) || (dlgform.queuename.$invalid && !dlgform.queuename.$pristine)" class="help-block">队列名称必填。</p>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="queueMaxCallTimes" class="col-md-3 control-label">最大呼叫次数<span class="star">*</span></label>
+		<div class="col-md-5 controls" ng-class="{'has-error': (submitInvalid && dlgform.queueMaxCallTimes.$invalid) || (dlgform.queueMaxCallTimes.$invalid && !dlgform.queueMaxCallTimes.$pristine)}">
+		<input type="number" class="form-control" id="queueMaxCallTimes"  name="queueMaxCallTimes" min="1" max="10" ng-model="currentedit.newval.maxCallTimes" required placeholder="请输入队列最大呼叫次数"/>
+		<p ng-show="(submitInvalid &&  dlgform.queueMaxCallTimes.$invalid) || (dlgform.queueMaxCallTimes.$invalid && !dlgform.queueMaxCallTimes.$pristine)" class="help-block">最大呼叫次数取值范围：1~10</p>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="queueClass" class="col-md-3 control-label">队列类别<span class="star">*</span></label>
+		<div class="col-md-5 controls" ng-class="{'has-error': (submitInvalid && dlgform.queueClass.$invalid) || (dlgform.queueClass.$invalid && !dlgform.queueClass.$pristine)}">
+		<pyinput show-columns="searchPinyin.showColumns" fullfill-column="name" selected-item="searchPinyin.selectedItem" py="searchPinyin.py" query="searchPinyin.queryByPinyin()"></pyinput>
+		<p ng-show="( submitInvalid && dlgform.queueClass.$invalid) || (dlgform.queueClass.$invalid && !dlgform.queueClass.$pristine)" class="help-block">队列类别必填。</p>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="queueIsActive" class="col-md-3 control-label">是否激活</label>
+		<div class="col-md-5 controls">
+		<input type="checkbox" id="queueIsActive"  name="queueIsActive" ng-model="currentedit.newval.isActive" ng-true-value="1" ng-false-value="0" />
+		</div>
+	</div>
+	
+</editdlg>
+</form>
+
+<div class="title control-group">	
+	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
+	<h3>配置队列</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>队列ID</th>
+		<th>队列名称</th>
+		<th>队列分类名称</th>
+		<th>最大呼叫次数</th>
+		<th>是否激活</th>
+    	<th></th>
+    </tr>
+    <tr ng-repeat="queue in queues">
+        <td>
+    		{{queue.id}}
+        </td>
+    	<td>
+    		{{queue.name}}
+        </td>
+        <td>
+    		{{queue.queueClassName}}
+        </td>
+    	<td>
+    		{{queue.maxCallTimes}}
+        </td>
+        <td>
+    		{{queue.isActive}}
+        </td>
+        <td>
+        	<edit ng-Model="queue"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="mm">编辑</a></edit>
+          | <delete ng-Model="queue" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+		</td>
+	</tr>
+</table>
+<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
+	<table class="table table-bordered table-hover">
+	    <tr>
+		    <td>ID</td>
+		     <td>
+		 		{{currentedit.newval.id}}
+		     </td>
+	    </tr>
+	    <tr>
+		    <td>队列名称</td>
+		 	<td>
+		 		{{currentedit.newval.name}}
+		     </td>
+	    </tr>
+	</table>
+</deletedlg>
+
+
+
+
