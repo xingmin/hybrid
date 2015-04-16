@@ -8,8 +8,10 @@ require.config({
 		'angular-bootstrap':'../bower_components/angular-bootstrap/ui-bootstrap',
 		'bootstrap':'../bower_components/bootstrap/dist/js/bootstrap',
 		'bootstrap-toggle':'../bower_components/bootstrap-toggle/js/bootstrap2-toggle',
+		'bootstrap-datepicker':'../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker',
 		//'modal-carousel':'../bower_components/bootstrap-modal-carousel/dist/js/bootstrap-modal-carousel',
 		'socketio':'/socket.io/socket.io',
+		'moment':'../bower_components/moment/moment',
 		'domReady':'lib/domReady',
 		'boot':'boot',
 		'appx':'appx',
@@ -23,6 +25,10 @@ require.config({
 		'bootstrap-toggle':{
 			deps:['jquery','bootstrap'],
 			exports:'bootstrap-toggle'
+		},
+		'bootstrap-datepicker':{
+			deps:['jquery','bootstrap'],
+			exports:'bootstrap-datepicker'
 		},
 		'angular':{
 			exports:'angular'

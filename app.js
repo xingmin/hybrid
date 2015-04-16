@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 
 var routes = require('./routes/index');
+
 var users = require('./routes/users');
 var patient = require('./routes/patient');
 var depts = require('./routes/depts');
@@ -16,6 +17,8 @@ var externalsys = require('./routes/queue/externalsys');
 var ticket = require('./routes/queue/ticket');
 var dict = require('./routes/queue/dict');
 var person = require('./routes/queue/person');
+
+var draw = require('./routes/opsupport/draw');
 
 var app = express();
 
@@ -45,6 +48,7 @@ app.use('/queue/ticket', ticket);
 app.use('/dict', dict);
 app.use('/queue/person', person);
 
+app.use('/opsupport/draw', draw);
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

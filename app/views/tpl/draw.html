@@ -1,0 +1,117 @@
+<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
+<editdlg module-name="拍照记录" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
+	<div class="form-group" >
+		<label  for="id" class="col-md-3 control-label">ID</label>
+		<div class="col-md-4" >
+		<span  name="id" >{{currentedit.newval.id}}</span>
+		</div>
+	</div>	
+	<div class="form-group" >
+		<label  for="consumer" class="col-md-3 control-label">手术间</label>
+		<div class="col-md-4 controls">
+		<input type="text" class="form-control" id="consumer"  name="consumer" ng-model="currentedit.newval.consumer" required placeholder="请录入手术间"/>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="receiver" class="col-md-3 control-label">领用人</label>
+		<div class="col-md-4 controls">
+		<input type="text" class="form-control" id="receiver"  name="receiver" ng-model="currentedit.newval.receiver" placeholder="请录入领用人"/>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="drawer" class="col-md-3 control-label">记录人</label>
+		<div class="col-md-4 controls">
+		<input type="text" class="form-control" id="drawer"  name="drawer" ng-model="currentedit.newval.drawer" required placeholder="请录入记录人"/>
+		</div>
+	</div>
+</editdlg>
+</form>
+
+<div class="title control-group">	
+	
+	<h3>拍照记录</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+<div class="control-group">
+	<input class="datepicker" data-date-format="mm/dd/yyyy" ng-model="query.dateBegin">
+	~
+	<input class="datepicker" data-date-format="mm/dd/yyyy" ng-model="query.dateEnd">
+	<button type="button" class="btn btn-primary">查询</button>
+	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
+</div>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>ID</th>
+		<th>手术间</th>
+		<th>领用人</th>
+    	<th>记录人</th>
+		<th>记录时间</th>
+    	<th>图片</th>
+    	<th></th>
+    </tr>
+    <tr ng-repeat="draw in draws">
+        <td>
+    		{{draw.id}}
+        </td>
+    	<td>
+    		{{draw.consumer}}
+        </td>
+        <td>
+    		{{draw.receiver}}
+        </td>
+        <td>
+    		{{draw.drawer}}
+        </td>
+        <td>
+    		{{moment(draw.drawTime).format('YYYY-MM-DD HH:mm:ss')}}
+        </td>
+        <td>
+        </td>
+        <td>
+        	<edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
+          | <delete ng-Model="draw" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+		</td>
+	</tr>
+</table>
+<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
+	<table class="table table-bordered table-hover">
+	    <tr>
+		    <td>ID</td>
+		     <td>
+		 		{{currentedit.newval.id}}
+		     </td>
+	    </tr>
+	    <tr>
+		    <td>手术间</td>
+		 	<td>
+		 		{{currentedit.newval.consumer}}
+		     </td>
+	    </tr>
+	     <tr>
+		    <td>领用人</td>
+		 	<td>
+		 		{{currentedit.newval.receiver}}
+		     </td>
+	    </tr>
+	    <tr>
+	    	<td>记录人</td>
+		 	<td>
+		 		{{currentedit.newval.drawer}}
+		     </td>
+	    </tr>
+	    <tr>
+	    	<td>记录时间</td>
+		 	<td>
+		 		{{moment(draw.drawTime).format('YYYY-MM-DD HH:mm:ss')}}
+		     </td>
+	    </tr>
+	</table>
+</deletedlg>
+<script type="text/javascript">
+$('.datepicker').datepicker({
+	format : 'yyyy-mm-dd'
+});
+</script>
+
+
+

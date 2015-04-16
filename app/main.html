@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
 <link rel="stylesheet" href="bower_components/bootstrap-toggle/css/bootstrap2-toggle.css">
 <link rel="stylesheet" href="bower_components/bootstrap-modal-carousel/dist/css/bootstrap-modal-carousel.css">
+<link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css">
 <link rel="stylesheet" href="styles/main.css">
 <script type='text/javascript' src='scripts/lib/require.js' data-main='scripts/main.js'></script>
 </head>
@@ -16,8 +17,14 @@
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#/">Home</a></li>
 			<li><a href="#/register">注册OA帐号</a></li>
-			<li><a href="#">SVN</a></li>
-			
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown">
+				手术支持<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#/opsupport/draw">拍照记录</a></li>
+				</ul>			
+			</li>
 			  
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown">
