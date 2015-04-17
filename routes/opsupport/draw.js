@@ -7,18 +7,29 @@ var momentz = require('moment-timezone');
 var moment = require('moment');
 
 router.post('/create', function(req, res) {
+	var barcode = req.body.barcode;
 	var receiver = req.body.receiver;
 	var drawer = req.body.drawer;
-	var consumer = req.body.consumer;
+	
 	var drawTime = momentz.tz(new Date(),'Asia/Chongqing');
 	var localDrawTime = new Date(drawTime.format('YYYY-MM-DD HH:mm:ss'));
+	var consumer = req.body.consumer;
+	
+	var remark = req.body.remark;
+
 	var draw = new Draw({
-		'receiver':receiver,
-		'drawer':drawer,
-		'consumer':consumer,
-		'drawTime':localDrawTime
+	    'barcode' : barcode,
+	    'receiver' : receiver,
+	    'drawer' : drawer,
+	    'drawTime' : localDrawTime,
+	    'consumer' : consumer,
+	    'useFlag' : 0,
+	    'recyler' : '',
+	    'recyleTime' : null,
+	    'remark' : remark,
+	    'photo' : null
 		});
-	draw.createNewDrawRecord()
+	draw.saveNewDrawRecord()
 		.then(function(status){
 			var resdata;
 			if(status instanceof Error){
@@ -32,17 +43,29 @@ router.post('/create', function(req, res) {
 
 router.post('/update', function(req, res) {
 	var id = req.body.id;
+	var barcode = req.body.barcode;
 	var receiver = req.body.receiver;
-	var drawer = req.body.drawer;
-	var consumer = req.body.consumer;
+	var drawer = req.body.drawer;	
 	var drawTime = momentz.tz(new Date(),'Asia/Chongqing');
 	var localDrawTime = new Date(drawTime.format('YYYY-MM-DD HH:mm:ss'));
+	var consumer = req.body.consumer;
+	var useFlag = req.body.useFlag;
+	var recyler = req.body.recyler;
+	var recyleTime = new Date();
+	var remark = req.body.remark;
+	
 	var draw = new Draw({
 		'id':id,
-		'receiver':receiver,
-		'drawer':drawer,
-		'consumer':consumer,
-		'drawTime': localDrawTime
+	    'barcode' : barcode,
+	    'receiver' : receiver,
+	    'drawer' : drawer,
+	    'drawTime' : localDrawTime,
+	    'consumer' : consumer,
+	    'useFlag' : 0,
+	    'recyler' : '',
+	    'recyleTime' : null,
+	    'remark' : remark,
+	    'photo' : null
 	});
 	draw.updateDrawRecord()
 		.then(function(status){

@@ -8,18 +8,29 @@ define(['./module'],function(services,$){
 			  deleteDraw:function(id){
 				  return $http.post('/opsupport/draw/delete', {'id':id});
 			  },
-			  createNewDraw:function(receiver, drawer, consumer){
+			  createNewDraw:function(barcode, receiver, drawer, consumer, remark){
 				  return $http.post('/opsupport/draw/create/', {
+					  'barcode' : barcode,
 					  'receiver':receiver,
 					  'drawer':drawer,
-					  'consumer':consumer
+					  'consumer':consumer,
+					  'remark' : remark
 					  });
 			  },
-			  saveChangeDraw:function(id, receiver, drawer, consumer){
-				  return $http.post('/opsupport/draw/update/', {'id':id,
-					  'receiver':receiver,
-					  'drawer':drawer,
-					  'consumer':consumer}); 
+			  saveChangeDraw:function(id, barcode, receiver, drawer, consumer, useFlag, recyler, remark){
+				  return $http.post('/opsupport/draw/update/', 
+						  {
+							  'id':id,
+							  'barcode': barcode,							  
+							  'receiver':receiver,
+							  'drawer':drawer,
+							  'consumer':consumer,
+							  'useFlag':useFlag,
+							  'recyler':recyler,
+							  'remark':remark
+							  
+						  }
+				  ); 
 			  }
 		  };
 	}])

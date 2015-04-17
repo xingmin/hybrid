@@ -1,27 +1,39 @@
 <form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
-<editdlg module-name="拍照记录" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
+<editdlg module-name="领用记录" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
 	<div class="form-group" >
 		<label  for="id" class="col-md-3 control-label">ID</label>
 		<div class="col-md-4" >
 		<span  name="id" >{{currentedit.newval.id}}</span>
 		</div>
-	</div>	
-	<div class="form-group" >
+	</div>
+	<div class="form-group">
+		<label  for="barcode" class="col-md-3 control-label">条形码</label>
+		<div class="col-md-4 controls">
+		<input type="text" class="form-control" id="barcode"  name="barcode" ng-model="currentedit.newval.barcode" required placeholder="请录入条码号"/>
+		</div>
+	</div>
+	<div class="form-group">
 		<label  for="consumer" class="col-md-3 control-label">手术间</label>
 		<div class="col-md-4 controls">
 		<input type="text" class="form-control" id="consumer"  name="consumer" ng-model="currentedit.newval.consumer" required placeholder="请录入手术间"/>
 		</div>
 	</div>
-	<div class="form-group" >
+	<div class="form-group">
 		<label  for="receiver" class="col-md-3 control-label">领用人</label>
 		<div class="col-md-4 controls">
 		<input type="text" class="form-control" id="receiver"  name="receiver" ng-model="currentedit.newval.receiver" placeholder="请录入领用人"/>
 		</div>
 	</div>
-	<div class="form-group" >
+	<div class="form-group">
 		<label  for="drawer" class="col-md-3 control-label">记录人</label>
 		<div class="col-md-4 controls">
 		<input type="text" class="form-control" id="drawer"  name="drawer" ng-model="currentedit.newval.drawer" required placeholder="请录入记录人"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label  for="remark" class="col-md-3 control-label">备注</label>
+		<div class="col-md-4 controls">
+		<input type="text" class="form-control" id="remark"  name="remark" ng-model="currentedit.newval.remark"/>
 		</div>
 	</div>
 </editdlg>
@@ -29,7 +41,7 @@
 
 <div class="title control-group">	
 	
-	<h3>拍照记录</h3>
+	<h3>领用记录</h3>
 </div>
 <msgbox messages="msgs"></msgbox>
 <div class="control-group">
@@ -42,16 +54,23 @@
 <table class="table table-bordered table-hover">
 	<tr>
 		<th>ID</th>
+		<th>条形码</th>
 		<th>手术间</th>
 		<th>领用人</th>
     	<th>记录人</th>
 		<th>记录时间</th>
-    	<th>图片</th>
+		<th>使用情况</th>
+		<th>回收者</th>
+		<th>回收时间</th>
+		<th>备注</th>
     	<th></th>
     </tr>
     <tr ng-repeat="draw in draws">
         <td>
     		{{draw.id}}
+        </td>
+        <td>
+    		{{draw.barcode}}
         </td>
     	<td>
     		{{draw.consumer}}
@@ -66,6 +85,16 @@
     		{{moment(draw.drawTime).format('YYYY-MM-DD HH:mm:ss')}}
         </td>
         <td>
+    		{{draw.useFlag}}
+        </td>
+        <td>
+    		{{draw.recycler}}
+        </td>
+        <td>
+    		{{moment(draw.recyclerTime).format('YYYY-MM-DD HH:mm:ss')}}
+        </td>
+        <td>
+    		{{draw.remark}}
         </td>
         <td>
         	<edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>

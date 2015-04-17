@@ -4,15 +4,20 @@ var Q = require('q');
 
 function Draw(obj){
     this.id = obj.id;
+    this.barcode = obj.barcode;
     this.receiver = obj.receiver;
     this.drawer = obj.drawer;
     this.drawTime = obj.drawTime;
     this.consumer = obj.consumer;
+    this.useFlag = obj.useFlag;
+    this.recyler = obj.recyler;
+    this.recyleTime = obj.recyleTime;
+    this.remark = obj.remark;
     this.photo = obj.photo;
 }
 
-Draw.prototype.init = function(queueId){
-	this.id = queueId;
+Draw.prototype.init = function(id){
+	this.id = id;
 	var defered = Q.defer();
 	var config = require('../connconfig').hybrid;
 	
@@ -26,12 +31,16 @@ Draw.prototype.init = function(queueId){
 	}).then(function(data){
 		var record = data.recordset[0];
 		if( record && record.length>0){
-			that.id = record[0].Id;
-			that.receiver = record[0].Receiver;
-			that.drawer = record[0].Drawer;
-			that.drawTime = record[0].DrawTime;
-			that.consumer = record[0].Consumer;
-			that.photo = record[0].Photo;
+		    that.barcode = record[0].Barcode;
+		    that.receiver = record[0].Receiver;
+		    that.drawer = record[0].Drawer;
+		    that.drawTime = record[0].DrawTime;
+		    that.consumer = record[0].Consumer;
+		    that.useFlag = record[0].UseFlag;
+		    that.recyler = record[0].Recyler;
+		    that.recyleTime = record[0].RecyleTime;
+		    that.remark = record[0].Remark;
+		    that.photo = record[0].Photo;
 		}
 		defered.resolve(that);
 	},function(err){
@@ -52,14 +61,21 @@ Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd){
 	}).then(function(data){
 		var arrDrawRecord = [];
 		data.recordset[0].forEach(function(value){
-			arrDrawRecord.push((new Draw({
-				"id": value.Id,
-				"receiver" : value.Receiver,
-				"drawer" : value.Drawer,
-				"drawTime" : value.DrawTime,
-				"consumer" : value.Consumer,
-				"photo" : value.Photo
-			})));
+			arrDrawRecord.push((new Draw(
+				{
+					'id' : value.Id,
+				    'barcode' : value.Barcode,
+				    'receiver' : value.Receiver,
+				    'drawer' : value.Drawer,
+				    'drawTime' : value.DrawTime,
+				    'consumer' : value.Consumer,
+				    'useFlag' : value.UseFlag,
+				    'recyler' : value.Recyler,
+				    'recyleTime' : value.RecyleTime,
+				    'remark' : value.Remark,
+				    'photo' : value.Photo
+				 }
+				)));
 		});
 		defered.resolve(arrDrawRecord);
 	},function(err){
@@ -72,7 +88,7 @@ Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd){
 };
 
 
-Draw.prototype.createNewDrawRecord = function(){
+Draw.prototype.saveNewDrawRecord = function(){
 	var defered = Q.defer();
 	var config = require('../connconfig').hybrid;
 	var conn = new sql.Connection(config);
@@ -80,10 +96,14 @@ Draw.prototype.createNewDrawRecord = function(){
 	
 	var promise = customdefer.conn_defered(conn).then(function(conn){
 		var request = new sql.Request(conn);
+		request.input('Barcode', sql.VarChar(50), that.barcode);
 		request.input('Receiver', sql.VarChar(12), that.receiver);
 		request.input('Drawer', sql.VarChar(12), that.drawer);
 		request.input('DrawTime', sql.DateTime, that.drawTime || null);
 		request.input('Consumer', sql.NVarChar(50), that.consumer);
+		request.input('Recycler', sql.VarChar(12), that.recycler);
+		request.input('RecycleTime', sql.DateTime, that.recycleTime);
+		request.input('Remark', sql.NVarChar(200), that.remark);
 		request.input('Photo', sql.VarChar(8000), that.photo || null);
 		return customdefer.request_defered(request, 'proc_addDrawRecord');
 	}).then(function(data){
@@ -111,11 +131,15 @@ Draw.prototype.updateDrawRecord = function(){
 	var promise = customdefer.conn_defered(conn).then(function(conn){
 		var request = new sql.Request(conn);
 		request.input('Id', sql.Int, that.id);
+		request.input('Barcode', sql.VarChar(50), that.barcode);
 		request.input('Receiver', sql.VarChar(12), that.receiver);
 		request.input('Drawer', sql.VarChar(12), that.drawer);
-		request.input('DrawTime', sql.DateTime, that.drawTime);
+		request.input('DrawTime', sql.DateTime, that.drawTime || null);
 		request.input('Consumer', sql.NVarChar(50), that.consumer);
-		request.input('Photo', sql.VarChar(8000), that.photo);
+		request.input('Recycler', sql.VarChar(12), that.recycler);
+		request.input('RecycleTime', sql.DateTime, that.recycleTime);
+		request.input('Remark', sql.NVarChar(200), that.remark);
+		request.input('Photo', sql.VarChar(8000), that.photo || null);
 		return customdefer.request_defered(request, 'proc_updateDrawRecord');
 	}).then(function(data){
 		if(data.ret === 0){
