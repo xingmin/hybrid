@@ -1,19 +1,16 @@
 var sql = require('mssql');
 var customdefer = require('../customdefer');
+var DrawDetail = require('./drawdetail');
 var Q = require('q');
 
 function Draw(obj){
     this.id = obj.id;
-    this.barcode = obj.barcode;
+    this.consumer = obj.consumer;
     this.receiver = obj.receiver;
+    this.remark = obj.remark;
     this.drawer = obj.drawer;
     this.drawTime = obj.drawTime;
-    this.consumer = obj.consumer;
-    this.useFlag = obj.useFlag;
-    this.recyler = obj.recyler;
-    this.recyleTime = obj.recyleTime;
-    this.remark = obj.remark;
-    this.photo = obj.photo;
+    this.drawDetails = obj.drawDetails;
 }
 
 Draw.prototype.init = function(id){
@@ -31,16 +28,11 @@ Draw.prototype.init = function(id){
 	}).then(function(data){
 		var record = data.recordset[0];
 		if( record && record.length>0){
-		    that.barcode = record[0].Barcode;
+			that.consumer = record[0].Consumer;
 		    that.receiver = record[0].Receiver;
+		    that.remark = record[0].Remark;
 		    that.drawer = record[0].Drawer;
 		    that.drawTime = record[0].DrawTime;
-		    that.consumer = record[0].Consumer;
-		    that.useFlag = record[0].UseFlag;
-		    that.recyler = record[0].Recyler;
-		    that.recyleTime = record[0].RecyleTime;
-		    that.remark = record[0].Remark;
-		    that.photo = record[0].Photo;
 		}
 		defered.resolve(that);
 	},function(err){
@@ -64,16 +56,11 @@ Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd){
 			arrDrawRecord.push((new Draw(
 				{
 					'id' : value.Id,
-				    'barcode' : value.Barcode,
+					'consumer' : value.Consumer,
 				    'receiver' : value.Receiver,
-				    'drawer' : value.Drawer,
-				    'drawTime' : value.DrawTime,
-				    'consumer' : value.Consumer,
-				    'useFlag' : value.UseFlag,
-				    'recyler' : value.Recyler,
-				    'recyleTime' : value.RecyleTime,
 				    'remark' : value.Remark,
-				    'photo' : value.Photo
+				    'drawer' : value.Drawer,
+				    'drawTime' : value.DrawTime				    
 				 }
 				)));
 		});
@@ -96,19 +83,22 @@ Draw.prototype.saveNewDrawRecord = function(){
 	
 	var promise = customdefer.conn_defered(conn).then(function(conn){
 		var request = new sql.Request(conn);
-		request.input('Barcode', sql.VarChar(50), that.barcode);
+		request.input('Consumer', sql.NVarChar(50), that.consumer);
 		request.input('Receiver', sql.VarChar(12), that.receiver);
+		request.input('Remark', sql.NVarChar(200), that.remark);
 		request.input('Drawer', sql.VarChar(12), that.drawer);
 		request.input('DrawTime', sql.DateTime, that.drawTime || null);
-		request.input('Consumer', sql.NVarChar(50), that.consumer);
-		request.input('Recycler', sql.VarChar(12), that.recycler);
-		request.input('RecycleTime', sql.DateTime, that.recycleTime);
-		request.input('Remark', sql.NVarChar(200), that.remark);
-		request.input('Photo', sql.VarChar(8000), that.photo || null);
+		var xmlBarcode = '';
+		if(that.drawDetails && that.drawDetails.length>0){
+			that.drawDetails.forEach(function(drawDetail){
+				xmlBarcode+='<row> <barcode>' + drawDetail.barcode + '</barcode> </row>';
+			});
+		}
+		request.input('Barcode', sql.Xml, xmlBarcode);
 		return customdefer.request_defered(request, 'proc_addDrawRecord');
 	}).then(function(data){
 		if(data.ret === 0){
-			that.id = data.recordset[0][0].Id;
+			that.id = data.recordset[0][0].DrawId;
 			defered.resolve(that);
 		}else{
 			defered.reject(new Error(data.recordset[0][0].errmsg));
@@ -131,15 +121,18 @@ Draw.prototype.updateDrawRecord = function(){
 	var promise = customdefer.conn_defered(conn).then(function(conn){
 		var request = new sql.Request(conn);
 		request.input('Id', sql.Int, that.id);
-		request.input('Barcode', sql.VarChar(50), that.barcode);
+		request.input('Consumer', sql.NVarChar(50), that.consumer);		
 		request.input('Receiver', sql.VarChar(12), that.receiver);
+		request.input('Remark', sql.NVarChar(200), that.remark);
 		request.input('Drawer', sql.VarChar(12), that.drawer);
 		request.input('DrawTime', sql.DateTime, that.drawTime || null);
-		request.input('Consumer', sql.NVarChar(50), that.consumer);
-		request.input('Recycler', sql.VarChar(12), that.recycler);
-		request.input('RecycleTime', sql.DateTime, that.recycleTime);
-		request.input('Remark', sql.NVarChar(200), that.remark);
-		request.input('Photo', sql.VarChar(8000), that.photo || null);
+		var xmlBarcode = '';
+		if(that.drawDetails && that.drawDetails.length>0){
+			that.drawDetails.forEach(function(drawDetail){
+				xmlBarcode+='<row> <barcode>' + drawDetail.barcode + '</barcode> </row>';
+			});
+		}
+		request.input('Barcode', sql.Xml, xmlBarcode);
 		return customdefer.request_defered(request, 'proc_updateDrawRecord');
 	}).then(function(data){
 		if(data.ret === 0){
@@ -175,6 +168,38 @@ Draw.prototype.deleteDrawRecord = function(){
 	},function(err){
 		if (err) {
 			console.log("executing proc_deleteDrawRecord Error: " + err.message);
+		}
+		defered.reject(err);
+	});
+	return defered.promise;
+};
+
+Draw.prototype.getDrawDetails = function(){
+	var defered = Q.defer();
+	var config = require('../connconfig').hybrid;
+	var conn = new sql.Connection(config);
+	var that = this;
+	var promise = customdefer.conn_defered(conn).then(function(conn){
+		var request = new sql.Request(conn);
+		request.input('DrawId', sql.DateTime, that.Id);
+		return customdefer.request_defered(request, 'proc_getDrawDetailByDrawId');
+	}).then(function(data){
+		var arrDrawDetail = [];
+		data.recordset[0].forEach(function(value){
+			arrDrawDetail.push((new DrawDetail(
+				{
+					'id' : value.Id,
+					'drawId' : value.DrawId,
+				    'barcode' : value.Barcode,
+				    'useFlag' : value.UseFlag,
+				    'recyleId' : value.RecyleId		    
+				 }
+				)));
+		});
+		defered.resolve(arrDrawDetail);
+	},function(err){
+		if (err) {
+			console.log("executing proc_getDrawDetailByDrawId Error: " + err.message);
 		}
 		defered.reject(err);
 	});

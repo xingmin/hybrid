@@ -1,33 +1,33 @@
 var express = require('express');
 var router = express.Router();
 var Draw = require("../../models/opsupport/draw.js");
+var DrawDetail = require("../../models/opsupport/drawdetail.js");
 var Q = require('q');
 var ResData = require("../resdata.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
 
 router.post('/create', function(req, res) {
-	var barcode = req.body.barcode;
+	var consumer = req.body.consumer;
 	var receiver = req.body.receiver;
+	var remark = req.body.remark;
 	var drawer = req.body.drawer;
-	
 	var drawTime = momentz.tz(new Date(),'Asia/Chongqing');
 	var localDrawTime = new Date(drawTime.format('YYYY-MM-DD HH:mm:ss'));
-	var consumer = req.body.consumer;
-	
-	var remark = req.body.remark;
-
+	var barcodes = req.body.barcodes;
+	var drawDetails = [];
+	if(barcodes && barcodes.length>0){
+		barcodes.map(function(barcode){
+			return new DrawDetail({'barcode':barcode});
+		});
+	}
 	var draw = new Draw({
-	    'barcode' : barcode,
-	    'receiver' : receiver,
-	    'drawer' : drawer,
-	    'drawTime' : localDrawTime,
-	    'consumer' : consumer,
-	    'useFlag' : 0,
-	    'recyler' : '',
-	    'recyleTime' : null,
-	    'remark' : remark,
-	    'photo' : null
+		'consumer' : consumer,
+		'receiver' : receiver,
+		'remark' : remark,
+		'drawer' : drawer,
+		'drawTime' : localDrawTime,
+		'drawDetails' : drawDetails
 		});
 	draw.saveNewDrawRecord()
 		.then(function(status){
@@ -43,30 +43,29 @@ router.post('/create', function(req, res) {
 
 router.post('/update', function(req, res) {
 	var id = req.body.id;
-	var barcode = req.body.barcode;
+	var consumer = req.body.consumer;
 	var receiver = req.body.receiver;
-	var drawer = req.body.drawer;	
+	var remark = req.body.remark;
+	var drawer = req.body.drawer;
 	var drawTime = momentz.tz(new Date(),'Asia/Chongqing');
 	var localDrawTime = new Date(drawTime.format('YYYY-MM-DD HH:mm:ss'));
-	var consumer = req.body.consumer;
-	var useFlag = req.body.useFlag;
-	var recyler = req.body.recyler;
-	var recyleTime = new Date();
-	var remark = req.body.remark;
+	var barcodes = req.body.barcodes;
+	var drawDetails = [];
+	if(barcodes && barcodes.length>0){
+		barcodes.map(function(barcode){
+			return new DrawDetail({'barcode':barcode});
+		});
+	}
 	
 	var draw = new Draw({
 		'id':id,
-	    'barcode' : barcode,
-	    'receiver' : receiver,
-	    'drawer' : drawer,
-	    'drawTime' : localDrawTime,
-	    'consumer' : consumer,
-	    'useFlag' : 0,
-	    'recyler' : '',
-	    'recyleTime' : null,
-	    'remark' : remark,
-	    'photo' : null
-	});
+		'consumer' : consumer,
+		'receiver' : receiver,
+		'remark' : remark,
+		'drawer' : drawer,
+		'drawTime' : localDrawTime,
+		'drawDetails' : drawDetails
+		});
 	draw.updateDrawRecord()
 		.then(function(status){
 			var resdata;
@@ -102,6 +101,21 @@ router.get('/q', function(req, res) {
 	console.log(qb);
 	console.log(qe);
 	Draw.prototype.getDrawRecordsByDate(qb, qe)
+		.then(function(data){
+			var resdata;
+			if(data instanceof Error){
+				resdata = new ResData(data.status, data.message);
+			}else{
+				resdata = new ResData(0,'',data);
+			}
+			resdata.sendJson(res);
+		});
+});
+
+router.get('/detail/:drawId', function(req, res) {
+	var drawId = req.param('drawId');
+	var draw = new Draw({id:drawId});
+	draw.getDrawDetails()
 		.then(function(data){
 			var resdata;
 			if(data instanceof Error){

@@ -23,32 +23,30 @@ define(['./module', 'moment'],function(controllers, moment){
     		$scope.isSaveCompleted = false;
     		if ($scope.mode == 'edit'){
     			drawService.saveChangeDraw($scope.currentedit.newval.id,
-    					$scope.currentedit.newval.barcode,
-    					$scope.currentedit.newval.receiver,
-    					$scope.currentedit.newval.drawer,
     					$scope.currentedit.newval.consumer,
-    					$scope.currentedit.newval.useFlag,
-    					$scope.currentedit.newval.recyler,
-    					$scope.currentedit.newval.remark)
-    				.success(function(data){//id, barcode, receiver, drawer, consumer, useFlag, recyler, remark
+    					$scope.currentedit.newval.receiver,
+    					$scope.currentedit.newval.remark,
+    					$scope.currentedit.newval.drawer,
+    					$scope.currentedit.newval.drawDetails
+    					)
+    				.success(function(data){
     					if(data.status==0){
-    						$scope.currentedit.oldval.barcode = $scope.currentedit.newval.barcode;
-    						$scope.currentedit.oldval.receiver = $scope.currentedit.newval.receiver;
-    						$scope.currentedit.oldval.drawer = $scope.currentedit.newval.drawer;
     						$scope.currentedit.oldval.consumer = $scope.currentedit.newval.consumer;
-    						$scope.currentedit.oldval.useFlag = $scope.currentedit.newval.useFlag;
-    						$scope.currentedit.oldval.recyler = $scope.currentedit.newval.recyler;
+    						$scope.currentedit.oldval.receiver = $scope.currentedit.newval.receiver;
     						$scope.currentedit.oldval.remark = $scope.currentedit.newval.remark;
+    						$scope.currentedit.oldval.drawer = $scope.currentedit.newval.drawer;
+    						$scope.currentedit.oldval.drawer = $scope.currentedit.newval.drawDetails;
     						$scope.isSaveCompleted = true;
     						$scope.msgs.push('修改成功！');
     					}});
     		}else if($scope.mode == 'create'){
     			drawService.createNewDraw(
-    					$scope.currentedit.newval.barcode,
-    					$scope.currentedit.newval.receiver,
-    					$scope.currentedit.newval.drawer,
     					$scope.currentedit.newval.consumer,
-    					$scope.currentedit.newval.remark)
+    					$scope.currentedit.newval.receiver,
+    					$scope.currentedit.newval.remark,
+    					$scope.currentedit.newval.drawer,
+    					$scope.currentedit.newval.drawDetails
+    					)
     			.success(function(data){
     				if(data.status==0){
     					$scope.draws.push(data.value);
@@ -75,7 +73,7 @@ define(['./module', 'moment'],function(controllers, moment){
     				angular.forEach( $scope.draws, function(val,index){
     					if(val == cur){
     						$scope.currentedit={newval:{},oldval:{}};
-    						$scope.draws.splice(index,1);						
+    						$scope.draws.splice(index,1);				
     						$scope.IsHideModal = true;
     						$scope.msgs.push('删除成功！');
     					}
@@ -88,4 +86,4 @@ define(['./module', 'moment'],function(controllers, moment){
 
     	};
     }]);
-})
+});
