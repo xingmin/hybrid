@@ -29,3 +29,7 @@ html,body{
 .dropdown:hover .dropdown-menu{
 	display: block;
 }
+
+.modal-dialog-lg{
+	width:60%;
+}

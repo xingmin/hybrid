@@ -181,7 +181,7 @@ Draw.prototype.getDrawDetails = function(){
 	var that = this;
 	var promise = customdefer.conn_defered(conn).then(function(conn){
 		var request = new sql.Request(conn);
-		request.input('DrawId', sql.DateTime, that.Id);
+		request.input('DrawId', sql.Int, that.id);
 		return customdefer.request_defered(request, 'proc_getDrawDetailByDrawId');
 	}).then(function(data){
 		var arrDrawDetail = [];

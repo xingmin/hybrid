@@ -112,7 +112,7 @@ router.get('/q', function(req, res) {
 		});
 });
 
-router.get('/detail/:drawId', function(req, res) {
+router.get('/getdetail/:drawId', function(req, res) {
 	var drawId = req.param('drawId');
 	var draw = new Draw({id:drawId});
 	draw.getDrawDetails()

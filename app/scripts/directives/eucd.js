@@ -54,7 +54,8 @@ define(['./module'],function(directives){
 			    templateUrl: 'views/component/editdlg.html',
 			    scope:{
 			    	ishide:'@isHide',
-			    	modulename:'@moduleName'
+			    	modulename:'@moduleName',
+			    	moduleclass: '@moduleClass'
 			    },
 			    link:function(scope, element, attrs){
 	//		    	$(element[0].children[0]).attr('name', attrs['dlgFormName']);

@@ -14,11 +14,21 @@ define(['./module', 'moment'],function(controllers, moment){
     			dateBegin:moment().format('YYYY-MM-DD'),
     			dateEnd:moment().format('YYYY-MM-DD')
     	};
-    	drawService.getDrawsByDate($scope.query.dateBegin, $scope.query.dateEnd).success(function(data){
-    		console.log($scope.query.dateBegin);
-    		console.log($scope.query.dateEnd);
-    		$scope.draws = data.value;
-    	});
+    	drawService.getDrawsByDate($scope.query.dateBegin, $scope.query.dateEnd)
+    		.then(function(receive){
+	    		console.log($scope.query.dateBegin);
+	    		console.log($scope.query.dateEnd);
+	    		$scope.draws = receive.data.value;
+	    		return $scope.draws;
+    		})
+    		.then(function(draws){
+    			draws && draws.length>0 && draws.every(function(draw){
+    				drawService.getDrawDetailsByDrawId(draw.id)
+    					.success(function(data){
+    						draw.drawDetails = data.value;
+    					})
+    			});
+    		});
     	$scope.saveChange = function(){
     		$scope.isSaveCompleted = false;
     		if ($scope.mode == 'edit'){

@@ -32,7 +32,7 @@ define(['./module'],function(services){
 				  ); 
 			  },
 			  getDrawDetailsByDrawId:function(drawId){
-				  return $http.get('/opsupport/draw/detail/'+drawId);
+				  return $http.get('/opsupport/draw/getdetail/'+drawId);
 			  },
 		  };
 	}])
