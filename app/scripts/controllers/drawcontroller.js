@@ -5,19 +5,21 @@ define(['./module', 'moment'],function(controllers, moment){
     		 function($scope,$http,$timeout, drawService){
     	$scope.moment = moment;
     	$scope.draws = [];
+    	$scope.scanner = {barcodeCollecter : ''};
     	$scope.IsHideModal = true;
     	$scope.msgs=[];
     	$scope.mode = '';
     	$scope.currentedit={newval:{},oldval:{}};
     	$scope.isSaveCompleted = false;
-    	$scope.query={
+    	$scope.queryParam={
     			dateBegin:moment().format('YYYY-MM-DD'),
     			dateEnd:moment().format('YYYY-MM-DD')
     	};
-    	drawService.getDrawsByDate($scope.query.dateBegin, $scope.query.dateEnd)
+    	$scope.query = function(){
+        	drawService.getDrawsByDate($scope.queryParam.dateBegin, $scope.queryParam.dateEnd)
     		.then(function(receive){
-	    		console.log($scope.query.dateBegin);
-	    		console.log($scope.query.dateEnd);
+	    		console.log($scope.queryParam.dateBegin);
+	    		console.log($scope.queryParam.dateEnd);
 	    		$scope.draws = receive.data.value;
 	    		return $scope.draws;
     		})
@@ -29,6 +31,8 @@ define(['./module', 'moment'],function(controllers, moment){
     					})
     			});
     		});
+    	};
+    	$scope.query();
     	$scope.saveChange = function(){
     		$scope.isSaveCompleted = false;
     		if ($scope.mode == 'edit'){
@@ -81,19 +85,27 @@ define(['./module', 'moment'],function(controllers, moment){
     		drawService.deleteDraw(cur.id).success(function(data){
     			if(data.status === 0){
     				angular.forEach( $scope.draws, function(val,index){
-    					if(val == cur){
-    						$scope.currentedit={newval:{},oldval:{}};
-    						$scope.draws.splice(index,1);				
-    						$scope.IsHideModal = true;
-    						$scope.msgs.push('删除成功！');
-    					}
-    				
-    				})
+	    					if(val == cur){
+	    						$scope.currentedit={newval:{},oldval:{}};
+	    						$scope.draws.splice(index,1);				
+	    						$scope.IsHideModal = true;
+	    						$scope.msgs.push('删除成功！');
+	    					}
+    				});
     			}else{
     				$scope.msgs.push(data.message);
     			}
     		});
-
+    	};
+    	$scope.addDrawDetail = function(event, barcode){
+    		if(event.which === 13){
+	    		if( !angular.isArray($scope.currentedit.newval.drawDetails)){
+	    			$scope.currentedit.newval.drawDetails=[];
+	    		}
+	    		$scope.currentedit.newval.drawDetails.push({'barcode':barcode});
+	    		$scope.scanner.barcodeCollecter = '';
+	    		event.preventDefault();
+    		}
     	};
     }]);
 });

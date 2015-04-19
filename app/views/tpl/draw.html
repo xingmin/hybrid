@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	<div class="col-md-8">
-		<input type="text" class="form-control" placeholder="请扫描条码"/>
+		<input type="text" class="form-control" ng-model="scanner.barcodeCollecter" ng-keypress="addDrawDetail($event, scanner.barcodeCollecter)" placeholder="请扫描条码"/>
 		<table class="table table-bordered table-hover">
 			<tr>
 				<th>条形码</th>
@@ -51,13 +51,15 @@
 		    </tr>
 			<tr ng-repeat="drawDetail in currentedit.newval.drawDetails">
 		        <td>
-		          {{drawDetail.barcode}}
+		        	{{drawDetail.barcode}}
+				</td>
+				<td>
+					{{drawDetail.useFlag}}
 				</td>
 				<td>
 				</td>
-				<td>回收者
-				</td>
-				<td>回收时间
+				<td>
+				
 				</td>
 				<td>
 				</td>
@@ -74,10 +76,10 @@
 </div>
 <msgbox messages="msgs"></msgbox>
 <div class="control-group">
-	<input class="datepicker" data-date-format="mm/dd/yyyy" ng-model="query.dateBegin">
+	<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateBegin">
 	~
-	<input class="datepicker" data-date-format="mm/dd/yyyy" ng-model="query.dateEnd">
-	<button type="button" class="btn btn-primary">查询</button>
+	<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateEnd">
+	<button type="button" class="btn btn-primary" ng-click="query()">查询</button>
 	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
 </div>
 <table class="table table-bordered table-hover">
