@@ -24,7 +24,7 @@ define(['./module', 'moment'],function(controllers, moment){
 	    		return $scope.draws;
     		})
     		.then(function(draws){
-    			draws && draws.length>0 && draws.every(function(draw){
+    			draws && draws.length>0 && draws.forEach(function(draw){
     				drawService.getDrawDetailsByDrawId(draw.id)
     					.success(function(data){
     						draw.drawDetails = data.value;
@@ -43,17 +43,30 @@ define(['./module', 'moment'],function(controllers, moment){
     					$scope.currentedit.newval.drawer,
     					$scope.currentedit.newval.drawDetails
     					)
-    				.success(function(data){
+    				.then(function(recv){
+    					var data = recv.data;
     					if(data.status==0){
     						$scope.currentedit.oldval.consumer = $scope.currentedit.newval.consumer;
     						$scope.currentedit.oldval.receiver = $scope.currentedit.newval.receiver;
     						$scope.currentedit.oldval.remark = $scope.currentedit.newval.remark;
     						$scope.currentedit.oldval.drawer = $scope.currentedit.newval.drawer;
-    						$scope.currentedit.oldval.drawer = $scope.currentedit.newval.drawDetails;
+    						$scope.currentedit.oldval.drawDetails = $scope.currentedit.newval.drawDetails;
     						$scope.isSaveCompleted = true;
     						$scope.msgs.push('修改成功！');
-    					}});
-    		}else if($scope.mode == 'create'){
+    						return $scope.currentedit.oldval;
+    					}})
+    				.then(
+	    					function(newDraw){
+	    						if(newDraw){
+	    		    				drawService.getDrawDetailsByDrawId(newDraw.id)
+	    	    					.success(function(data){
+	    	    						newDraw.drawDetails = data.value;
+	    	    					});
+	    						}
+	    					}
+    				);
+    		}
+    		if($scope.mode == 'create'){
     			drawService.createNewDraw(
     					$scope.currentedit.newval.consumer,
     					$scope.currentedit.newval.receiver,
@@ -61,12 +74,28 @@ define(['./module', 'moment'],function(controllers, moment){
     					$scope.currentedit.newval.drawer,
     					$scope.currentedit.newval.drawDetails
     					)
-    			.success(function(data){
-    				if(data.status==0){
-    					$scope.draws.push(data.value);
-    					$scope.isSaveCompleted = true;
-    					$scope.msgs.push('创建成功！');
-    				}});	
+    			.then(function(receive){
+	    				var data = receive.data;
+	    				if(data.status === 0){
+	    					$scope.draws.push(data.value);
+	    					$scope.isSaveCompleted = true;
+	    					$scope.msgs.push('创建成功！');
+	    					return data.value;
+	    				}else{
+	    					return null;
+	    				}
+	    				
+	    		})//从数据库加载保存成功后的Details记录
+    			.then(
+    					function(newDraw){
+    						if(newDraw){
+    		    				drawService.getDrawDetailsByDrawId(newDraw.id)
+    	    					.success(function(data){
+    	    						newDraw.drawDetails = data.value;
+    	    					});
+    						}
+    					}
+    			);
     		}
     	};
     	//create --新建
@@ -106,6 +135,11 @@ define(['./module', 'moment'],function(controllers, moment){
 	    		$scope.scanner.barcodeCollecter = '';
 	    		event.preventDefault();
     		}
+    	};
+    	$scope.deleteDrawDetail = function(arrDrawDetail, drawDetail){
+    		arrDrawDetail 
+    			&& arrDrawDetail.length>0 
+    			&& arrDrawDetail.splice(arrDrawDetail.indexOf(drawDetail),1);
     	};
     }]);
 });

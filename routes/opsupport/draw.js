@@ -14,20 +14,21 @@ router.post('/create', function(req, res) {
 	var drawer = req.body.drawer;
 	var drawTime = momentz.tz(new Date(),'Asia/Chongqing');
 	var localDrawTime = new Date(drawTime.format('YYYY-MM-DD HH:mm:ss'));
-	var barcodes = req.body.barcodes;
-	var drawDetails = [];
-	if(barcodes && barcodes.length>0){
-		barcodes.map(function(barcode){
-			return new DrawDetail({'barcode':barcode});
-		});
-	}
+	var drawDetails = req.body.drawDetails;
+	var arrDrawDetail = drawDetails;
+//	var arrDrawDetail = [];
+//	if(drawDetails && drawDetails.length>0){
+//		arrDrawDetail = drawDetails.map(function(drawDetail){
+//			return new DrawDetail({'barcode':drawDetail.barcode});
+//		});
+//	}
 	var draw = new Draw({
 		'consumer' : consumer,
 		'receiver' : receiver,
 		'remark' : remark,
 		'drawer' : drawer,
 		'drawTime' : localDrawTime,
-		'drawDetails' : drawDetails
+		'drawDetails' : arrDrawDetail
 		});
 	draw.saveNewDrawRecord()
 		.then(function(status){
@@ -49,13 +50,14 @@ router.post('/update', function(req, res) {
 	var drawer = req.body.drawer;
 	var drawTime = momentz.tz(new Date(),'Asia/Chongqing');
 	var localDrawTime = new Date(drawTime.format('YYYY-MM-DD HH:mm:ss'));
-	var barcodes = req.body.barcodes;
-	var drawDetails = [];
-	if(barcodes && barcodes.length>0){
-		barcodes.map(function(barcode){
-			return new DrawDetail({'barcode':barcode});
-		});
-	}
+	var drawDetails = req.body.drawDetails;
+	var arrDrawDetail = drawDetails;
+//	var arrDrawDetail = [];
+//	if(drawDetails && drawDetails.length>0){
+//		arrDrawDetail = drawDetails.map(function(drawDetail){
+//			return new DrawDetail({'barcode':drawDetail.barcode});
+//		});
+//	}
 	
 	var draw = new Draw({
 		'id':id,
@@ -64,7 +66,7 @@ router.post('/update', function(req, res) {
 		'remark' : remark,
 		'drawer' : drawer,
 		'drawTime' : localDrawTime,
-		'drawDetails' : drawDetails
+		'drawDetails' : arrDrawDetail
 		});
 	draw.updateDrawRecord()
 		.then(function(status){

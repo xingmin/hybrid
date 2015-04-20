@@ -8,17 +8,17 @@ define(['./module'],function(services){
 			  deleteDraw:function(id){
 				  return $http.post('/opsupport/draw/delete', {'id':id});
 			  },
-			  createNewDraw:function(consumer, receiver, remark, drawer, barcodes){
+			  createNewDraw:function(consumer, receiver, remark, drawer, drawDetails){
 				  return $http.post('/opsupport/draw/create/', 
 						  {
 							  'consumer':consumer,
 							  'receiver':receiver,
 							  'remark' : remark,
 							  'drawer':drawer,
-							  'barcodes' : barcodes,
+							  'drawDetails' : drawDetails,
 						  });
 			  },
-			  saveChangeDraw:function(id, consumer, receiver, remark, drawer, barcodes){
+			  saveChangeDraw:function(id, consumer, receiver, remark, drawer, drawDetails){
 				  return $http.post('/opsupport/draw/update/', 
 						  {
 							  'id':id,
@@ -26,7 +26,7 @@ define(['./module'],function(services){
 							  'receiver':receiver,
 							  'remark' : remark,
 							  'drawer':drawer,
-							  'barcodes' : barcodes,
+							  'drawDetails' : drawDetails,
 							  
 						  }
 				  ); 
