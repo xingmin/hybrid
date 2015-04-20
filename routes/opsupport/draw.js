@@ -31,15 +31,17 @@ router.post('/create', function(req, res) {
 		'drawDetails' : arrDrawDetail
 		});
 	draw.saveNewDrawRecord()
-		.then(function(status){
-			var resdata;
-			if(status instanceof Error){
-				resdata = new ResData(1, status.message);
-			}else{
-				resdata = new ResData(0, '', draw);
-			}
-			resdata.sendJson(res);
-		});
+		.then(
+				function(status){
+					var resdata;
+					resdata = new ResData(0, '', draw);
+					resdata.sendJson(res);
+				},
+				function(err){
+					var resdata = new ResData(1, err.message);
+					resdata.sendJson(res);
+				}
+		);
 });
 
 router.post('/update', function(req, res) {
@@ -69,30 +71,35 @@ router.post('/update', function(req, res) {
 		'drawDetails' : arrDrawDetail
 		});
 	draw.updateDrawRecord()
-		.then(function(status){
-			var resdata;
-			if(status instanceof Error){
-				resdata = new ResData(status, status.message);
-			}else{
-				resdata = new ResData(0, '', draw);
-			}
-			resdata.sendJson(res);
-		});
+		.then(
+				function(status){
+					var resdata;
+					resdata = new ResData(0, '', draw);
+					resdata.sendJson(res);
+				},
+				function(err){
+					var resdata = new ResData(1, err.message);
+					resdata.sendJson(res);
+				}
+		);
 });
 
 router.post('/delete', function(req, res) {
 	var id = req.body.id;
 	var draw = new Draw({id:id});
 	draw.deleteDrawRecord()
-		.then(function(status){
-			var resdata;
-			if(status instanceof Error){
-				resdata = new ResData(status.status, status.message);
-			}else{
-				resdata = new ResData(0);
-			}
-			resdata.sendJson(res);
-		});
+		.then(
+				function(status){
+					var resdata;
+					resdata = new ResData(0);
+					resdata.sendJson(res);
+				},
+				function(status){
+					var resdata;	 
+					resdata = new ResData(status.status, status.message);
+					resdata.sendJson(res);
+				}
+		);
 });
 
 router.get('/q', function(req, res) {
@@ -103,30 +110,36 @@ router.get('/q', function(req, res) {
 	console.log(qb);
 	console.log(qe);
 	Draw.prototype.getDrawRecordsByDate(qb, qe)
-		.then(function(data){
-			var resdata;
-			if(data instanceof Error){
-				resdata = new ResData(data.status, data.message);
-			}else{
-				resdata = new ResData(0,'',data);
-			}
-			resdata.sendJson(res);
-		});
+		.then(
+				function(data){
+					var resdata;
+					resdata = new ResData(0,'',data);
+					resdata.sendJson(res);
+				},
+				function(data){
+					var resdata;
+					resdata = new ResData(data.status, data.message);
+					resdata.sendJson(res);
+				}
+		);
 });
 
 router.get('/getdetail/:drawId', function(req, res) {
 	var drawId = req.param('drawId');
 	var draw = new Draw({id:drawId});
 	draw.getDrawDetails()
-		.then(function(data){
-			var resdata;
-			if(data instanceof Error){
-				resdata = new ResData(data.status, data.message);
-			}else{
-				resdata = new ResData(0,'',data);
-			}
-			resdata.sendJson(res);
-		});
+		.then(
+				function(data){
+					var resdata;
+					resdata = new ResData(0,'',data);
+					resdata.sendJson(res);
+				},
+				function(data){
+					var resdata;
+					resdata = new ResData(data.status, data.message);
+					resdata.sendJson(res);
+				}
+		);
 });
 
 module.exports = router;

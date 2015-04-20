@@ -82,6 +82,7 @@ define(['./module', 'moment'],function(controllers, moment){
 	    					$scope.msgs.push('创建成功！');
 	    					return data.value;
 	    				}else{
+	    					$scope.msgs.push('保存失败：'+data.errmsg);
 	    					return null;
 	    				}
 	    				
@@ -140,6 +141,33 @@ define(['./module', 'moment'],function(controllers, moment){
     		arrDrawDetail 
     			&& arrDrawDetail.length>0 
     			&& arrDrawDetail.splice(arrDrawDetail.indexOf(drawDetail),1);
+    	};
+    	//下面是回收的操作
+    	$scope.recycle = {};
+    	$scope.recycle.isRecycleSaved = false;
+    	$scope.recycle.msgs = [];
+    	$scope.recycle.barcodeCollecter = '';
+    	$scope.recycle.initRecycleModal = function(){
+    		$scope.recycle.barcodeCollecter='';
+    		$scope.recycle.arrDrawDetail=[];
+    	};
+    	$scope.recycle.collectBarcode = function(event, barcode){
+    		if(event.which === 13){
+	    		if( !angular.isArray($scope.recycle.arrDrawDetail)){
+	    			$scope.recycle.arrDrawDetail=[];
+	    		}
+	    		$scope.recycle.arrDrawDetail.push({'barcode':barcode, 'useFlag':0});
+	    		$scope.recycle.barcodeCollecter = '';
+	    		event.preventDefault();
+    		}
+    	};
+    	$scope.recycle.deleteBarcode = function(arrDrawDetail, detail){
+    		arrDrawDetail 
+				&& arrDrawDetail.length>0 
+				&& arrDrawDetail.splice(arrDrawDetail.indexOf(detail),1);
+    	};
+    	$scope.recycle.saveRecycle = function(arrDrawDetail, drawDetail){
+
     	};
     }]);
 });

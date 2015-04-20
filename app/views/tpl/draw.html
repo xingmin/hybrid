@@ -1,75 +1,3 @@
-<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
-<editdlg module-name="领用记录" dlgid="editmodal" is-hide="{{isSaveCompleted}}" module-class="modal-dialog-lg">
-<div class="row">
-	<div class="col-md-4">
-		<div class="form-group" >
-			<label  for="id" class="col-md-4 control-label">ID</label>
-			<div class="col-md-8" >
-			<span  name="id" >{{currentedit.newval.id}}</span>
-			</div>
-		</div>
-		<div class="form-group">
-			<label  for="consumer" class="col-md-4 control-label">手术间</label>
-			<div class="col-md-8 controls">
-			<input type="text" class="form-control" id="consumer"  name="consumer" ng-model="currentedit.newval.consumer" required placeholder="请录入手术间"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label  for="receiver" class="col-md-4 control-label">领用人</label>
-			<div class="col-md-8 controls">
-			<input type="text" class="form-control" id="receiver"  name="receiver" ng-model="currentedit.newval.receiver" placeholder="请录入领用人"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label  for="drawer" class="col-md-4 control-label">记录人</label>
-			<div class="col-md-8 controls">
-			<input type="text" class="form-control" id="drawer"  name="drawer" ng-model="currentedit.newval.drawer" required placeholder="请录入记录人"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label  for="remark" class="col-md-4 control-label">备注</label>
-			<div class="col-md-8 controls">
-			<input type="text" class="form-control" id="remark"  name="remark" ng-model="currentedit.newval.remark"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label  for="drawTime" class="col-md-4 control-label">时间</label>
-			<div class="col-md-8 controls">
-			{{moment(currentedit.newval.drawTime).format('YYYY-MM-DD HH:mm:ss')}}
-			</div>
-		</div>
-	</div>
-	<div class="col-md-8">
-		<input type="text" class="form-control" ng-model="scanner.barcodeCollecter" ng-keypress="addDrawDetail($event, scanner.barcodeCollecter)" placeholder="请扫描条码"/>
-		<table class="table table-bordered table-hover">
-			<tr>
-				<th>条形码</th>
-				<th>使用情况</th>
-				<th>回收者</th>
-				<th>回收时间</th>
-		    	<th></th>
-		    </tr>
-			<tr ng-repeat="drawDetail in currentedit.newval.drawDetails">
-		        <td>
-		        	{{drawDetail.barcode}}
-				</td>
-				<td>
-					{{drawDetail.useFlag}}
-				</td>
-				<td>
-				</td>
-				<td>
-				
-				</td>
-				<td>
-				<a href="javascript:void(0);" ng-click="deleteDrawDetail(currentedit.newval.drawDetails, drawDetail)">删除</a >
-				</td>
-			</tr>
-		</table>
-	</div>
-</div>
-</editdlg>
-</form>
 
 <div class="title control-group">	
 	
@@ -82,7 +10,7 @@
 	<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateEnd">
 	<button type="button" class="btn btn-primary" ng-click="query()">查询</button>
 	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">领用</button>
-	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">回收</button>
+	<button type="button" data-target="#recyclemodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="recycle.initRecycleModal()">回收</button>
 </div>
 <table class="table table-bordered table-hover">
 	<tr>
@@ -164,6 +92,80 @@
 	</tr>
 	</tbody>
 </table>
+
+<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
+<editdlg module-name="领用记录" dlgid="editmodal" is-hide="{{isSaveCompleted}}" module-class="modal-dialog-lg">
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group" >
+			<label  for="id" class="col-md-4 control-label">ID</label>
+			<div class="col-md-8" >
+			<span  name="id" >{{currentedit.newval.id}}</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label  for="consumer" class="col-md-4 control-label">手术间</label>
+			<div class="col-md-8 controls">
+			<input type="text" class="form-control" id="consumer"  name="consumer" ng-model="currentedit.newval.consumer" required placeholder="请录入手术间"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label  for="receiver" class="col-md-4 control-label">领用人</label>
+			<div class="col-md-8 controls">
+			<input type="text" class="form-control" id="receiver"  name="receiver" ng-model="currentedit.newval.receiver" placeholder="请录入领用人"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label  for="drawer" class="col-md-4 control-label">记录人</label>
+			<div class="col-md-8 controls">
+			<input type="text" class="form-control" id="drawer"  name="drawer" ng-model="currentedit.newval.drawer" required placeholder="请录入记录人"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label  for="remark" class="col-md-4 control-label">备注</label>
+			<div class="col-md-8 controls">
+			<input type="text" class="form-control" id="remark"  name="remark" ng-model="currentedit.newval.remark"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label  for="drawTime" class="col-md-4 control-label">时间</label>
+			<div class="col-md-8 controls">
+			{{moment(currentedit.newval.drawTime).format('YYYY-MM-DD HH:mm:ss')}}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<input type="text" class="form-control" ng-model="scanner.barcodeCollecter" ng-keypress="addDrawDetail($event, scanner.barcodeCollecter)" placeholder="请扫描条码"/>
+		<table class="table table-bordered table-hover">
+			<tr>
+				<th>条形码</th>
+				<th>使用情况</th>
+				<th>回收者</th>
+				<th>回收时间</th>
+		    	<th></th>
+		    </tr>
+			<tr ng-repeat="drawDetail in currentedit.newval.drawDetails track by $index">
+		        <td>
+		        	{{drawDetail.barcode}}
+				</td>
+				<td>
+					{{drawDetail.useFlag}}
+				</td>
+				<td>
+				</td>
+				<td>
+				
+				</td>
+				<td>
+				<a href="javascript:void(0);" ng-click="deleteDrawDetail(currentedit.newval.drawDetails, drawDetail)">删除</a >
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+</editdlg>
+</form>
+
 <deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
 	<table class="table table-bordered table-hover">
 	    <tr>
@@ -198,6 +200,51 @@
 	    </tr>
 	</table>
 </deletedlg>
+
+<form  name="formRecycle" class="form-horizontal" ng-submit="recycle.saveRecycle(formRecycle.$valid)" role="form" novalidate>
+<editdlg module-name="回收条形码" dlgid="recyclemodal" is-hide="{{recycle.isRecycleSaved}}" module-class="modal-dialog-lg">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group">
+				<label  for="returner" class="col-md-4 control-label">送还人</label>
+				<div class="col-md-8 controls">
+					<input type="text" class="form-control" id="returner"  name="returner" ng-model="recycle.returner" placeholder="请录入送还人"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label  for="recycler" class="col-md-4 control-label">记录人</label>
+				<div class="col-md-8 controls">
+					<input type="text" class="form-control" id="recycler"  name="recycler" ng-model="recycle.recycler" placeholder="请录入记录人"/>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<input type="text" class="form-control" 
+				ng-model="recycle.barcodeCollecter"
+				ng-keypress="recycle.collectBarcode($event, recycle.barcodeCollecter)" placeholder="请扫描条码"/>
+			<table class="table table-bordered table-hover">
+				<tr>
+					<th>条形码</th>
+			    	<th>使用情况(使用√)</th>
+			    	<th></th>
+			    </tr>
+				<tr ng-repeat="detail in recycle.arrDrawDetail track by $index">
+			        <td>
+			        	{{detail.barcode}}			        	
+					</td>
+					<td>
+						<input type="checkbox"  ng-model="detail.useFlag" ng-true-value="1" ng-false-value="0"/>
+					</td>
+					<td>
+						<a href="javascript:void(0);" ng-click="recycle.deleteBarcode(recycle.arrDrawDetail, detail)">删除</a >
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</editdlg>
+</form>
+
 <script type="text/javascript">
 $('.datepicker').datepicker({
 	format : 'yyyy-mm-dd'
