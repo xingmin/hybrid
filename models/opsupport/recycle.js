@@ -1,6 +1,6 @@
 var sql = require('mssql');
 var customdefer = require('../customdefer');
-var DrawDetail = require('./drawdetail');
+var RecycleDetail = require('./drawdetail');
 var Q = require('q');
 
 function Recycle(obj){
@@ -12,7 +12,35 @@ function Recycle(obj){
     this.remark = obj.remark;
 }
 
-Recycle.prototype.saveNewDrawRecord = function(){
+Recycle.prototype.init = function(id){
+	this.id = id;
+	var defered = Q.defer();
+	var config = require('../connconfig').hybrid;
+	
+	var conn = new sql.Connection(config);
+	var that = this;
+	
+	var promise = customdefer.conn_defered(conn).then(function(conn){
+		var request = new sql.Request(conn);
+		request.input('RecycleId', sql.Int, that.id);
+		return customdefer.request_defered(request, 'proc_getRecycleByRecycleId');
+	}).then(function(data){
+		var record = data.recordset[0];
+		if( record && record.length>0){
+			that.recycler = record[0].Recycler;
+			that.recycleTime = record[0].RecycleTime;
+			that.returner = record[0].Returner;
+			that.returnTime = record[0].ReturnTime;
+			that.remark = record[0].Remark;
+		}
+		defered.resolve(that);
+	},function(err){
+		defered.reject(err);
+	});
+	return defered.promise;
+};
+
+Recycle.prototype.saveNewRecycle = function(){
 	var defered = Q.defer();
 	var config = require('../connconfig').hybrid;
 	var conn = new sql.Connection(config);
@@ -26,13 +54,13 @@ Recycle.prototype.saveNewDrawRecord = function(){
 		request.input('RecycleTime', sql.DateTime, that.recycleTime);
 		request.input('Remark', sql.NVarChar(200), that.remark || null);
 		var xmlBarcode = '';
-		if(that.drawDetails && that.drawDetails.length>0){
-			that.drawDetails.forEach(function(drawDetail){
+		if(that.recycleDetails && that.recycleDetails.length>0){
+			that.recycleDetails.forEach(function(recycleDetail){
 				xmlBarcode+=
-					'<row>'
-					+'<barcode>' + drawDetail.barcode + '</barcode>'
-					+'<useflag>' + drawDetail.useFlag + '</useflag>'
-					+'</row>';
+					'<row>'+
+					'<barcode>' + recycleDetail.barcode + '</barcode>'+
+					'<useflag>' + recycleDetail.useFlag + '</useflag>'+
+					'</row>';
 			});
 		}
 		request.input('Barcode', sql.Xml, xmlBarcode);
@@ -48,6 +76,38 @@ Recycle.prototype.saveNewDrawRecord = function(){
 	},function(err){
 		if (err) {
 			console.log("executing proc_addRecycleBarcode Error: " + err.message);
+		}
+		defered.reject(err);
+	});
+	return defered.promise;
+};
+
+
+Recycle.prototype.getRecycleDetailsByRecycleId = function(recycleId){
+	var defered = Q.defer();
+	var config = require('../connconfig').hybrid;
+	var conn = new sql.Connection(config);
+	var promise = customdefer.conn_defered(conn).then(function(conn){
+		var request = new sql.Request(conn);
+		request.input('RecycleId', sql.Int, recycleId);
+		return customdefer.request_defered(request, 'proc_getRecycleDetailByRecycleId');
+	}).then(function(data){
+		var arrRecycleDetail = [];
+		data.recordset[0].forEach(function(value){
+			arrRecycleDetail.push((new RecycleDetail(
+				{
+					'id' : value.Id,
+					'drawId' : value.Consumer,
+				    'barcode' : value.Receiver,
+				    'useFlag' : value.Remark,
+				    'recyleId' : value.Drawer			    
+				 }
+				)));
+		});
+		defered.resolve(arrRecycleDetail);
+	},function(err){
+		if (err) {
+			console.log("executing proc_getRecycleDetailByRecycleId Error: " + err.message);
 		}
 		defered.reject(err);
 	});

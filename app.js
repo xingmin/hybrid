@@ -19,6 +19,7 @@ var dict = require('./routes/queue/dict');
 var person = require('./routes/queue/person');
 
 var draw = require('./routes/opsupport/draw');
+var recyle = require('./routes/opsupport/recyle');
 
 var app = express();
 
@@ -49,6 +50,8 @@ app.use('/dict', dict);
 app.use('/queue/person', person);
 
 app.use('/opsupport/draw', draw);
+app.use('/opsupport/recycle', recycle);
+
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

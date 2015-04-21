@@ -2,8 +2,13 @@ define(['./module', 'moment'],function(controllers, moment){
     'use strict';
     controllers.controller('drawController',
     		['$scope','$http','$timeout','drawService',
-    		 function($scope,$http,$timeout, drawService){
-    	$scope.moment = moment;
+    		 'recycleService',
+    		 function($scope
+    				 ,$http
+    				 ,$timeout
+    				 ,drawService
+    				 ,recycleService){
+    	$scope.moment = moment;		
     	$scope.draws = [];
     	$scope.scanner = {barcodeCollecter : ''};
     	$scope.IsHideModal = true;
@@ -149,25 +154,54 @@ define(['./module', 'moment'],function(controllers, moment){
     	$scope.recycle.barcodeCollecter = '';
     	$scope.recycle.initRecycleModal = function(){
     		$scope.recycle.barcodeCollecter='';
-    		$scope.recycle.arrDrawDetail=[];
+    		$scope.recycle.arrRecycleDetail=[];
     	};
     	$scope.recycle.collectBarcode = function(event, barcode){
     		if(event.which === 13){
-	    		if( !angular.isArray($scope.recycle.arrDrawDetail)){
-	    			$scope.recycle.arrDrawDetail=[];
+	    		if( !angular.isArray($scope.recycle.arrRecycleDetail)){
+	    			$scope.recycle.arrRecycleDetail=[];
 	    		}
-	    		$scope.recycle.arrDrawDetail.push({'barcode':barcode, 'useFlag':0});
+	    		$scope.recycle.arrRecycleDetail.push({'barcode':barcode, 'useFlag':0});
 	    		$scope.recycle.barcodeCollecter = '';
 	    		event.preventDefault();
     		}
     	};
     	$scope.recycle.deleteBarcode = function(arrDrawDetail, detail){
-    		arrDrawDetail 
-				&& arrDrawDetail.length>0 
-				&& arrDrawDetail.splice(arrDrawDetail.indexOf(detail),1);
+    		arrRecycleDetail 
+				&& arrRecycleDetail.length>0 
+				&& arrRecycleDetail.splice(arrRecycleDetail.indexOf(detail),1);
     	};
-    	$scope.recycle.saveRecycle = function(arrDrawDetail, drawDetail){
-
+    	$scope.recycle.saveRecycle = function(){
+    		recycleService.createNewRecycle(
+    				$scope.recycle.returner,
+    				$scope.recycle.recycler,
+    				$scope.recycle.remark,
+    				$scope.recycle.recycleDetails
+    				)
+	    		.then(
+	    				function(recv){
+	    					var recycle = recv.data.value;
+	    	    			return recycle;//recycle对象		
+	    				},
+	    				function(recv){
+	    					var data = recv.data;
+	    					$scope.recyle.msgs.push('保存失败：'+data.errmsg);
+	    				}
+	    		)
+	    		.then(
+	    				function(recycle){        			 
+	    					return recycleService.getRecycleDetails(recycle.id)	    					
+	    				}
+	    		)
+	    		.then(
+	    				function(recv){
+	    					var recycleDetails = recv.data.value;
+	        				angular.forEach( $scope.draws, function(draw){
+	        					angular.forEach(draw.drawDetails, function(drawDetail){
+		        				});
+	        				});
+	    				}
+	    		)
     	};
     }]);
 });

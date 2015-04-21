@@ -228,7 +228,7 @@
 			    	<th>使用情况(使用√)</th>
 			    	<th></th>
 			    </tr>
-				<tr ng-repeat="detail in recycle.arrDrawDetail track by $index">
+				<tr ng-repeat="detail in recycle.arrRecycleDetail track by $index">
 			        <td>
 			        	{{detail.barcode}}			        	
 					</td>
@@ -236,7 +236,7 @@
 						<input type="checkbox"  ng-model="detail.useFlag" ng-true-value="1" ng-false-value="0"/>
 					</td>
 					<td>
-						<a href="javascript:void(0);" ng-click="recycle.deleteBarcode(recycle.arrDrawDetail, detail)">删除</a >
+						<a href="javascript:void(0);" ng-click="recycle.deleteBarcode(recycle.arrRecycleDetail, detail)">删除</a >
 					</td>
 				</tr>
 			</table>
