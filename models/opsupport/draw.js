@@ -41,7 +41,7 @@ Draw.prototype.init = function(id){
 	return defered.promise;
 };
 
-Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd){
+Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd, barcode){
 	var defered = Q.defer();
 	var config = require('../connconfig').hybrid;
 	var conn = new sql.Connection(config);
@@ -49,6 +49,7 @@ Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd){
 		var request = new sql.Request(conn);
 		request.input('BDate', sql.DateTime, dateBegin);
 		request.input('EDate', sql.DateTime, dateEnd);
+		request.input('Barcode', sql.VarChar(50), barcode);
 		return customdefer.request_defered(request, 'proc_getDrawRecordByDate');
 	}).then(function(data){
 		var arrDrawRecord = [];

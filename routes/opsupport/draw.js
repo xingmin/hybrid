@@ -105,11 +105,13 @@ router.post('/delete', function(req, res) {
 router.get('/q', function(req, res) {
 	var dateBegin = req.query.b;
 	var dateEnd = req.query.e;
+	var barcode = req.query.barcode;
 	var qb = new Date(dateBegin);
 	var qe = new Date(dateEnd);
+
 	console.log(qb);
 	console.log(qe);
-	Draw.prototype.getDrawRecordsByDate(qb, qe)
+	Draw.prototype.getDrawRecordsByDate(qb, qe, barcode)
 		.then(
 				function(data){
 					var resdata;

@@ -6,7 +6,7 @@ html,body{
 	min-height:100%;
 	height:auto !important;
 	height:100%;
-	margin:0 auto -40px;
+	margin:0 auto -30px;
 }
 .header{
 	height:100%;
@@ -16,10 +16,10 @@ html,body{
 .footer{
 	background-color:#333;
 	color:white;
-	height:40px;
+	height:30px;
 }
 .container .credit{
-	margin:10px 0;
+	margin:10px 0 35px 0;
 }
 #register .title label{
 	font-size:2em;

@@ -10,6 +10,7 @@ require.config({
 		'bootstrap-toggle':'../bower_components/bootstrap-toggle/js/bootstrap2-toggle',
 		'bootstrap-datepicker':'../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker',
 		//'modal-carousel':'../bower_components/bootstrap-modal-carousel/dist/js/bootstrap-modal-carousel',
+		'lodash':'../bower_components/lodash/lodash',
 		'socketio':'/socket.io/socket.io',
 		'moment':'../bower_components/moment/moment',
 		'domReady':'lib/domReady',

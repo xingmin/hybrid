@@ -1,4 +1,4 @@
-define(['./module', 'moment'],function(controllers, moment){
+define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
     'use strict';
     controllers.controller('drawController',
     		['$scope','$http','$timeout','drawService',
@@ -8,7 +8,8 @@ define(['./module', 'moment'],function(controllers, moment){
     				 ,$timeout
     				 ,drawService
     				 ,recycleService){
-    	$scope.moment = moment;		
+    	$scope.moment = moment;
+    	$scope._ = _;
     	$scope.draws = [];
     	$scope.scanner = {barcodeCollecter : ''};
     	$scope.IsHideModal = true;
@@ -21,7 +22,7 @@ define(['./module', 'moment'],function(controllers, moment){
     			dateEnd:moment().format('YYYY-MM-DD')
     	};
     	$scope.query = function(){
-        	drawService.getDrawsByDate($scope.queryParam.dateBegin, $scope.queryParam.dateEnd)
+        	drawService.getDrawsByDate($scope.queryParam.dateBegin, $scope.queryParam.dateEnd, $scope.queryParam.barcode||'')
     		.then(function(receive){
 	    		console.log($scope.queryParam.dateBegin);
 	    		console.log($scope.queryParam.dateEnd);
@@ -38,9 +39,6 @@ define(['./module', 'moment'],function(controllers, moment){
     								.then(
     										function(recv){
     											drawDetail.recycle = recv.data.value;    											
-    										},
-    										function(recv){
-    											//
     										}
     								);
     						});   						
@@ -78,6 +76,14 @@ define(['./module', 'moment'],function(controllers, moment){
 	    		    				drawService.getDrawDetailsByDrawId(newDraw.id)
 	    	    					.success(function(data){
 	    	    						newDraw.drawDetails = data.value;
+	    	    						angular.forEach(newDraw.drawDetails, function(detail){
+	            							recycleService.getRecycleById(detail.recycleId)
+		        								.then(
+		        										function(recv){
+		        											detail.recycle = recv.data.value; 											
+		        										}
+		        								);
+	    	    						});
 	    	    					});
 	    						}
 	    					}
@@ -94,7 +100,7 @@ define(['./module', 'moment'],function(controllers, moment){
     			.then(function(receive){
 	    				var data = receive.data;
 	    				if(data.status === 0){
-	    					$scope.draws.push(data.value);
+	    					$scope.draws.splice(0, 0, data.value);
 	    					$scope.isSaveCompleted = true;
 	    					$scope.msgs.push('创建成功！');
 	    					return data.value;
@@ -110,6 +116,15 @@ define(['./module', 'moment'],function(controllers, moment){
     		    				drawService.getDrawDetailsByDrawId(newDraw.id)
     	    					.success(function(data){
     	    						newDraw.drawDetails = data.value;
+    	    						angular.forEach(newDraw.drawDetails, function(detail){
+            							recycleService.getRecycleById(detail.recycleId)
+	        								.then(
+	        										function(recv){
+	        											detail.recycle = recv.data.value; 											
+	        										}
+	        								);
+    	    						});
+
     	    					});
     						}
     					}
@@ -195,6 +210,8 @@ define(['./module', 'moment'],function(controllers, moment){
 	    		.then(
 	    				function(recv){
 	    					var recycle = recv.data.value;
+	    					$scope.recycle.isRecycleSaved = true;
+	    					$scope.msgs.push('保存回收信息成功！');
 	    	    			return recycle;//recycle对象		
 	    				},
 	    				function(recv){
@@ -213,8 +230,8 @@ define(['./module', 'moment'],function(controllers, moment){
 	    					//更新当前界面的数据
 	    					var recycleDetails = recv.data.value;
 	    					angular.forEach(recycleDetails, function(recycleDetail){
-		        				angular.forEach( $scope.draws, function(draw){
-		        					angular.forEach(draw.drawDetails, function(drawDetail){
+		        				$scope.draws.every(function(draw){
+		        					var founded = draw.drawDetails.every(function(drawDetail){
 		        						if(recycleDetail.id === drawDetail.id){
 		        							drawDetail.useFlag = recycleDetail.useFlag;
 		        							drawDetail.recycleId = recycleDetail.recycleId;
@@ -222,14 +239,13 @@ define(['./module', 'moment'],function(controllers, moment){
 			    								.then(
 			    										function(recv){
 			    											drawDetail.recycle = recv.data.value;    											
-			    										},
-			    										function(recv){
-			    											//
 			    										}
 			    								);
-		        						}		        						
+		        							return false;
+		        						}
+		        						return true;
 			        				});
-		        					$scope.recycle.isRecycleSaved = true;
+		        					return founded;
 		        				});
 	        				});
 	    				}
