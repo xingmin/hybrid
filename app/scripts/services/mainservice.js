@@ -1,4 +1,5 @@
-define(['./queueservicex',
+define(['./lodashservice',
+        './queueservicex',
         './queueclassservicex',
         './windowservice',
         './userservice',

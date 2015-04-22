@@ -91,11 +91,11 @@ router.post('/delete', function(req, res) {
 		.then(
 				function(status){
 					var resdata;
-					resdata = new ResData(0);
+					resdata = new ResData(0, '');
 					resdata.sendJson(res);
 				},
 				function(status){
-					var resdata;	 
+					var resdata;
 					resdata = new ResData(status.status, status.message);
 					resdata.sendJson(res);
 				}

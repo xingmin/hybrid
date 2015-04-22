@@ -3,11 +3,14 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
     controllers.controller('drawController',
     		['$scope','$http','$timeout','drawService',
     		 'recycleService',
+    		 //'lodashService',
     		 function($scope
     				 ,$http
     				 ,$timeout
     				 ,drawService
-    				 ,recycleService){
+    				 ,recycleService
+    				 //,_
+    				 ){
     	$scope.moment = moment;
     	$scope._ = _;
     	$scope.draws = [];
@@ -33,6 +36,9 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
     			draws && draws.length>0 && draws.forEach(function(draw){
     				drawService.getDrawDetailsByDrawId(draw.id)
     					.success(function(data){
+    						if(data.status !== 0){
+    							return;
+    						}
     						draw.drawDetails = data.value;
     						angular.forEach(draw.drawDetails, function(drawDetail){
     							recycleService.getRecycleById(drawDetail.recycleId)
@@ -58,34 +64,44 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
     					$scope.currentedit.newval.drawer,
     					$scope.currentedit.newval.drawDetails
     					)
-    				.then(function(recv){
-    					var data = recv.data;
-    					if(data.status==0){
-    						$scope.currentedit.oldval.consumer = $scope.currentedit.newval.consumer;
-    						$scope.currentedit.oldval.receiver = $scope.currentedit.newval.receiver;
-    						$scope.currentedit.oldval.remark = $scope.currentedit.newval.remark;
-    						$scope.currentedit.oldval.drawer = $scope.currentedit.newval.drawer;
-    						$scope.currentedit.oldval.drawDetails = $scope.currentedit.newval.drawDetails;
-    						$scope.isSaveCompleted = true;
-    						$scope.msgs.push('修改成功！');
-    						return $scope.currentedit.oldval;
-    					}})
+    				.then(
+    						function(recv){
+		    					var data = recv.data;
+		    					if(data.status==0){
+		    						$scope.currentedit.oldval.consumer = $scope.currentedit.newval.consumer;
+		    						$scope.currentedit.oldval.receiver = $scope.currentedit.newval.receiver;
+		    						$scope.currentedit.oldval.remark = $scope.currentedit.newval.remark;
+		    						$scope.currentedit.oldval.drawer = $scope.currentedit.newval.drawer;
+		    						$scope.currentedit.oldval.drawDetails = $scope.currentedit.newval.drawDetails;
+		    						$scope.isSaveCompleted = true;
+		    						$scope.msgs.push('修改成功！');
+		    						return $scope.currentedit.oldval;
+		    					}else{
+		    						throw new Error(data.errmsg);
+		    					}
+		    				}
+    				)
     				.then(
 	    					function(newDraw){
-	    						if(newDraw){
-	    		    				drawService.getDrawDetailsByDrawId(newDraw.id)
-	    	    					.success(function(data){
-	    	    						newDraw.drawDetails = data.value;
-	    	    						angular.forEach(newDraw.drawDetails, function(detail){
-	            							recycleService.getRecycleById(detail.recycleId)
-		        								.then(
-		        										function(recv){
-		        											detail.recycle = recv.data.value; 											
-		        										}
-		        								);
-	    	    						});
-	    	    					});
+	    						if(!newDraw){
+	    							return;
 	    						}
+    		    				drawService.getDrawDetailsByDrawId(newDraw.id)
+    	    					.success(function(data){
+    	    						newDraw.drawDetails = data.value;
+    	    						angular.forEach(newDraw.drawDetails, function(detail){
+            							recycleService.getRecycleById(detail.recycleId)
+	        								.then(
+	        										function(recv){
+	        											detail.recycle = recv.data.value; 											
+	        										}
+	        								);
+    	    						});
+    	    					});
+	    					},
+	    					function(err){
+	    						$scope.isSaveCompleted = true;
+	    						$scope.msgs.push('修改失败！'+err.message);
 	    					}
     				);
     		}
@@ -104,9 +120,8 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
 	    					$scope.isSaveCompleted = true;
 	    					$scope.msgs.push('创建成功！');
 	    					return data.value;
-	    				}else{
-	    					$scope.msgs.push('保存失败：'+data.errmsg);
-	    					return null;
+	    				}else{	    					
+	    					throw new Error(data.errmsg);
 	    				}
 	    				
 	    		})//从数据库加载保存成功后的Details记录
@@ -127,6 +142,10 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
 
     	    					});
     						}
+    					},
+    					function(err){
+    						$scope.isSaveCompleted = true;
+    						$scope.msgs.push('保存失败：'+err.message);
     					}
     			);
     		}
@@ -144,20 +163,33 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
     	$scope.deletecur = function(){
     		var cur = $scope.currentedit.oldval;
     		$scope.IsHideModal = false;
-    		drawService.deleteDraw(cur.id).success(function(data){
-    			if(data.status === 0){
-    				angular.forEach( $scope.draws, function(val,index){
-	    					if(val == cur){
-	    						$scope.currentedit={newval:{},oldval:{}};
-	    						$scope.draws.splice(index,1);				
-	    						$scope.IsHideModal = true;
-	    						$scope.msgs.push('删除成功！');
-	    					}
-    				});
-    			}else{
-    				$scope.msgs.push(data.message);
-    			}
-    		});
+    		drawService.deleteDraw(cur.id)
+    			.then(
+	    			function(recv){
+	    				var data = recv.data;
+	    				if(data.status !== 0){
+	    					throw new Error(data.errmsg);
+	    				}
+	    				$scope.draws.every(function(val,index){
+		    					if(val == cur){
+		    						$scope.currentedit={newval:{},oldval:{}};
+		    						$scope.draws.splice(index,1);				
+		    						$scope.IsHideModal = true;
+		    						return false;
+		    					}
+		    					return true;
+	    				});
+	    				$scope.msgs.push('删除记录成功');
+	    				
+	    			}
+	    		)
+	    		.then(
+	    				null,
+	    				function(err){
+		    				$scope.msgs.push('删除记录失败'+err.message);
+		    				$scope.IsHideModal = true;
+		    			}
+	    		);
     	};
     	$scope.addDrawDetail = function(event, barcode){
     		if(event.which === 13){
@@ -173,6 +205,17 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
     		arrDrawDetail 
     			&& arrDrawDetail.length>0 
     			&& arrDrawDetail.splice(arrDrawDetail.indexOf(drawDetail),1);
+    	};
+    	$scope.DRAW = {};
+    	$scope.DRAW.isDrawDeletable = function(draw){
+    		if(draw && draw.drawDetails && $scope._.isArray(draw.drawDetails)){
+        		var deletable=draw.drawDetails.every(function(drawDetail){
+        			return _.isNull(drawDetail.recycleId);
+        		});	
+        		//console.log('可删除');
+        		return deletable;
+    		}
+    		return false;
     	};
     	//下面是回收的操作
     	$scope.recycle = {};
@@ -209,16 +252,15 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
     				)
 	    		.then(
 	    				function(recv){
+	    					if(recv.data.status !== 0){
+	    						throw new Error(recv.data.errmsg);
+	    					}
 	    					var recycle = recv.data.value;
 	    					$scope.recycle.isRecycleSaved = true;
 	    					$scope.msgs.push('保存回收信息成功！');
 	    	    			return recycle;//recycle对象		
-	    				},
-	    				function(recv){
-	    					var data = recv.data;
-	    					$scope.recycle.isRecycleSaved = true;
-	    					$scope.recyle.msgs.push('保存失败：'+data.errmsg);
 	    				}
+
 	    		)
 	    		.then(
 	    				function(recycle){        			 
@@ -248,8 +290,13 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
 		        					return founded;
 		        				});
 	        				});
+	    				},
+	    				function(err){
+	    					$scope.recycle.isRecycleSaved = true;
+	    					$scope.recyle.msgs.push('保存失败：'+err.message);
 	    				}
-	    		)
+
+	    		);
     	};
     }]);
 });

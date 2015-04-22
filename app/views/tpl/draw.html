@@ -70,7 +70,7 @@
         </td>
         <td>
         	<edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
-          | <delete ng-Model="draw" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+           <delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
 		</td>
 	</tr>
 	<tr ng-repeat="drawDetail in draw.drawDetails">
@@ -169,7 +169,7 @@
 					{{drawDetail.useFlag}}
 				</td>
 				<td>
-				{{drawDetail.recycle.recycler}}
+				{{drawDetail.recycle.recycler}}{{drawDetail.recycle.id}}
 				</td>
 				<td>
 				 {{drawDetail.recycle.recycleTime}}
@@ -216,7 +216,7 @@
 	    <tr>
 	    	<td>记录时间</td>
 		 	<td>
-		 		{{draw.drawTime}}
+		 		{{currentedit.newval.drawTime}}
 		    </td>
 	    </tr>
 	</table>
