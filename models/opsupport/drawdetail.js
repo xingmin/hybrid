@@ -7,7 +7,7 @@ function DrawDetail(obj){
     this.drawId = obj.drawId;
     this.barcode = obj.barcode;
     this.useFlag = obj.useFlag;
-    this.recyleId = obj.recyleId;
+    this.recycleId = obj.recycleId;
 }
 
 module.exports = DrawDetail;

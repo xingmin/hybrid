@@ -10,6 +10,7 @@ function Recycle(obj){
     this.recycler = obj.recycler;
     this.recycleTime = obj.recycleTime;
     this.remark = obj.remark;
+    this.recycleDetails = obj.recycleDetails;
 }
 
 Recycle.prototype.init = function(id){
@@ -97,10 +98,10 @@ Recycle.prototype.getRecycleDetailsByRecycleId = function(recycleId){
 			arrRecycleDetail.push((new RecycleDetail(
 				{
 					'id' : value.Id,
-					'drawId' : value.Consumer,
-				    'barcode' : value.Receiver,
-				    'useFlag' : value.Remark,
-				    'recyleId' : value.Drawer			    
+					'drawId' : value.DrawId,
+				    'barcode' : value.Barcode,
+				    'useFlag' : value.UseFlag,
+				    'recycleId' : value.RecycleId	    
 				 }
 				)));
 		});
@@ -114,4 +115,45 @@ Recycle.prototype.getRecycleDetailsByRecycleId = function(recycleId){
 	return defered.promise;
 };
 
+
+Recycle.getRecyclesByRecycleIds = function(recycleIds){
+	var defered = Q.defer();
+	var config = require('../connconfig').hybrid;
+	var conn = new sql.Connection(config);
+	var promise = customdefer.conn_defered(conn).then(function(conn){
+		var request = new sql.Request(conn);
+		var xmlId = '';
+		if(recycleIds && recycleIdslength>0){
+			recycleIds.forEach(function(recycleId){
+				xmlId+=
+					'<recycle>'+
+					'<id>' + recycleDetail.barcode + '</id>'+
+					'</recycle>';
+			});
+		}
+		request.input('RecycleIds', sql.Xml, xmlId);
+		return customdefer.request_defered(request, 'proc_getRecyclesByRecycleIds');
+	}).then(function(data){
+		var arrRecycle = [];
+		data.recordset[0].forEach(function(value){
+			arrRecycle.push((new Recycle(
+				{
+					'id' : value.Id,
+					'recycler' : value.Recycler,
+				    'recycleTime' : value.RecycleTime,
+				    'returner' : value.Returner,
+				    'returnTime' : value.ReturnTime,
+				    'remark' : value.Remark
+				 }
+				)));
+		});
+		defered.resolve(arrRecycle);
+	},function(err){
+		if (err) {
+			console.log("executing proc_getRecyclesByRecycleIds Error: " + err.message);
+		}
+		defered.reject(err);
+	});
+	return defered.promise;
+};
 module.exports = Recycle;

@@ -8,4 +8,5 @@ define(['./queueservicex',
         './ticketService',
         './dictService',
         './personService',
-        './drawService'],function(){});
+        './drawService',
+        './recycleService'],function(){});

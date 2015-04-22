@@ -192,7 +192,7 @@ Draw.prototype.getDrawDetails = function(){
 					'drawId' : value.DrawId,
 				    'barcode' : value.Barcode,
 				    'useFlag' : value.UseFlag,
-				    'recyleId' : value.RecyleId		    
+				    'recycleId' : value.RecycleId		    
 				 }
 				)));
 		});

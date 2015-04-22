@@ -19,7 +19,7 @@ var dict = require('./routes/queue/dict');
 var person = require('./routes/queue/person');
 
 var draw = require('./routes/opsupport/draw');
-var recyle = require('./routes/opsupport/recyle');
+var recycle = require('./routes/opsupport/recycle');
 
 var app = express();
 

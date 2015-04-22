@@ -12,13 +12,16 @@ define(['./module'],function(services){
 						});
 				},
 				getRecycleById : function(id){
-					return $http.post('/opsupport/recycle/'+id);
+					return $http.get('/opsupport/recycle/'+id);
 				},
 				getRecycleDetails : function(id){
-					return $http.post('/opsupport/recycle/detail/'+id);
+					return $http.get('/opsupport/recycle/detail/'+id);
+				},
+				getRecyclesByRecycleIds : function(arrRecycleId){
+					return $http.post('/opsupport/recycle/', arrRecycleId);
 				}
 
-		  };
-	}])
+		};
+	}]);
 });
 

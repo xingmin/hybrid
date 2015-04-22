@@ -27,7 +27,7 @@ router.post('/create', function(req, res) {
 		'remark' : remark,
 		'returnTime' : localDrawTime,
 		'recycleTime' : localDrawTime,
-		'drawDetails' : arrRecycleDetail
+		'recycleDetails' : arrRecycleDetail
 		});
 	recycle.saveNewRecycle()
 		.then(
@@ -61,8 +61,8 @@ router.get('/:id', function(req, res) {
 		);
 });
 
-router.get('/detail/:recyleid', function(req, res) {
-	var recyleId = req.param('recyleid');
+router.get('/detail/:recycleid', function(req, res) {
+	var recyleId = req.param('recycleid');
 	Recycle.prototype.getRecycleDetailsByRecycleId(recyleId)
 		.then(
 				function(data){
@@ -73,6 +73,22 @@ router.get('/detail/:recyleid', function(req, res) {
 				function(data){
 					var resdata;
 					resdata = new ResData(data.status, data.message);
+					resdata.sendJson(res);
+				}
+		);
+});
+
+router.post('/', function(req, res) {
+	var arrRecycleId = req.body.arrRecycleId;
+	Recycle.getRecyclesByRecycleIds(arrRecycleId)
+		.then(
+				function(data){
+					var resdata;
+					resdata = new ResData(0, '', data.value);
+					resdata.sendJson(res);
+				},
+				function(err){
+					var resdata = new ResData(1, err.message);
 					resdata.sendJson(res);
 				}
 		);

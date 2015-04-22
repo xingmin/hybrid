@@ -33,7 +33,19 @@ define(['./module', 'moment'],function(controllers, moment){
     				drawService.getDrawDetailsByDrawId(draw.id)
     					.success(function(data){
     						draw.drawDetails = data.value;
-    					})
+    						angular.forEach(draw.drawDetails, function(drawDetail){
+    							recycleService.getRecycleById(drawDetail.recycleId)
+    								.then(
+    										function(recv){
+    											drawDetail.recycle = recv.data.value;    											
+    										},
+    										function(recv){
+    											//
+    										}
+    								);
+    						});   						
+    						
+    					});
     			});
     		});
     	};
@@ -154,14 +166,15 @@ define(['./module', 'moment'],function(controllers, moment){
     	$scope.recycle.barcodeCollecter = '';
     	$scope.recycle.initRecycleModal = function(){
     		$scope.recycle.barcodeCollecter='';
-    		$scope.recycle.arrRecycleDetail=[];
+    		$scope.recycle.recycleDetails=[];
     	};
+    	$scope.recycle.initRecycleModal();
     	$scope.recycle.collectBarcode = function(event, barcode){
     		if(event.which === 13){
-	    		if( !angular.isArray($scope.recycle.arrRecycleDetail)){
-	    			$scope.recycle.arrRecycleDetail=[];
+	    		if( !angular.isArray($scope.recycle.recycleDetails)){
+	    			$scope.recycle.recycleDetails=[];
 	    		}
-	    		$scope.recycle.arrRecycleDetail.push({'barcode':barcode, 'useFlag':0});
+	    		$scope.recycle.recycleDetails.push({'barcode':barcode, 'useFlag':0});
 	    		$scope.recycle.barcodeCollecter = '';
 	    		event.preventDefault();
     		}
@@ -172,6 +185,7 @@ define(['./module', 'moment'],function(controllers, moment){
 				&& arrRecycleDetail.splice(arrRecycleDetail.indexOf(detail),1);
     	};
     	$scope.recycle.saveRecycle = function(){
+    		$scope.recycle.isRecycleSaved = false;
     		recycleService.createNewRecycle(
     				$scope.recycle.returner,
     				$scope.recycle.recycler,
@@ -185,19 +199,37 @@ define(['./module', 'moment'],function(controllers, moment){
 	    				},
 	    				function(recv){
 	    					var data = recv.data;
+	    					$scope.recycle.isRecycleSaved = true;
 	    					$scope.recyle.msgs.push('保存失败：'+data.errmsg);
 	    				}
 	    		)
 	    		.then(
 	    				function(recycle){        			 
-	    					return recycleService.getRecycleDetails(recycle.id)	    					
+	    					return recycleService.getRecycleDetails(recycle.id);    					
 	    				}
 	    		)
 	    		.then(
 	    				function(recv){
+	    					//更新当前界面的数据
 	    					var recycleDetails = recv.data.value;
-	        				angular.forEach( $scope.draws, function(draw){
-	        					angular.forEach(draw.drawDetails, function(drawDetail){
+	    					angular.forEach(recycleDetails, function(recycleDetail){
+		        				angular.forEach( $scope.draws, function(draw){
+		        					angular.forEach(draw.drawDetails, function(drawDetail){
+		        						if(recycleDetail.id === drawDetail.id){
+		        							drawDetail.useFlag = recycleDetail.useFlag;
+		        							drawDetail.recycleId = recycleDetail.recycleId;
+		        							recycleService.getRecycleById(drawDetail.recycleId)
+			    								.then(
+			    										function(recv){
+			    											drawDetail.recycle = recv.data.value;    											
+			    										},
+			    										function(recv){
+			    											//
+			    										}
+			    								);
+		        						}		        						
+			        				});
+		        					$scope.recycle.isRecycleSaved = true;
 		        				});
 	        				});
 	    				}
