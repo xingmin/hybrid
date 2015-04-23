@@ -106,16 +106,26 @@ router.get('/q', function(req, res) {
 	var dateBegin = req.query.b;
 	var dateEnd = req.query.e;
 	var barcode = req.query.barcode;
+	var pageNo = req.query.pageno;
+	var pageSize = req.query.pagesize;
+	
+	if (!pageSize || isNaN(pageSize)) {
+		pageSize = 5;
+	}
+	if (!pageNo || isNaN(pageNo)) {
+		pageNo = 1;
+	}
 	var qb = new Date(dateBegin);
 	var qe = new Date(dateEnd);
-
-	console.log(qb);
-	console.log(qe);
-	Draw.prototype.getDrawRecordsByDate(qb, qe, barcode)
+	
+	var promise1 = Draw.prototype.getDrawRecordsPageInfo(qb, qe, barcode,pageSize);
+	var promise2 = Draw.prototype.getDrawRecordsByDate(qb, qe, barcode, pageNo, pageSize);
+	
+	Q.all([promise1, promise2])
 		.then(
-				function(data){
+				function(arrData){
 					var resdata;
-					resdata = new ResData(0,'',data);
+					resdata = new ResData(0,'',{'pageInfo':arrData[0], 'pageData': arrData[1]});
 					resdata.sendJson(res);
 				},
 				function(data){

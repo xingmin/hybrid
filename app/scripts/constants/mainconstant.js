@@ -1,0 +1,3 @@
+define(['./lodashconstant',
+        './momentconstant'
+        ],function(){});

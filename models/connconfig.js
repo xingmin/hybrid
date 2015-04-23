@@ -27,6 +27,13 @@ module.exports = {
 		database: 'hybrid',
 //		driver:'tds'
 	},
+	"AC":{
+		user: 'sa',
+		password: 'system',
+		server: '127.0.0.1', // You can use 'localhost\\instance' to connect to named instance
+		database: 'AccessControl',
+//		driver:'tds'
+	},
 	"queueexternal":{
 		user: 'sa',
 		password: 'system',

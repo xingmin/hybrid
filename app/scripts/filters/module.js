@@ -1,4 +1,4 @@
 define(['angular'], function(angular) {
     'use strict';
-    return angular.module('webapp.filters', []);
+    return angular.module('webapp.filters', ['webapp.constants']);
  });

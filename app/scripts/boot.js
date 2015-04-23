@@ -5,7 +5,6 @@ define(['require',
         'angular-route',
         'angular-bootstrap',
         'bootstrap-datepicker',
-        'moment',
       //  'modal-carousel',
         'appx',
         'router'

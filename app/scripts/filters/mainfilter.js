@@ -1,3 +1,3 @@
-define(['filters/translatemode',
-        'filters/dictqueuestatusmap',
+define(['filters/formatdatefilter',
+        'filters/usetranfilter'
         ],function(){});

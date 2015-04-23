@@ -5,7 +5,7 @@ require.config({
 		'angular':'../bower_components/angular/angular',
 		'angular-route':'../bower_components/angular-route/angular-route',
 		'angular-md5':'../bower_components/angular-md5/angular-md5',
-		'angular-bootstrap':'../bower_components/angular-bootstrap/ui-bootstrap',
+		'angular-bootstrap':'../bower_components/angular-bootstrap/ui-bootstrap-tpls',
 		'bootstrap':'../bower_components/bootstrap/dist/js/bootstrap',
 		'bootstrap-toggle':'../bower_components/bootstrap-toggle/js/bootstrap2-toggle',
 		'bootstrap-datepicker':'../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker',

@@ -2,8 +2,13 @@ define(['./module'],function(services){
 	'use strict';
 	services.factory("drawService",['$http',function($http){
 		  return{
-			  getDrawsByDate:function(dBegin, dEnd, barcode){
-				  return $http.get('/opsupport/draw/q?b='+dBegin+'&e='+dEnd+'&barcode='+barcode);
+			  getDrawsByDate:function(dBegin, dEnd, barcode, pageSize, pageNo){
+				  return $http.get(
+						  '/opsupport/draw/q?b='+dBegin+
+						  '&e='+dEnd+
+						  '&barcode='+barcode+
+						  '&pagesize='+pageSize+
+						  '&pageno='+pageNo);
 			  },
 			  deleteDraw:function(id){
 				  return $http.post('/opsupport/draw/delete', {'id':id});

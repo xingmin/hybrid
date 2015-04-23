@@ -1,18 +1,20 @@
-define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
+define(['./module'],function(controllers){
     'use strict';
     controllers.controller('drawController',
     		['$scope','$http','$timeout','drawService',
     		 'recycleService',
-    		 //'lodashService',
+    		 '_',
+    		 'moment',
     		 function($scope
     				 ,$http
     				 ,$timeout
     				 ,drawService
     				 ,recycleService
-    				 //,_
+    				 ,_
+    				 ,moment
     				 ){
-    	$scope.moment = moment;
-    	$scope._ = _;
+    	//$scope.moment = moment;
+    	//$scope._ = _;
     	$scope.draws = [];
     	$scope.scanner = {barcodeCollecter : ''};
     	$scope.IsHideModal = true;
@@ -21,37 +23,55 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
     	$scope.currentedit={newval:{},oldval:{}};
     	$scope.isSaveCompleted = false;
     	$scope.queryParam={
-    			dateBegin:moment().format('YYYY-MM-DD'),
-    			dateEnd:moment().format('YYYY-MM-DD')
+    			dateBegin  : moment().format('YYYY-MM-DD'),
+    			dateEnd    : moment().format('YYYY-MM-DD'),
+    			barcode    : '',
+    			pageNo     : 1,
+    			pageSize   : 1,
+    			pageCount  : 0,
+    			totalItems : 0
     	};
     	$scope.query = function(){
-        	drawService.getDrawsByDate($scope.queryParam.dateBegin, $scope.queryParam.dateEnd, $scope.queryParam.barcode||'')
+        	drawService.getDrawsByDate($scope.queryParam.dateBegin,
+        			$scope.queryParam.dateEnd,
+        			$scope.queryParam.barcode || '',
+        			$scope.queryParam.pageSize,
+        			$scope.queryParam.pageNo)
     		.then(function(receive){
-	    		console.log($scope.queryParam.dateBegin);
-	    		console.log($scope.queryParam.dateEnd);
-	    		$scope.draws = receive.data.value;
+    			var data = receive.data;
+	    		if(data.status !== 0){
+	    			throw new Error(data.errmsg);
+	    		}
+	    		$scope.draws = data.value.pageData;
+	    		$scope.queryParam.pageCount = data.value.pageInfo.pageCount;
+	    		$scope.queryParam.totalItems = data.value.pageInfo.totalRows;
 	    		return $scope.draws;
     		})
-    		.then(function(draws){
-    			draws && draws.length>0 && draws.forEach(function(draw){
-    				drawService.getDrawDetailsByDrawId(draw.id)
-    					.success(function(data){
-    						if(data.status !== 0){
-    							return;
-    						}
-    						draw.drawDetails = data.value;
-    						angular.forEach(draw.drawDetails, function(drawDetail){
-    							recycleService.getRecycleById(drawDetail.recycleId)
-    								.then(
-    										function(recv){
-    											drawDetail.recycle = recv.data.value;    											
-    										}
-    								);
-    						});   						
-    						
-    					});
-    			});
-    		});
+    		.then(
+    				function(draws){
+		    			draws && draws.length>0 && draws.forEach(function(draw){
+		    				drawService.getDrawDetailsByDrawId(draw.id)
+		    					.success(function(data){
+		    						if(data.status !== 0){
+		    							return;
+		    						}
+		    						draw.drawDetails = data.value;
+		    						angular.forEach(draw.drawDetails, function(drawDetail){
+		    							recycleService.getRecycleById(drawDetail.recycleId)
+		    								.then(
+		    										function(recv){
+		    											drawDetail.recycle = recv.data.value;    											
+		    										}
+		    								);
+		    						});   						
+		    						
+		    					});
+		    			});
+		    		},
+		    		function(err){
+		    			$scope.msgs.push(err.message);
+		    		}
+    		);
     	};
     	$scope.query();
     	$scope.saveChange = function(){
@@ -208,7 +228,7 @@ define(['./module', 'moment', 'lodash'],function(controllers, moment, _){
     	};
     	$scope.DRAW = {};
     	$scope.DRAW.isDrawDeletable = function(draw){
-    		if(draw && draw.drawDetails && $scope._.isArray(draw.drawDetails)){
+    		if(draw && draw.drawDetails && _.isArray(draw.drawDetails)){
         		var deletable=draw.drawDetails.every(function(drawDetail){
         			return _.isNull(drawDetail.recycleId);
         		});	

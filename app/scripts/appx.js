@@ -1,17 +1,21 @@
 define(["angular",
         "angular-route",
         'angular-md5',
-        'controllers/maincontroller',
-        'directives/maindirective',
+        'constants/mainconstant',
         'services/mainservice',
-        'filters/mainfilter'
+        'filters/mainfilter',
+        'directives/maindirective',
+        'controllers/maincontroller'
        ],function(angular){
     return angular.module("webapp",['ngRoute',
                                     'angular-md5',
-                                    'webapp.controllers',
-                                    'webapp.directives',
+                                    'ui.bootstrap',
+                                    'webapp.constants',
                                     'webapp.services',
-                                    'webapp.filters']);
+                                    'webapp.filters',
+                                    'webapp.directives',
+                                    'webapp.controllers'                               
+                                    ]);
 })
 
 
