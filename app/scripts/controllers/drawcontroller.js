@@ -5,6 +5,7 @@ define(['./module'],function(controllers){
     		 'recycleService',
     		 '_',
     		 'moment',
+    		 'indexedDbService',
     		 function($scope
     				 ,$http
     				 ,$timeout
@@ -12,6 +13,7 @@ define(['./module'],function(controllers){
     				 ,recycleService
     				 ,_
     				 ,moment
+    				 ,indexedDbService
     				 ){
     	//$scope.moment = moment;
     	//$scope._ = _;
@@ -31,6 +33,34 @@ define(['./module'],function(controllers){
     			pageCount  : 0,
     			totalItems : 0
     	};
+    	//把pagesize保存在indexeddb
+    	$scope.$watch('queryParam.pageSize', function(newVal, oldVal){
+    		if(newVal === oldVal){
+    			return;
+    		}
+			indexedDbService.setAppConfig('drawPageSize',newVal)
+				.then(
+						function(){
+							console.log('save pageSize succeeded！');
+						},
+						function(){console.log('save pageSize failed!')}
+					);
+    	});
+		indexedDbService.getAppConfig('drawPageSize')
+			.then(
+				function(data){
+					if(data && data.length>0){
+						$scope.queryParam.pageSize = data[0];
+						$scope.query();
+					}
+					
+				}
+			)
+			.finally(
+					function(){
+						$scope.query();
+					}					
+			);
     	$scope.query = function(){
         	drawService.getDrawsByDate($scope.queryParam.dateBegin,
         			$scope.queryParam.dateEnd,
@@ -73,7 +103,7 @@ define(['./module'],function(controllers){
 		    		}
     		);
     	};
-    	$scope.query();
+    	
     	$scope.saveChange = function(){
     		$scope.isSaveCompleted = false;
     		if ($scope.mode == 'edit'){

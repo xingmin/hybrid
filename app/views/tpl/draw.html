@@ -109,28 +109,37 @@
 	</tr>
 	</tbody>
 </table>
-<div class="container-fluid">
-	<div class="pull-left">
-		<pagination 
-			total-items="queryParam.totalItems"
-			items-per-page="queryParam.pageSize"
-			ng-model="queryParam.pageNo"
-			class="pagination"
-			boundary-links="true"
-			max-size ="4"
-			first-text="首页"
-			previous-text="前页"
-			next-text="后页"
-			last-text="最后"
-			ng-change="query()"
-			ng-class="pull-left"
-			>
-		</pagination>
-	</div>
-	<div class="form-group col-md-1 pagination">
-	<input type="text" class="form-control" id="pagesize"  name="pagesize" ng-model="queryParam.pageSize" placeholder="页大小"/>
-	</div>
-</div>
+  <div class="container-fluid">
+ <div class="row">
+ 		<div class="pull-left">
+			<pagination 
+				total-items="queryParam.totalItems"
+				items-per-page="queryParam.pageSize"
+				ng-model="queryParam.pageNo"
+				class="pagination"
+				boundary-links="true"
+				max-size ="4"
+				first-text="首页"
+				previous-text="前页"
+				next-text="后页"
+				last-text="最后"
+				ng-change="query()">
+			</pagination>
+		</div>
+		<div class="btn-group pagination" style="float:left">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-target="#test" data-toggle="collapse">
+		    设置
+		      <span class="caret"></span>
+		    </button>
+		    <div class="dropdown-menu collapse" id="test">				 
+				<div class="input-group">
+			         <span class="input-group-addon">页大小</span>
+			         <input type="text" id="pagesize" class="form-control"  name="pagesize" ng-model="queryParam.pageSize" placeholder="页大小"/>
+			     </div>
+		    </div>
+		</div>
+ </div>
+ </div>
 <form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
 <editdlg module-name="领用记录" dlgid="editmodal" is-hide="{{isSaveCompleted}}" module-class="modal-dialog-lg">
 <div class="row">
