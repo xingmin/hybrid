@@ -1,0 +1,5 @@
+.project
+.jshintrc
+.tern-project
+node_modules/
+.settings/
