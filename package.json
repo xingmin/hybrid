@@ -6,15 +6,21 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "NodeAPII": "git+https://github.com/ealeksandrov/NodeAPI.git#a91b7d6bf52b2e3f057b299400c698bed61e1030",
     "body-parser": "~1.0.0",
     "cookie-parser": "~1.0.1",
-    "debug": "~0.7.4",
+    "debug": "^0.7.4",
     "ejs": "~1.0.0",
     "express": "~4.2.0",
+    "jade": "^1.9.2",
     "moment": "^2.10.2",
     "moment-timezone": "^0.3.1",
+    "mongoose-hrbac": "^3.0.0",
     "morgan": "~1.0.0",
+    "mssql": "^2.1.2",
     "q": "^1.1.2",
+    "rbac": "^3.0.6",
+    "serve-favicon": "^2.2.0",
     "socket.io": "^1.2.1",
     "static-favicon": "~1.0.0"
   }
