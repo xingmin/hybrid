@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
+var log = require('./log')(module);
 
 var routes = require('./routes/index');
 
@@ -21,6 +22,8 @@ var person = require('./routes/queue/person');
 var draw = require('./routes/opsupport/draw');
 var recycle = require('./routes/opsupport/recycle');
 
+
+
 var app = express();
 
 // view engine setup
@@ -35,6 +38,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'app')));//app.use(express.static(path.join(__dirname, 'public')));
+
+//init the authentication module
+//(require('./authlib/libs/app'))(app);
 
 app.use('/', routes);
 app.use('/users', users);
@@ -56,6 +62,7 @@ app.use('/opsupport/recycle', recycle);
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
+    log.debug('%s %d %s', req.method, res.statusCode, req.url);
     next(err);
 });
 
@@ -66,6 +73,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
+        log.debug('%s %d %s', req.method, res.statusCode, req.url);
         res.render('error', {
             message: err.message,
             error: err
@@ -85,6 +93,7 @@ app.use(function(err, req, res, next) {
 
 
 app.use(function noCache(req, res, next){
+	log.debug('%s %d %s', req.method, res.statusCode, req.url);
 	res.header("Cache-Control","no-cache, no-store, must-revalidate");	
 	res.header("Pragma","no-cache");
 	res.header("Expires",0);

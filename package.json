@@ -9,7 +9,7 @@
     "NodeAPII": "git+https://github.com/ealeksandrov/NodeAPI.git#a91b7d6bf52b2e3f057b299400c698bed61e1030",
     "body-parser": "~1.0.0",
     "cookie-parser": "~1.0.1",
-    "debug": "^0.7.4",
+    "debug": "^2.1.3",
     "ejs": "~1.0.0",
     "express": "~4.2.0",
     "jade": "^1.9.2",
@@ -22,6 +22,16 @@
     "rbac": "^3.0.6",
     "serve-favicon": "^2.2.0",
     "socket.io": "^1.2.1",
-    "static-favicon": "~1.0.0"
+    "static-favicon": "~1.0.0",
+    "faker": "^2.0.x",
+    "method-override": "^2.3.x",
+    "mongoose": "^3.8.x",
+    "nconf": "^0.6.x",
+    "oauth2orize": "^1.0.x",
+    "passport": "^0.2.x",
+    "passport-http": "^0.2.x",
+    "passport-http-bearer": "^1.0.x",
+    "passport-oauth2-client-password": "^0.1.x",
+    "winston": "^0.8.x"
   }
 }
