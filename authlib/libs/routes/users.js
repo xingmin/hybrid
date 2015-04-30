@@ -1,8 +1,9 @@
 var express = require('express');
 var passport = require('passport');
+var path = require('path');
 var router = express.Router();
 
-var libs = process.cwd() + '/authlib/libs/';
+var libs = path.resolve(__dirname, '../..')+ '/libs/';
 
 var db = require(libs + 'db/mongoose');
 

@@ -1,8 +1,9 @@
+var path = require('path');
 var mongoose = require('mongoose');
 
-var libs = process.cwd() + '/authlib/libs/';
+var libs = path.resolve(__dirname, '../..')  + '/libs/';
 
-var log = require(libs + 'log')(module);
+var log = require('../../../log')(module);
 var config = require(libs + 'config');
 
 mongoose.connect(config.get('mongoose:uri'));

@@ -1,11 +1,12 @@
+var path = require('path');
 var oauth2orize = require('oauth2orize');
 var passport = require('passport');
 var crypto = require('crypto');
 
-var libs = process.cwd() + '/authlib/libs/';
+var libs = path.resolve(__dirname, '../..') + '/libs/';
 
 var config = require(libs + 'config');
-var log = require(libs + 'log')(module);
+//var log = require(libs + 'log')(module);
 
 var db = require(libs + 'db/mongoose');
 var User = require(libs + 'model/user');
@@ -26,7 +27,7 @@ var errFn = function (cb, err) {
 var generateTokens = function (data, done) {
 
 	// curries in `done` callback so we don't need to pass it
-    var errorHandler = errFn.bind(undefined, done), 
+    var errorHandler = errFn.bind(undefined, done),
 	    refreshToken,
 	    refreshTokenValue,
 	    token,
@@ -49,7 +50,7 @@ var generateTokens = function (data, done) {
     token.save(function (err) {
     	if (err) {
 			
-			log.error(err);
+			//log.error(err);
     		return done(err); 
     	}
     	done(null, tokenValue, refreshTokenValue, { 

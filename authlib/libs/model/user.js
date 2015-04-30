@@ -1,12 +1,18 @@
+var extendAuthUser = require('../../rbac/extendauthuser');
+
 var mongoose = require('mongoose'),
 	crypto = require('crypto'),
-
+	
 	Schema = mongoose.Schema,
 
 	User = new Schema({
 		username: {
 			type: String,
 			unique: true,
+			required: true
+		},
+		legalname: {
+			type: String,
 			required: true
 		},
 		hashedPassword: {
@@ -46,5 +52,7 @@ User.virtual('password')
 User.methods.checkPassword = function(password) {
 	return this.encryptPassword(password) === this.hashedPassword;
 };
+
+extendAuthUser(User);
 
 module.exports = mongoose.model('User', User);

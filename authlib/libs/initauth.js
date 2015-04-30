@@ -1,14 +1,13 @@
-var addAuth = function(app){	
+var addAuth = function(app){
 	var path = require('path');
 	var passport = require('passport');
 	var methodOverride = require('method-override');
-
-	var libs = process.cwd() + '/authlib/libs/';
-	require(libs + 'auth/auth');
-
 	
-	var oauth2 = require('./auth/oauth2');
-
+	var libs = path.resolve(__dirname, '../..')  + '/authlib/libs/';
+	require(libs + 'auth/auth');	
+	
+	var oauth = require('./routes/oauth');
+	
 	var api = require('./routes/api');
 	var users = require('./routes/users');
 	
@@ -17,7 +16,7 @@ var addAuth = function(app){
 	
 	app.use('/authapi', api);
 	app.use('/authapi/users', users);
-	app.use('/authapi/oauth/token', oauth2.token);
+	app.use('/authapi/oauth', oauth);
 };
 
 module.exports = addAuth;

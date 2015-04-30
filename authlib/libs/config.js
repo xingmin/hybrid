@@ -1,9 +1,10 @@
 var nconf = require('nconf');
+var path = require('path');
 
 nconf.argv()
 	.env()
 	.file({
-		file: process.cwd() + '/authlib/config.json'
+		file: path.resolve(__dirname, '..') + '/config.json'
 	});
 
 module.exports = nconf;

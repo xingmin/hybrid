@@ -22,7 +22,7 @@ var person = require('./routes/queue/person');
 var draw = require('./routes/opsupport/draw');
 var recycle = require('./routes/opsupport/recycle');
 
-
+var auth = require('./authlib/libs/initauth');
 
 var app = express();
 
@@ -38,6 +38,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'app')));//app.use(express.static(path.join(__dirname, 'public')));
+
+auth(app);
 
 //init the authentication module
 //(require('./authlib/libs/app'))(app);
