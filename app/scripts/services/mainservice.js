@@ -1,7 +1,7 @@
 define(['./queueservicex',
         './queueclassservicex',
         './windowservice',
-        './userservice',
+        './auth/userservice',
         './socketservice',
         './indexedDbService',
         './externalSysService',

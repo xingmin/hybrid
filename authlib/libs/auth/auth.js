@@ -13,7 +13,7 @@ var Client = require(libs + 'model/client');
 var AccessToken = require(libs + 'model/accessToken');
 var RefreshToken = require(libs + 'model/refreshToken');
 
-passport.use(new BasicStrategy(
+passport.use(new BasicStrategy(//{passReqToCallback:true},
     function(username, password, done) {
         User.findOne({ 'username': username }, function(err, user) {
             if (err) {

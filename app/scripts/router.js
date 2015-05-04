@@ -43,10 +43,7 @@ define(["./appx"],function(app){
 											templateUrl:'/views/tpl/window.html',
 											controller: 'windowController'
 										})
-										.when('/queuesys/user',{
-											templateUrl:'/views/tpl/user.html',
-											controller: 'userController'
-										})
+
 										.when('/queuesys/user/login',{
 											templateUrl:'/views/tpl/login.html',
 											controller: 'userLoginController'
@@ -70,6 +67,10 @@ define(["./appx"],function(app){
 										.when('/opsupport/draw/',{
 											templateUrl:'/views/tpl/draw.html',
 											controller: 'drawController'
+										})
+										.when('/auth/user',{
+											templateUrl:'/views/tpl/auth/user.html',
+											controller: 'userController'
 										})
 										.otherwise({
 											redirectTo:'/'

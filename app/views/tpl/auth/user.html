@@ -1,0 +1,69 @@
+<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
+<editdlg module-name="用户" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
+	<div class="form-group" >
+		<label  for="legalName" class="col-md-3 control-label">姓名<span class="star">*</span></label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.legalName.$invalid) || (dlgform.legalName.$invalid && !dlgform.legalName.$pristine)}">
+		<input type="text" class="form-control" id="legalName"  legalName="legalName" ng-model="currentedit.newval.legalName" required placeholder="请输入姓名"/>
+		<p ng-show="( dlgform.legalName.$invalid) || (dlgform.legalName.$invalid && !dlgform.legalName.$pristine)" class="help-block">姓名必填。</p>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="userName" class="col-md-3 control-label">用户名<span class="star">*</span></label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.userName.$invalid) || (dlgform.userName.$invalid && !dlgform.userName.$pristine)}">
+		<input type="text" class="form-control" id="userName"  name="userName" ng-model="currentedit.newval.userName" required placeholder="请输入用户名"/>
+		<p ng-show="( dlgform.userName.$invalid) || (dlgform.userName.$invalid && !dlgform.userName.$pristine)" class="help-block">用户名必填。</p>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="password" class="col-md-3 control-label">密码</label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.password.$invalid) || (dlgform.password.$invalid && !dlgform.password.$pristine)}">
+		<input type="password" class="form-control" id="password"  name="password" ng-model="currentedit.newval.password"  />		 
+		</div>
+	</div>
+</editdlg>
+</form>
+
+<div class="title control-group">	
+	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
+	<h3>用户</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>姓名</th>
+		<th>登录名</th>
+    	<th></th>
+    </tr>
+    <tr ng-repeat="user in users">
+    	<td>
+    		{{user.legalName}}
+        </td>
+       <td>
+    		{{user.userName}}
+        </td>
+        <td>
+        	<edit ng-Model="user"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
+          | <delete ng-Model="user" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+		</td>
+	</tr>
+</table>
+<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
+	<table class="table table-bordered table-hover">
+	    <tr>
+		    <td>ID</td>
+		     <td>
+		 		{{currentedit.newval.legalName}}
+		     </td>
+	    </tr>
+	    <tr>
+		    <td>名称</td>
+		 	<td>
+		 		{{currentedit.newval.userName}}
+		     </td>
+	    </tr>
+	</table>
+</deletedlg>
+
+
+
+

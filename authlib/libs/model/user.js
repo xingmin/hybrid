@@ -34,6 +34,7 @@ User.methods.encryptPassword = function(password) {
     //more secure - return crypto.pbkdf2Sync(password, this.salt, 10000, 512);
 };
 
+
 User.virtual('userId')
 .get(function () {
 	return this.id;

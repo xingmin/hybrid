@@ -1,7 +1,7 @@
 define(['controllers/queuecontrollerx',
         'controllers/queueclasscontrollerx',
         'controllers/windowcontroller',
-        'controllers/usercontroller',
+        'controllers/auth/usercontroller',
         'controllers/userwindowcontroller',
         'controllers/userQueueController',
         'controllers/choosewindowcontroller',
