@@ -1,4 +1,4 @@
-var extendAuthUser = require('../../rbac/extendauthuser');
+var extendAuthUser = require('../rbac/extendauthuser');
 
 var mongoose = require('mongoose'),
 	crypto = require('crypto'),

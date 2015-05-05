@@ -72,6 +72,10 @@ define(["./appx"],function(app){
 											templateUrl:'/views/tpl/auth/user.html',
 											controller: 'userController'
 										})
+										.when('/auth/permission',{
+											templateUrl:'/views/tpl/auth/permission.html',
+											controller: 'permissionController'
+										})
 										.otherwise({
 											redirectTo:'/'
 										});

@@ -16,7 +16,7 @@ router.get('/info', passport.authenticate('bearer', { session: false }),
         // `BearerStrategy`.  It is typically used to indicate scope of the token,
         // and used in access control checks.  For illustrative purposes, this
         // example simply returns the scope in the response.
-        res.json({ 
+        res.json({
         	user_id: req.user.userId, 
         	name: req.user.username, 
         	scope: req.authInfo.scope 
@@ -46,12 +46,14 @@ router.post('/', //passport.authenticate('bearer', { session: false }),
 			var result = null;
 			if(err){
 				result = new Result(1, err, null);
+			}else{
+				result = new Result(0, 'save succeeded!',  UserInfo.convertFromUsers(user));
 			}
-			result = new Result(0, 'save succeeded!',  UserInfo.convertFromUsers(user));
 			res.json(result);
 		});
 	}
 );
+
 //update user
 router.post('/update', //passport.authenticate('bearer', { session: false }),
 	function(req, res) {
@@ -73,6 +75,20 @@ router.post('/update', //passport.authenticate('bearer', { session: false }),
 				res.json(result);
 			}
 		);
+	}
+);
+//delete a user
+router.delete('/:userId', //passport.authenticate('bearer', { session: false }),
+	function(req, res) {
+		var userId = req.params.userId;
+		User.findByIdAndRemove(userId, {}, function(err, user){
+			if(err){
+				result = new Result(1, err, null);
+			}else{
+				result = new Result(0, 'save delete succeeded!', null);
+			}
+			res.json(result);
+		});
 	}
 );
 module.exports = router;

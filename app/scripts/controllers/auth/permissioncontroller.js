@@ -1,14 +1,16 @@
 define(['../module'],function(controllers,$){
     'use strict';
-    controllers.controller('userController',['$scope','$http','$timeout','userService','md5',function($scope,$http,$timeout, userService, md5){
-    	$scope.users =null;
+    controllers.controller('permissionController',
+    		['$scope','$http','$timeout','permissionService','md5',
+    		 function($scope,$http,$timeout, permissionService, md5){
+    	$scope.permissions =null;
     	$scope.IsHideModal = true;
     	$scope.msgs=[];
     	$scope.mode = '';
     	$scope.currentedit={newval:{},oldval:{}};
     	$scope.isSaveCompleted = false;
-    	userService.getUsers().success(function(data){
-    		$scope.users = data.value;
+    	permissionService.getPermissons().success(function(data){
+    		$scope.permissions = data.value;
     	});
     	$scope.saveChange = function(){
     		$scope.isSaveCompleted = false;
@@ -27,13 +29,12 @@ define(['../module'],function(controllers,$){
     						$scope.msgs.push($scope.currentedit.newval.legalName+'修改成功！');
     					}});
     		}else if($scope.mode == 'create'){
-    			$scope.currentedit.newval.password = md5.createHash($scope.currentedit.newval.password || '');
-    			userService.createNewUser($scope.currentedit.newval.legalName,
-    					$scope.currentedit.newval.userName,
-    					$scope.currentedit.newval.password)
+    			permissionService.createNewPermission(
+    					$scope.currentedit.newval.action,
+    					$scope.currentedit.newval.resource)
     			.success(function(data){
     				if(data.code === 0){
-    					$scope.users.push(data.value);
+    					$scope.permissions.push($scope.currentedit.newval);
     					$scope.isSaveCompleted = true;
     					$scope.msgs.push('创建成功！');
     				}});	
@@ -51,7 +52,7 @@ define(['../module'],function(controllers,$){
     	$scope.deletecur = function(){
     		var cur = $scope.currentedit.oldval;
     		$scope.IsHideModal = false;
-    		userService.delUser(cur.userId).success(function(data){
+    		permissionService.deletePermission(cur.action, cur.resource).success(function(data){
     			if(data.code === 0){
     				angular.forEach( $scope.users, function(val,index){
     					if(val == cur){

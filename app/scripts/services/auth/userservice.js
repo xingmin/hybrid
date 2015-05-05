@@ -27,6 +27,9 @@ define(['../module'],function(services){
 						}
 					}
 				);
+			},
+			delUser : function(userid){
+				return $http.delete('/authapi/users/'+userid);
 			}
 		};
 	}]);

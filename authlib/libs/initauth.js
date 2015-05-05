@@ -4,18 +4,22 @@ var addAuth = function(app){
 	var methodOverride = require('method-override');
 	
 	var libs = path.resolve(__dirname, '../..')  + '/authlib/libs/';
+	var db = require(libs + 'db/mongoose');
+	//var db = require('./rbac/init-rbac-storage');
 	require(libs + 'auth/auth');	
 	
 	var oauth = require('./routes/oauth');
 	
 	var api = require('./routes/api');
 	var users = require('./routes/users');
+	var permission = require('./routes/permission');
 	
 	app.use(methodOverride());
 	app.use(passport.initialize());
 	
 	app.use('/authapi', api);
 	app.use('/authapi/users', users);
+	app.use('/authapi/permission', permission);
 	app.use('/authapi/oauth', oauth);
 };
 

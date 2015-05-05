@@ -1,0 +1,63 @@
+<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
+<editdlg module-name="权限" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
+	<div class="form-group" >
+		<label  for="resource" class="col-md-3 control-label">模块</label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.resource.$invalid) || (dlgform.resource.$invalid && !dlgform.resource.$pristine)}">
+		<input type="text" class="form-control" id="resource"  resource="resource" ng-model="currentedit.newval.resource" required placeholder="模块"/>
+		<p ng-show="( dlgform.resource.$invalid) || (dlgform.resource.$invalid && !dlgform.resource.$pristine)" class="help-block">模块必填。</p>
+		</div>
+	</div>
+	<div class="form-group" >
+		<label  for="action" class="col-md-3 control-label">动作</label>
+		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.action.$invalid) || (dlgform.action.$invalid && !dlgform.action.$pristine)}">
+		<input type="text" class="form-control" id="action"  name="action" ng-model="currentedit.newval.action" required placeholder="请输入动作"/>
+		<p ng-show="( dlgform.action.$invalid) || (dlgform.action.$invalid && !dlgform.action.$pristine)" class="help-block">动作必填。</p>
+		</div>
+	</div>
+</editdlg>
+</form>
+
+<div class="title control-group">	
+	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
+	<h3>权限</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>模块</th>
+		<th>动作</th>
+    	<th></th>
+    </tr>
+    <tr ng-repeat="permission in permissions">
+    	<td>
+    		{{permission.resource}}
+        </td>
+       <td>
+    		{{permission.action}}
+        </td>
+        <td>
+        	<edit ng-Model="permission"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
+          | <delete ng-Model="permission" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+		</td>
+	</tr>
+</table>
+<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
+	<table class="table table-bordered table-hover">
+	    <tr>
+		    <td>ID</td>
+		     <td>
+		 		{{currentedit.newval.resource}}
+		     </td>
+	    </tr>
+	    <tr>
+		    <td>名称</td>
+		 	<td>
+		 		{{currentedit.newval.action}}
+		     </td>
+	    </tr>
+	</table>
+</deletedlg>
+
+
+
+
