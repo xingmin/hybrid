@@ -12,6 +12,7 @@ var addAuth = function(app){
 	
 	var api = require('./routes/api');
 	var users = require('./routes/users');
+	var role = require('./routes/role');
 	var permission = require('./routes/permission');
 	
 	app.use(methodOverride());
@@ -20,6 +21,7 @@ var addAuth = function(app){
 	app.use('/authapi', api);
 	app.use('/authapi/users', users);
 	app.use('/authapi/permission', permission);
+	app.use('/authapi/roles', role);
 	app.use('/authapi/oauth', oauth);
 };
 

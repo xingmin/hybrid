@@ -1,3 +1,4 @@
+
 <form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
 <editdlg module-name="权限" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
 	<div class="form-group" >
@@ -28,7 +29,7 @@
 		<th>动作</th>
     	<th></th>
     </tr>
-    <tr ng-repeat="permission in permissions">
+    <tr ng-repeat="permission in permissions | orderBy : ['resource', 'action']">
     	<td>
     		{{permission.resource}}
         </td>
@@ -36,8 +37,7 @@
     		{{permission.action}}
         </td>
         <td>
-        	<edit ng-Model="permission"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
-          | <delete ng-Model="permission" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+        	<delete ng-Model="permission" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
 		</td>
 	</tr>
 </table>
