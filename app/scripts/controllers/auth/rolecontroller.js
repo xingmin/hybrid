@@ -5,13 +5,13 @@ define(['../module'],function(controllers,$){
     		 function($scope,$http,$timeout, roleFactory, md5){
     	$scope.msgs=[];
     	roleFactory.getRoles();
-    	$scope.on('role.update', function(code){
+    	$scope.$on('role.update', function(code){
     		if(code === 0){
     			$scope.msgs.push('获取成功');
     		}
     		$scope.roles = roleFactory.roles;
     	});
-    	$scope.IsHideModal = true; 
+    	$scope.IsHideModal = true;
     	$scope.mode = '';
     	$scope.currentedit={newval:{},oldval:{}};
     	$scope.isSaveCompleted = false;
@@ -21,7 +21,7 @@ define(['../module'],function(controllers,$){
     			roleFactory.saveNewRole($scope.currentedit.newval.name);
     		}
     	};
-    	$scope.on('role.created', function(code){
+    	$scope.$on('role.created', function(code){
     		if(code === 0){
     			$scope.msgs.push('保存成功');
     			$scope.isSaveCompleted = true;
@@ -39,9 +39,9 @@ define(['../module'],function(controllers,$){
     	$scope.deletecur = function(){
     		var cur = $scope.currentedit.oldval;
     		$scope.IsHideModal = false;
-    		roleFactory.delRole(cur.name);		
+    		roleFactory.delRole(cur.name);
     	};
-    	$scope.on('role.deleted', function(code){
+    	$scope.$on('role.deleted', function(code){
     		if(code === 0){
     			$scope.msgs.push('删除成功');
     			$scope.isSaveCompleted = true;

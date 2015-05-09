@@ -1,4 +1,4 @@
-define(['../module'],function(services){
+define(['../module', 'lodash'],function(services, _){
 	'use strict';
 	services.factory("roleFactory",['$http','$rootScope',function($http, $rootScope){
 		var rolefactory = {};
@@ -7,9 +7,11 @@ define(['../module'],function(services){
 			$http.get('/authapi/roles/').success(
 				function(data){
 					if(data.code === 0){
-						_roles = data.value;
-					} 
-					$rootScope.$broadcast( 'roles.update', data.code);
+						data.value.forEach(function(val){
+							_roles.splice(-1, 0, val);	
+						});
+					}
+					$rootScope.$broadcast( 'role.update', data.code);
 				}
 			);
 		};
@@ -26,7 +28,7 @@ define(['../module'],function(services){
 						if(data.code === 0){
 							_roles.push({name:name});
 						} 
-						$rootScope.$broadcast( 'roles.created', data.code);
+						$rootScope.$broadcast( 'role.created', data.code);
 					}
 			);
 		};
@@ -47,7 +49,7 @@ define(['../module'],function(services){
 	    					}			
 	    				});
 					} 
-					$rootScope.$broadcast( 'roles.deleted', data.code);
+					$rootScope.$broadcast( 'role.deleted', data.code);
 				}
 			);
 		};

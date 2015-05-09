@@ -1,6 +1,7 @@
 define(['controllers/queuecontrollerx',
         'controllers/queueclasscontrollerx',
         'controllers/windowcontroller',
+        'controllers/auth/rolecontroller',
         'controllers/auth/usercontroller',
         'controllers/auth/permissioncontroller',
         'controllers/userwindowcontroller',

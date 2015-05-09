@@ -1,14 +1,13 @@
 <form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
 <editdlg module-name="角色" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
 	<div class="form-group" >
-		<label  for="action" class="col-md-3 control-label">角色</label>
-		<div class="col-md-4 controls" ng-class="{'has-error': (submitInvalid && dlgform.action.$invalid) || (dlgform.action.$invalid && !dlgform.action.$pristine)}">
-		<input type="text" class="form-control" id="action"  name="action" ng-model="currentedit.newval.action" required placeholder="请输入角色"/>
+		<label  for="rolename" class="col-md-3 control-label">角色</label>
+		<div class="col-md-4 controls" >
+		<input type="text" class="form-control" id="rolename"  name="rolename" ng-model="currentedit.newval.name" required placeholder="请输入角色"/>
 		</div>
 	</div>
 </editdlg>
 </form>
-
 <div class="title control-group">	
 	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
 	<h3>角色</h3>
@@ -24,7 +23,7 @@
     		{{role.name}}
         </td>
         <td>
-        	<delete ng-Model="permission" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+        	<delete ng-Model="role" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
 		</td>
 	</tr>
 </table>
@@ -33,18 +32,8 @@
 	    <tr>
 		    <td>名称</td>
 		     <td>
-		 		{{currentedit.newval.resource}}
-		     </td>
-	    </tr>
-	    <tr>
-		    <td>名称</td>
-		 	<td>
-		 		{{currentedit.newval.action}}
+		 		{{currentedit.newval.name}}
 		     </td>
 	    </tr>
 	</table>
 </deletedlg>
-
-
-
-

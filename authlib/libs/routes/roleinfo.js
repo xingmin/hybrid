@@ -7,19 +7,17 @@ var RoleInfo  = function(info){
 	this.name = info.name;
 	this.grants = info.grants;
 };
-//RoleInfo.convertFromRoles = function(roles){
-//	if(!_.isArray(roles)){
-//		return new RoleInfo({
-//			name          : roles.name,
-//			grants        : PermissionInfo.convertFromPermissions(roles.grants)
-//		});
-//	}
-//	var arrRoleInfo = roles.map(function(role){
-//		return new RoleInfo({
-//			name          : role.name,
-//			grants        : PermissionInfo.convertFromPermissions(roles.grants)
-//		});
-//	});
-//	return arrRoleInfo;
-//};
+RoleInfo.convertFromRoles = function(roles){
+	if(!_.isArray(roles)){
+		return new RoleInfo({
+			name          : roles.name
+		});
+	}
+	var arrRoleInfo = roles.map(function(role){
+		return new RoleInfo({
+			name          : role.name
+		});
+	});
+	return arrRoleInfo;
+};
 module.exports = RoleInfo;
