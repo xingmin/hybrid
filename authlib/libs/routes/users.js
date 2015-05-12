@@ -58,13 +58,22 @@ router.post('/', //passport.authenticate('bearer', { session: false }),
 router.post('/update', //passport.authenticate('bearer', { session: false }),
 	function(req, res) {
 		var userinfo = req.body.userinfo;
+		var tmpUser = {};
+		if(userinfo.userName){
+			tmpUser.username = userinfo.userName;
+		}
+		if(userinfo.legalName){
+			tmpUser.legalname = userinfo.legalName;
+		}
+		if(userinfo.password){
+			tmpUser.password = userinfo.password;
+		}
+		if(userinfo.role){
+			tmpUser.role = userinfo.role;
+		}
 		User.update(
 			{ _id : userinfo.userId },
-			{ 
-				username  : userinfo.userName,
-				legalname : userinfo.legalName,
-				password  : userinfo.password
-			},
+			tmpUser,
 			{},
 			function(err, raw){
 				var result = null;

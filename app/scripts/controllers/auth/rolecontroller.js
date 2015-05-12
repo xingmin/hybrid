@@ -1,15 +1,14 @@
 define(['../module'],function(controllers,$){
     'use strict';
     controllers.controller('roleController',
-    		['$scope','$http','$timeout','roleFactory','md5',
-    		 function($scope,$http,$timeout, roleFactory, md5){
-    	$scope.msgs=[];
-    	roleFactory.getRoles();
+    		['$scope','$http','$timeout','roleFactory',
+    		 function($scope, $http, $timeout, roleFactory){
+    	$scope.msgs=[];    	
+    	$scope.roles = roleFactory.getRoles();
     	$scope.$on('role.update', function(code){
     		if(code === 0){
     			$scope.msgs.push('获取成功');
     		}
-    		$scope.roles = roleFactory.roles;
     	});
     	$scope.IsHideModal = true;
     	$scope.mode = '';
@@ -21,11 +20,13 @@ define(['../module'],function(controllers,$){
     			roleFactory.saveNewRole($scope.currentedit.newval.name);
     		}
     	};
-    	$scope.$on('role.created', function(code){
+    	$scope.$on('role.created', function(event, code){
     		if(code === 0){
     			$scope.msgs.push('保存成功');
-    			$scope.isSaveCompleted = true;
+    		}else{
+    			$scope.msgs.push('保存失败');
     		}
+    		$scope.isSaveCompleted = true;	
     	});
     	//create --新建
     	//edit --编辑
@@ -41,13 +42,14 @@ define(['../module'],function(controllers,$){
     		$scope.IsHideModal = false;
     		roleFactory.delRole(cur.name);
     	};
-    	$scope.$on('role.deleted', function(code){
-    		if(code === 0){
-    			$scope.msgs.push('删除成功');
-    			$scope.isSaveCompleted = true;
-    			$scope.currentedit={newval:{},oldval:{}};
-    			$scope.IsHideModal = true;	
+    	$scope.$on('role.deleted', function(event, code){
+    		$scope.currentedit={newval:{},oldval:{}};
+    		if(code === 0){    			
+				$scope.msgs.push('删除成功');				
+    		}else{
+    			$scope.msgs.push('删除失败');
     		}
+    		$scope.IsHideModal = true;
     	});
     }]);
 })

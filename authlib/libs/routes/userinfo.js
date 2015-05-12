@@ -6,6 +6,7 @@ var UserInfo  = function(info){
 	this.userName = info.userName;
 	this.legalName = info.legalName;
 	this.password = info.password;
+	this.role = info.role;
 };
 UserInfo.convertFromUsers = function(users){
 	if(!_.isArray(users)){
@@ -13,7 +14,8 @@ UserInfo.convertFromUsers = function(users){
 			userId    : users.userId,
 			userName  : users.username,
 			legalName : users.legalname,
-			password  : users.password
+			password  : users.password,
+			role      : users.role
 		});
 	}
 	var arrUserInfo = users.map(function(user){
@@ -21,7 +23,8 @@ UserInfo.convertFromUsers = function(users){
 			userId    : user.userId,
 			userName  : user.username,
 			legalName : user.legalname,
-			password  : user.password
+			password  : user.password,
+			role      : user.role
 		});
 	});
 	return arrUserInfo;
@@ -30,7 +33,8 @@ UserInfo.prototype.convertToUser = function(){
 	var user = new User({
 		username  : this.userName,
 		legalname : this.legalName,
-		password  : this.password
+		password  : this.password,
+		role      : this.role
 	});
 	return user;
 };

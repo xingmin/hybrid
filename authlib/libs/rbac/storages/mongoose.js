@@ -261,7 +261,7 @@ var MongooseStorage = (function (_Storage) {
 						return cb(null, []);
 					}
 
-					_this.model.find({ name: record.grants }, function (err, records) {
+					_this.model.find({ "name": { "$in" : record.grants } }, function (err, records) {
 						if (err) {
 							return cb(err);
 						}

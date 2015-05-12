@@ -1,7 +1,10 @@
 define(['../module'],function(controllers,$){
     'use strict';
-    controllers.controller('userController',['$scope','$http','$timeout','userService','md5',function($scope,$http,$timeout, userService, md5){
+    controllers.controller('userController',
+    		['$scope','$http','$timeout','userService','md5','roleFactory',
+    		 function($scope,$http,$timeout, userService, md5,roleFactory){
     	$scope.users =null;
+    	$scope.roles = roleFactory.getRoles();
     	$scope.IsHideModal = true;
     	$scope.msgs=[];
     	$scope.mode = '';
@@ -17,20 +20,23 @@ define(['../module'],function(controllers,$){
     			userService.saveUserChange($scope.currentedit.newval.userId,
     					$scope.currentedit.newval.legalName,
     					$scope.currentedit.newval.userName,
-    					$scope.currentedit.newval.password
+    					$scope.currentedit.newval.password,
+    					$scope.currentedit.newval.role
     					)
     				.success(function(data){
     					if(data.code === 0){
     						$scope.isSaveCompleted = true;
     						$scope.currentedit.oldval.legalName = $scope.currentedit.newval.legalName;
         					$scope.currentedit.oldval.userName = $scope.currentedit.newval.userName;
+        					$scope.currentedit.oldval.role = $scope.currentedit.newval.role;
     						$scope.msgs.push($scope.currentedit.newval.legalName+'修改成功！');
     					}});
     		}else if($scope.mode == 'create'){
     			$scope.currentedit.newval.password = md5.createHash($scope.currentedit.newval.password || '');
     			userService.createNewUser($scope.currentedit.newval.legalName,
     					$scope.currentedit.newval.userName,
-    					$scope.currentedit.newval.password)
+    					$scope.currentedit.newval.password,
+    					$scope.currentedit.newval.role)
     			.success(function(data){
     				if(data.code === 0){
     					$scope.users.push(data.value);
@@ -66,6 +72,9 @@ define(['../module'],function(controllers,$){
     			}
     		});
 
+    	};
+    	$scope.selectRole = function(role){
+    		$scope.currentedit.newval.role = role.name;
     	};
     }]);
 })

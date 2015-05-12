@@ -4,6 +4,9 @@ define(['../module', 'lodash'],function(services, _){
 		var rolefactory = {};
 		var _roles = [];
 		var _getRoles = function(){
+			if(_roles.length>0){
+				return _roles;
+			}
 			$http.get('/authapi/roles/').success(
 				function(data){
 					if(data.code === 0){
@@ -11,9 +14,11 @@ define(['../module', 'lodash'],function(services, _){
 							_roles.splice(-1, 0, val);	
 						});
 					}
+					_refreshRoleGrants();
 					$rootScope.$broadcast( 'role.update', data.code);
 				}
 			);
+			return _roles;
 		};
 		
 		var _saveNewRole = function(name){
@@ -27,7 +32,8 @@ define(['../module', 'lodash'],function(services, _){
 					function(data){
 						if(data.code === 0){
 							_roles.push({name:name});
-						} 
+							_refreshRoleGrants(name);
+						}						
 						$rootScope.$broadcast( 'role.created', data.code);
 					}
 			);
@@ -53,10 +59,67 @@ define(['../module', 'lodash'],function(services, _){
 				}
 			);
 		};
+		var _getRoleGrants = function(roleName){
+			$http.get('/authapi/roles/'+ roleName +'/grants/').success(
+				function(data){
+					_roles.every(function(role){
+						if(role.name === roleName){
+							role.grants = data.value;
+							return false;
+						}
+						return true;
+					});
+				}
+			);
+		};
+		var _refreshRoleGrants = function(roleName){
+			if(roleName){
+				_getRoleGrants(roleName);
+				return;
+			};
+			angular.forEach(_roles, function(role){
+				_getRoleGrants(role.name);
+			});
+		};
+		var _grantPermissionToRole = function(role, resource, action){
+			$http.post('/authapi/roles/' + role + '/grant/',
+					{
+						permissionInfo:{
+							resource : resource,
+							action   : action
+						}
+					}
+				)
+				.success(
+					function(data){
+						_refreshRoleGrants(role);
+						$rootScope.$broadcast( 'role.grant', data.code);
+					}
+				);
+		};
+		var _revokePermissionFromRole = function(role, resource, action){
+			$http.post('/authapi/roles/' + role + '/revoke/',
+					{
+						permissionInfo:{
+							resource : resource,
+							action   : action
+						}
+					}
+				)
+				.success(
+					function(data){
+						_refreshRoleGrants(role);
+						$rootScope.$broadcast( 'role.revoke', data.code);
+					}
+				);
+		};
 		rolefactory.delRole = _delRole;
 		rolefactory.getRoles = _getRoles;
 		rolefactory.saveNewRole = _saveNewRole;
 		rolefactory.roles = _roles;
+		rolefactory.refreshRoleGrants = _refreshRoleGrants;
+		rolefactory.grantPermissionToRole = _grantPermissionToRole;
+		rolefactory.revokePermissionFromRole = _revokePermissionFromRole;
 		return rolefactory;
 	}]);
 });

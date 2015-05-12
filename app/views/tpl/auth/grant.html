@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="styles/common.css"/>
+<div class="title control-group">
+	<h3>设置角色的权限</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+ 
+<div class="row">
+	<div class="col-md-4">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">角色列表</h3>
+		</div>
+		<table class="table table-bordered table-hover">
+			<tr>
+				<th>名称</th>
+		    	<th></th>
+		    </tr>
+		    <tr ng-repeat="role in roles" ng-click="selectRole(role)" ng-class="{'selected':role.selected}">
+		    	<td>
+		    		{{role.name}}
+		        </td>
+			</tr>
+		</table>
+	</div>
+	</div>
+	<div class="col-md-8">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">权限列表</h3>
+		</div>
+		<table class="table table-bordered table-hover">
+			<tr>
+				<th></th>
+				<th>资源</th>
+				<th>动作</th>
+		    </tr>
+		    <tr ng-repeat="permission in permissions">
+		    	<td>		    
+		    		<input type="checkbox" ng-change = "grant(permission)"  ng-model="permission.selected" ng-true-value="true" ng-false-value="false"/>
+		    	</td>
+		    	<td>
+		    		{{permission.resource}}
+		        </td>
+				<td>
+					{{permission.action}}
+				</td>
+			</tr>
+		</table>
+	</div>
+	</div>
+</div>
+ 
+
+
+
+

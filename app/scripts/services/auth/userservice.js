@@ -5,25 +5,27 @@ define(['../module'],function(services){
 			getUsers : function(){
 				return $http.get('/authapi/users/');
 			},
-			createNewUser : function(legalname, username, password){
+			createNewUser : function(legalname, username, password, role){
 				return $http.post('/authapi/users/',
 					{
 						userinfo:{
 							userName  : username,
 							legalName : legalname,
-							password  : password
+							password  : password,
+							role      : role
 						}
 					}
 				);
 			},
-			saveUserChange : function(userid, legalname, username, password){
+			saveUserChange : function(userid, legalname, username, password, role){
 				return $http.post('/authapi/users/update',
 					{
 						userinfo:{
 							userId    : userid,
 							userName  : username,
 							legalName : legalname,
-							password  : password
+							password  : password,
+							role      : role
 						}
 					}
 				);
