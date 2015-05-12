@@ -48,7 +48,7 @@ router.post('/delete', //passport.authenticate('bearer', { session: false }),
 		rbac.removeByName(permname, function(err){
 			var result = null;
 			if(err){
-				result = new Result(1, err, null);
+				result = new Result(1, err.message, null);
 			}else{
 				result = new Result(0, permname+'delete succeeded!', null);
 			}

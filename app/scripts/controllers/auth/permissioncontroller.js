@@ -14,21 +14,6 @@ define(['../module'],function(controllers,$){
     	});
     	$scope.saveChange = function(){
     		$scope.isSaveCompleted = false;
-//    		if ($scope.mode == 'edit'){
-//    			$scope.currentedit.newval.password = md5.createHash($scope.currentedit.newval.password || '');
-//    			userService.saveUserChange($scope.currentedit.newval.userId,
-//    					$scope.currentedit.newval.legalName,
-//    					$scope.currentedit.newval.userName,
-//    					$scope.currentedit.newval.password
-//    					)
-//    				.success(function(data){
-//    					if(data.code === 0){
-//    						$scope.isSaveCompleted = true;
-//    						$scope.currentedit.oldval.legalName = $scope.currentedit.newval.legalName;
-//        					$scope.currentedit.oldval.userName = $scope.currentedit.newval.userName;
-//    						$scope.msgs.push($scope.currentedit.newval.legalName+'修改成功！');
-//    					}});
-//    		}else 
     		if($scope.mode == 'create'){
     			permissionService.createNewPermission(
     					$scope.currentedit.newval.action,
@@ -59,12 +44,13 @@ define(['../module'],function(controllers,$){
     					if(val == cur){
     						$scope.currentedit={newval:{},oldval:{}};
     						$scope.users.splice(index,1);						
-    						$scope.IsHideModal = true;				
+    						$scope.IsHideModal = true;	
     						$scope.msgs.push('删除成功！');
     					}			
     				})
     			}else{
-    				$scope.msgs.push(data.message);
+    				$scope.msgs.push('删除失败:'+data.message);
+    				$scope.IsHideModal = true;
     			}
     		});
 
