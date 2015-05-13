@@ -40,11 +40,11 @@ define(['../module'],function(controllers,$){
     		$scope.IsHideModal = false;
     		permissionService.deletePermission(cur.action, cur.resource).success(function(data){
     			if(data.code === 0){
-    				angular.forEach( $scope.users, function(val,index){
+    				angular.forEach( $scope.permissions, function(val,index){
     					if(val == cur){
     						$scope.currentedit={newval:{},oldval:{}};
-    						$scope.users.splice(index,1);						
-    						$scope.IsHideModal = true;	
+    						$scope.permissions.splice(index,1);						
+    						$scope.IsHideModal = true;
     						$scope.msgs.push('删除成功！');
     					}			
     				})

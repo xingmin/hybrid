@@ -91,11 +91,25 @@ router.delete('/:userId', //passport.authenticate('bearer', { session: false }),
 	function(req, res) {
 		var userId = req.params.userId;
 		User.findByIdAndRemove(userId, {}, function(err, user){
+			var result;
 			if(err){
 				result = new Result(1, err, null);
 			}else{
 				result = new Result(0, 'save delete succeeded!', null);
 			}
+			res.json(result);
+		});
+	}
+);
+router.post('/checkpassword/', //passport.authenticate('bearer', { session: false }),
+	function(req, res) {
+		var userName = req.body.username;
+		var password = req.body.password;
+		User.checkUserNamePassword(userName, password, function(err, passed){
+			if(passed){
+				return (result = new Result(0, 'user check succeess', null) && res.json(result));
+			}
+			result = new Result(1, err, null);
 			res.json(result);
 		});
 	}

@@ -15,21 +15,36 @@ var RBACExt = function(options, callback){
 extend(RBACExt, RBAC);
 util.inherits(RBACExt, RBAC);
 RBACExt.prototype.remove = function(item, cb){
+	var self = this;
 	var permname = null;
 	if (RBAC.isPermission(item)) {
-		permname = RBACExt.Permission.createName(item.action, item.resource);	
-		this.storage.model.findOne({ "grants": { "$in" : [permname] } }, function (err, record) {
-			if (err) {
-				return cb(err);
-			}
-			if (!record) {
-				return RBAC.prototype.remove.call(this, item, cb);
-			}
-			cb(new Error('permission were granted to the others, cannot be deleted.'));
-		});
+		permname = RBACExt.Permission.createName(item.action, item.resource);
+	}else if(RBAC.isRole(item)){
+		permname = item.name;
 	}else{
-		return RBAC.prototype.remove.call(this, item, cb);
-	}	
+		RBAC.prototype.remove.call(this, item, cb);
+	}
+	this.storage.model.findOne({ "grants": { "$in" : [permname] } }, function (err, record) {
+		if (err) {
+			return cb(err);
+		}
+		if (!record) {
+			return RBAC.prototype.remove.call(self, item, cb);
+		}
+		cb(new Error('permission were granted to the others, cannot be deleted.'));
+	});
+};
+RBACExt.prototype.removeByName = function(name, cb){
+	var self = this;
+	this.storage.model.findOne({ "grants": { "$in" : [name] } }, function (err, record) {
+		if (err) {
+			return cb(err);
+		}
+		if (!record) {
+			return RBAC.prototype.removeByName.call(self, name, cb);
+		}
+		cb(new Error('permission were granted to the others, cannot be deleted.'));
+	});
 };
 RBACExt.prototype.getScopeExt = function(roleName, cb){
 	var scope = [];

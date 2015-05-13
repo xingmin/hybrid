@@ -36,18 +36,17 @@
 			</div>
 			<table class="table table-bordered table-hover">
 				<tr>
-					<th>选择</th>
-					<th>名称</th>
+					<th></th>
+					<th>角色</th>
 			    </tr>
-			    <tr ng-repeat="role in roles" ng-click="selectRole(role)" ng-class="{'selected':role.name === currentedit.newval.role}">
-			    	<td></td>
-			    	<td>
-			    		{{role.name}}
-			        </td>
-				</tr>
+			    <tr ng-repeat="role in roles" ng-click="selectRole(role)">
+				    <td><input type="checkbox" ng-checked = "role.name === currentedit.newval.role" data-toggle="toggle"></td>
+				    <td>{{role.name}}</td>
+			    </tr>
 			</table>
 		</div>
 	</div>
+</div>
 </div>
 </editdlg>
 </form>

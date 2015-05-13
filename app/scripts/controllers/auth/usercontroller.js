@@ -1,50 +1,52 @@
-define(['../module'],function(controllers,$){
+define(['../module', 'bootstrap-toggle'],function(controllers){
     'use strict';
     controllers.controller('userController',
     		['$scope','$http','$timeout','userService','md5','roleFactory',
     		 function($scope,$http,$timeout, userService, md5,roleFactory){
-    	$scope.users =null;
+    	$scope.users = userService.getUsers();
     	$scope.roles = roleFactory.getRoles();
     	$scope.IsHideModal = true;
     	$scope.msgs=[];
     	$scope.mode = '';
     	$scope.currentedit={newval:{},oldval:{}};
     	$scope.isSaveCompleted = false;
-    	userService.getUsers().success(function(data){
-    		$scope.users = data.value;
-    	});
     	$scope.saveChange = function(){
     		$scope.isSaveCompleted = false;
     		if ($scope.mode == 'edit'){
     			$scope.currentedit.newval.password = md5.createHash($scope.currentedit.newval.password || '');
-    			userService.saveUserChange($scope.currentedit.newval.userId,
-    					$scope.currentedit.newval.legalName,
-    					$scope.currentedit.newval.userName,
-    					$scope.currentedit.newval.password,
-    					$scope.currentedit.newval.role
-    					)
-    				.success(function(data){
-    					if(data.code === 0){
-    						$scope.isSaveCompleted = true;
-    						$scope.currentedit.oldval.legalName = $scope.currentedit.newval.legalName;
-        					$scope.currentedit.oldval.userName = $scope.currentedit.newval.userName;
-        					$scope.currentedit.oldval.role = $scope.currentedit.newval.role;
-    						$scope.msgs.push($scope.currentedit.newval.legalName+'修改成功！');
-    					}});
+    			userService.saveUserChange(
+						$scope.currentedit.newval.userId,
+						$scope.currentedit.newval.legalName,
+						$scope.currentedit.newval.userName,
+						$scope.currentedit.newval.password,
+						$scope.currentedit.newval.role
+    			);
     		}else if($scope.mode == 'create'){
     			$scope.currentedit.newval.password = md5.createHash($scope.currentedit.newval.password || '');
-    			userService.createNewUser($scope.currentedit.newval.legalName,
-    					$scope.currentedit.newval.userName,
-    					$scope.currentedit.newval.password,
-    					$scope.currentedit.newval.role)
-    			.success(function(data){
-    				if(data.code === 0){
-    					$scope.users.push(data.value);
-    					$scope.isSaveCompleted = true;
-    					$scope.msgs.push('创建成功！');
-    				}});	
+    			userService.createNewUser(
+						$scope.currentedit.newval.legalName,
+						$scope.currentedit.newval.userName,
+						$scope.currentedit.newval.password,
+						$scope.currentedit.newval.role
+    			);	
     		}
     	};
+    	$scope.$on('users.update', function(event, code){
+    		if(code === 0){
+    			$scope.msgs.push('保存成功');
+    		}else{
+    			$scope.msgs.push('保存失败');
+    		}
+    		$scope.isSaveCompleted = true;
+    	});
+    	$scope.$on('users.created', function(event, code){
+    		if(code === 0){
+    			$scope.msgs.push('保存成功');
+    		}else{
+    			$scope.msgs.push('保存失败');
+    		}
+    		$scope.isSaveCompleted = true;
+    	});
     	//create --新建
     	//edit --编辑
     	//del --删除
@@ -57,22 +59,16 @@ define(['../module'],function(controllers,$){
     	$scope.deletecur = function(){
     		var cur = $scope.currentedit.oldval;
     		$scope.IsHideModal = false;
-    		userService.delUser(cur.userId).success(function(data){
-    			if(data.code === 0){
-    				angular.forEach( $scope.users, function(val,index){
-    					if(val == cur){
-    						$scope.currentedit={newval:{},oldval:{}};
-    						$scope.users.splice(index,1);						
-    						$scope.IsHideModal = true;				
-    						$scope.msgs.push('删除成功！');
-    					}    				
-    				})
-    			}else{
-    				$scope.msgs.push(data.message);
-    			}
-    		});
-
+    		userService.delUser(cur.userId);
     	};
+    	$scope.$on('users.delete', function(event, code){
+    		if(code === 0){
+    			$scope.msgs.push('保存成功');
+    		}else{
+    			$scope.msgs.push('保存失败');
+    		}
+    		$scope.isSaveCompleted = true;
+    	});
     	$scope.selectRole = function(role){
     		$scope.currentedit.newval.role = role.name;
     	};

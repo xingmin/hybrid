@@ -3,8 +3,9 @@ define(['../module', 'lodash'],function(services, _){
 	services.factory("roleFactory",['$http','$rootScope',function($http, $rootScope){
 		var rolefactory = {};
 		var _roles = [];
+		var _init = false;
 		var _getRoles = function(){
-			if(_roles.length>0){
+			if(_init){
 				return _roles;
 			}
 			$http.get('/authapi/roles/').success(
@@ -18,6 +19,7 @@ define(['../module', 'lodash'],function(services, _){
 					$rootScope.$broadcast( 'role.update', data.code);
 				}
 			);
+			_init = true;
 			return _roles;
 		};
 		

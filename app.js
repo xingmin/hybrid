@@ -7,29 +7,12 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var log = require('./log')(module);
 
-var routes = require('./routes/index');
-
-var users = require('./routes/users');
-var patient = require('./routes/patient');
-var depts = require('./routes/depts');
-var queueclass = require('./routes/queue/queueclass');
-var queue = require('./routes/queue/queue');
-var externalsys = require('./routes/queue/externalsys');
-var ticket = require('./routes/queue/ticket');
-var dict = require('./routes/queue/dict');
-var person = require('./routes/queue/person');
-
-var draw = require('./routes/opsupport/draw');
-var recycle = require('./routes/opsupport/recycle');
-
-var auth = require('./authlib/libs/initauth');
-
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 //app.engine('.html', require('ejs').renderFile);
-app.engine('.html', ejs.__express)
+app.engine('.html', ejs.__express);
 app.set('view engine', 'html');//app.set('view engine', 'ejs');
 
 app.use(favicon());
@@ -39,26 +22,7 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'app')));//app.use(express.static(path.join(__dirname, 'public')));
 
-auth(app);
-
-//init the authentication module
-//(require('./authlib/libs/app'))(app);
-
-app.use('/', routes);
-app.use('/users', users);
-app.use('/patient', patient);
-app.use('/depts', depts);
-app.use('/queue/queueclass', queueclass);
-app.use('/queue/queue', queue);
-app.use('/queue/window', require('./routes/queue/window'));
-app.use('/queue/user', require('./routes/queue/user'));
-app.use('/queue/externalsys', externalsys);
-app.use('/queue/ticket', ticket);
-app.use('/dict', dict);
-app.use('/queue/person', person);
-
-app.use('/opsupport/draw', draw);
-app.use('/opsupport/recycle', recycle);
+require('./routes/index')(app);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

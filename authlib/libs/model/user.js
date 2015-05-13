@@ -53,6 +53,18 @@ User.virtual('password')
 User.methods.checkPassword = function(password) {
 	return this.encryptPassword(password) === this.hashedPassword;
 };
+User.statics.checkUserNamePassword = function(username, password, cb){
+	this.find({"username":userName}, function(err, user){
+		if(err){
+			return cb(err, null);
+		}
+		if(user.checkPassword(password)){
+			cb(err, true);
+		}else{
+			cb(err, false);
+		}		 
+	});
+};
 
 extendAuthUser(User);
 
