@@ -1,11 +1,12 @@
-define(['../module'],function(services){
+define(['../module', 'moment'],function(services, moment){
 	'use strict';
 	services.factory("userService",
 			['$http', '$rootScope', 'md5','$timeout',
 			 function($http, $rootScope, md5, $timeout){
 		var _users = [];
 		var _init = false;
-		var _currentUser = {};
+		var _authToke = {};
+		
 		var _getUsers = function(){
 			if(_init){
 				return _users;
@@ -84,6 +85,14 @@ define(['../module'],function(services){
     			$rootScope.$broadcast( 'users.delete', data.code);
     		});
 		};
+		var _reorgnizeAuthToken = function(data){
+			_authToke = _authToke || {};
+			_authToke.access_token  = data.access_token;
+			_authToke.expires_in    = data.expires_in;
+			_authToke.refresh_token = data.refresh_token;
+			_authToke.token_type    = data.token_type;
+			
+		};
 		var _userLogin = function(username, password){
 			$http.post('/authapi/oauth/token',
 					{
@@ -97,10 +106,10 @@ define(['../module'],function(services){
 				.then(
 					function(recv){
 						var data = recv.data;
-						_currentUser.access_token  = data.access_token;
-						_currentUser.expires_in    = data.expires_in;
-						_currentUser.refresh_token = data.refresh_token;
-						_currentUser.token_type    = data.token_type;
+						_reorgnizeAuthToken(data);
+						//开始计时刷新accessToken
+						var interval =(Number(_authToke.expires_in)-Number(_authToke.expires_in)*0.1)*1000;
+						$timeout(function(){_refreshToken(interval);},interval);
 						$rootScope.$broadcast( 'users.login', true);
 					},
 					function(err){
@@ -108,33 +117,31 @@ define(['../module'],function(services){
 					}
 				);
 		};
-		var _refreshToken = function(){
-			if ( !_currentUser.refresh_token){
+		var _refreshToken = function(interval){
+			$timeout(function(){_refreshToken(interval);},interval);
+			if ( !_authToke.refresh_token){
 				return;
 			}
+			console.log(moment().format('YYYY-MM-DD HH:mm:ss')+'refresh token');
 			$http.post('/authapi/oauth/token',
 					{
 						'client_id'     : 'android',
 						'client_secret' : 'SomeRandomCharsAndNumbers',
-						'refresh_token' : _currentUser.refresh_token,
+						'refresh_token' : _authToke.refresh_token,
 						'grant_type'    : 'refresh_token'
 					}
 				)
 				.then(
 					function(recv){
 						var data = recv.data;
-						$rootScope.$broadcast( 'users.refreshtoken', true);
+						_reorgnizeAuthToken(data);
+						//$rootScope.$broadcast( 'users.refreshtoken', true);
 					},
 					function(err){
-						$rootScope.$broadcast( 'users.refreshtoken', false);
+						//$rootScope.$broadcast( 'users.refreshtoken', false);
 					}
-				);
+				);			
 		};
-		$timeout(
-			function(){
-				_refreshToken();
-			},1000);
-			//_currentUser.expires_in-500);
 		return{
 			refreshToken:_refreshToken,
 			userLogin: _userLogin,

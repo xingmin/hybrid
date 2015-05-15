@@ -36,8 +36,8 @@ passport.use(new BasicStrategy(//{passReqToCallback:true},
 passport.use(new ClientPasswordStrategy(
     function(clientId, clientSecret, done) {
         Client.findOne({ clientId: clientId }, function(err, client) {
-            if (err) { 
-            	return done(err); 
+            if (err) {
+            	return done(err);
             }
 
             if (!client) {
