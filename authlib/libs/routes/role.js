@@ -8,9 +8,11 @@ var Result = require('./result');
 var PermissionInfo = require('./permissioninfo');
 var RoleInfo = require('./roleinfo');
 var rbac = require('../rbac/initrbac');
-
+var RBACMidware = require('../rbac/rbacmidware');
 //get role list
-router.get('/', //passport.authenticate('bearer', { session: false }),
+router.get('/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'list', 'role'),
 	function(req, res) {
 		rbac.getRoles(function(err, roles){
 			var result = null;
@@ -25,7 +27,9 @@ router.get('/', //passport.authenticate('bearer', { session: false }),
 );
 
 //create new role
-router.post('/', //passport.authenticate('bearer', { session: false }),
+router.post('/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'create', 'role'),
 	function(req, res) {
 		var roleInfo = req.body.roleInfo;
 		rbac.createRole(roleInfo.name, true,
@@ -41,7 +45,9 @@ router.post('/', //passport.authenticate('bearer', { session: false }),
 	}
 );
 //delete role
-router.post('/delete', //passport.authenticate('bearer', { session: false }),
+	router.post('/delete',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'delete', 'role'),
 	function(req, res) {
 		var roleInfo = req.body.roleInfo;
 		rbac.removeByName(roleInfo.name, function(err){
@@ -58,7 +64,9 @@ router.post('/delete', //passport.authenticate('bearer', { session: false }),
 
 
 //grant permission to role
-router.post('/:role/grant/', //passport.authenticate('bearer', { session: false }),
+router.post('/:role/grant/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'grant-permission', 'role'),
 	function(req, res) {
 		var permInfo = req.body.permissionInfo;
 		var role  = rbac.createRole(req.params.role, false, function(){});
@@ -76,7 +84,9 @@ router.post('/:role/grant/', //passport.authenticate('bearer', { session: false 
 );
 
 //revoke permission from role
-router.post('/:role/revoke/', //passport.authenticate('bearer', { session: false }),
+router.post('/:role/revoke/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'revoke-permission', 'role'),
 	function(req, res) {
 		var permInfo = req.body.permissionInfo;
 		var role  = rbac.createRole(req.params.role, false, function(){});
@@ -94,7 +104,9 @@ router.post('/:role/revoke/', //passport.authenticate('bearer', { session: false
 );
 
 //get role's grants list
-router.get('/:role/grants/', //passport.authenticate('bearer', { session: false }),
+router.get('/:role/grants/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'list-grants', 'role'),
 	function(req, res) {
 		var roleName = req.params.role;
 		rbac.getScopeExt(roleName, function(err, grants){

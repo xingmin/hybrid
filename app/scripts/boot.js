@@ -1,4 +1,4 @@
-define(['require',        
+define(['require',
         'angular',
         'jquery',
         'bootstrap',
@@ -7,18 +7,12 @@ define(['require',
         'bootstrap-datepicker',
       //  'modal-carousel',
         'appx',
-        'router'
-       
-        //,
-//        'mainController',
-//        'mainDirective',
-//        'mainService'
+        'router',
+        'appconfig'
         ],function(require,angular){
 	'use strict';
 	require(['domReady!'],function(document){
 		angular.bootstrap(document,['webapp']);
 		//require(['bootstrap-toggle'],function(){})
-	
-		
 	});
 });

@@ -9,22 +9,13 @@ var db = require(libs + 'db/mongoose');
 var User = require('../model/user');
 var Result = require('./result');
 var UserInfo = require('./userinfo');
+var rbac = require('../rbac/initrbac');
+var RBACMidware = require('../rbac/rbacmidware');
 
-router.get('/info', passport.authenticate('bearer', { session: false }),
-    function(req, res) {
-        // req.authInfo is set using the `info` argument supplied by
-        // `BearerStrategy`.  It is typically used to indicate scope of the token,
-        // and used in access control checks.  For illustrative purposes, this
-        // example simply returns the scope in the response.
-        res.json({
-        	user_id: req.user.userId, 
-        	name: req.user.username, 
-        	scope: req.authInfo.scope 
-        });
-    }
-);
 //get user list
-router.get('/', //passport.authenticate('bearer', { session: false }),
+router.get('/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'list', 'user'),
 	function(req, res) {
 		User.find().exec()
 			.then(
@@ -38,7 +29,9 @@ router.get('/', //passport.authenticate('bearer', { session: false }),
 	}
 );
 //create new user
-router.post('/', //passport.authenticate('bearer', { session: false }),
+router.post('/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'create', 'user'),
 	function(req, res) {
 		var userinfo = req.body.userinfo;
 		var user = UserInfo.prototype.convertToUser.call(userinfo);
@@ -55,39 +48,46 @@ router.post('/', //passport.authenticate('bearer', { session: false }),
 );
 
 //update user
-router.post('/update', //passport.authenticate('bearer', { session: false }),
+router.post('/update',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'update', 'user'),
 	function(req, res) {
 		var userinfo = req.body.userinfo;
-		var tmpUser = {};
-		if(userinfo.userName){
-			tmpUser.username = userinfo.userName;
-		}
-		if(userinfo.legalName){
-			tmpUser.legalname = userinfo.legalName;
-		}
-		if(userinfo.password){
-			tmpUser.password = userinfo.password;
-		}
-		if(userinfo.role){
-			tmpUser.role = userinfo.role;
-		}
-		User.update(
-			{ _id : userinfo.userId },
-			tmpUser,
-			{},
-			function(err, raw){
-				var result = null;
+		User.findById(userinfo.userId,
+			function(err, user){
 				if(err){
 					result = new Result(1, err, null);
+					res.json(result);
+					return;
 				}
-				result = new Result(0, 'save update succeeded!', null);
-				res.json(result);
+				if(userinfo.userName){
+					user.username = userinfo.userName;
+				}
+				if(userinfo.legalName){
+					user.legalname = userinfo.legalName;
+				}
+				if(userinfo.password){
+					user.password = userinfo.password;
+				}
+				if(userinfo.role){
+					user.role = userinfo.role;
+				}		
+				user.save(function(err){
+					var result = null;
+					if(err){
+						result = new Result(2, err, null);
+					}
+					result = new Result(0, 'save update succeeded!', null);
+					res.json(result);
+				});
 			}
 		);
 	}
 );
 //delete a user
-router.delete('/:userId', //passport.authenticate('bearer', { session: false }),
+router.delete('/:userId',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'delete', 'user'),
 	function(req, res) {
 		var userId = req.params.userId;
 		User.findByIdAndRemove(userId, {}, function(err, user){
@@ -101,7 +101,9 @@ router.delete('/:userId', //passport.authenticate('bearer', { session: false }),
 		});
 	}
 );
-router.post('/checkpassword/', //passport.authenticate('bearer', { session: false }),
+router.post('/checkpassword/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'check-password', 'user'),
 	function(req, res) {
 		var userName = req.body.username;
 		var password = req.body.password;

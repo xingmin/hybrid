@@ -14,37 +14,57 @@ define(['../module'],function(services){
 							_permissions.splice(-1, 0, val);	
 						});
 					}
-					$rootScope.$broadcast( 'permission.update', data.code);
+					$rootScope.$broadcast( 'permission.refreshed', data.code);
 				}
 			);
 			_init = true;
 			return _permissions;
 		};
+		var _createNewPermission = function(action, resource){
+			$http.post('/authapi/permission/',
+				{
+					permissionInfo:{
+						action  : action,
+						resource : resource
+					}
+				}
+			).success(
+				function(data){
+					if(data.code === 0){
+						_permissions.push({action:action, resource:resource});
+					}						
+					$rootScope.$broadcast( 'permission.created', data.code);
+				}
+			).error(function(data,status,headers,config){
+				console.log(status);
+			});
+		};
+		var _deletePermission = function(action, resource){
+			$http.post('/authapi/permission/delete/',
+				{
+					permissionInfo:{
+						action  : action,
+						resource : resource
+					}
+				}
+			) .success(
+				function(data){
+					if(data.code === 0){
+	    				angular.forEach( _permissions, function(val,index){
+	    					if(val.action === action && val.resource === resource){
+	    						_permissions.splice(index,1);						
+	    					}			
+	    				});
+					} 
+					$rootScope.$broadcast( 'permission.deleted', data.code);
+				}
+			);
+		};
 		return{
 			getAllPermissionList : _getAllPermissonList,
-			getPermissons : function(){
-				return $http.get('/authapi/permission/');
-			},
-			createNewPermission : function(action, resource){
-				return $http.post('/authapi/permission/',
-					{
-						permissionInfo:{
-							action  : action,
-							resource : resource
-						}
-					}
-				);
-			},
-			deletePermission : function(action, resource){
-				return $http.post('/authapi/permission/delete/',
-					{
-						permissionInfo:{
-							action  : action,
-							resource : resource
-						}
-					}
-				);
-			}
+			getPermissons : _getAllPermissonList,
+			createNewPermission : _createNewPermission,
+			deletePermission : _deletePermission
 		};
 	}]);
 });

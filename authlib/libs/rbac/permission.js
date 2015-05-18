@@ -135,7 +135,7 @@ var Permission = (function (_Base) {
     */
 
 			value: function isValidName(name) {
-				if (/^[a-zA-Z0-9]+$/.test(name)) {
+				if (/^[a-zA-Z0-9\-]+$/.test(name)) {
 					return true;
 				}
 

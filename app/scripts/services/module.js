@@ -1,4 +1,4 @@
-define(['angular'], function(angular) {
+define(['angular', 'values/mainvalue'], function(angular) {
     'use strict';
-    return angular.module('webapp.services', []);
+    return angular.module('webapp.services', ['webapp.values']);
  });

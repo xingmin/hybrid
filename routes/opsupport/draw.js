@@ -6,8 +6,14 @@ var Q = require('q');
 var ResData = require("../resdata.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
+var passport = require('passport');
+var rbac = require('../../authlib/libs/rbac/initrbac');
+var RBACMidware = require('../../authlib/libs/rbac/rbacmidware');
 
-router.post('/create', function(req, res) {
+router.post('/create',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'draw', 'opsupport'),
+	function(req, res) {
 	var consumer = req.body.consumer;
 	var receiver = req.body.receiver;
 	var remark = req.body.remark;
@@ -44,7 +50,10 @@ router.post('/create', function(req, res) {
 		);
 });
 
-router.post('/update', function(req, res) {
+router.post('/update',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'draw', 'opsupport'),
+	function(req, res) {
 	var id = req.body.id;
 	var consumer = req.body.consumer;
 	var receiver = req.body.receiver;
@@ -84,7 +93,10 @@ router.post('/update', function(req, res) {
 		);
 });
 
-router.post('/delete', function(req, res) {
+router.post('/delete',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'draw', 'opsupport'),
+	function(req, res) {
 	var id = req.body.id;
 	var draw = new Draw({id:id});
 	draw.deleteDrawRecord()
@@ -102,7 +114,10 @@ router.post('/delete', function(req, res) {
 		);
 });
 
-router.get('/q', function(req, res) {
+router.get('/q',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'draw', 'opsupport'),
+	function(req, res) {
 	var dateBegin = req.query.b;
 	var dateEnd = req.query.e;
 	var barcode = req.query.barcode;
@@ -136,7 +151,10 @@ router.get('/q', function(req, res) {
 		);
 });
 
-router.get('/getdetail/:drawId', function(req, res) {
+router.get('/getdetail/:drawId',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'draw', 'opsupport'),
+	function(req, res) {
 	var drawId = req.param('drawId');
 	var draw = new Draw({id:drawId});
 	draw.getDrawDetails()

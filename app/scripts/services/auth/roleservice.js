@@ -8,17 +8,22 @@ define(['../module', 'lodash'],function(services, _){
 			if(_init){
 				return _roles;
 			}
-			$http.get('/authapi/roles/').success(
-				function(data){
-					if(data.code === 0){
-						data.value.forEach(function(val){
-							_roles.splice(-1, 0, val);	
-						});
+			$http.get('/authapi/roles/')
+				.then(
+					function(recv){
+						var data = recv.data;
+						if(data.code === 0){
+							data.value.forEach(function(val){
+								_roles.splice(-1, 0, val);	
+							});
+						}
+						_refreshRoleGrants();
+						$rootScope.$broadcast( 'role.update', data.code);
+					},
+					function(err){
+						console.log(err);
 					}
-					_refreshRoleGrants();
-					$rootScope.$broadcast( 'role.update', data.code);
-				}
-			);
+				)
 			_init = true;
 			return _roles;
 		};

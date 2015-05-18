@@ -6,8 +6,14 @@ var Q = require('q');
 var ResData = require("../resdata.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
+var passport = require('passport');
+var rbac = require('../../authlib/libs/rbac/initrbac');
+var RBACMidware = require('../../authlib/libs/rbac/rbacmidware');
 
-router.post('/create', function(req, res) {
+router.post('/create',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'recycle', 'opsupport'),
+	function(req, res) {
 	var returner = req.body.returner;
 	var recycler = req.body.recycler;
 	var remark = req.body.remark;
@@ -43,7 +49,10 @@ router.post('/create', function(req, res) {
 		);
 });
 
-router.get('/:id', function(req, res) {
+router.get('/:id',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'recycle', 'opsupport'),
+	function(req, res) {
 	var recyleId = req.param('id');
 	var recyle = new Recycle({});
 	recyle.init(recyleId)
@@ -61,7 +70,10 @@ router.get('/:id', function(req, res) {
 		);
 });
 
-router.get('/detail/:recycleid', function(req, res) {
+router.get('/detail/:recycleid',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'recycle', 'opsupport'),
+	function(req, res) {
 	var recyleId = req.param('recycleid');
 	Recycle.prototype.getRecycleDetailsByRecycleId(recyleId)
 		.then(
@@ -78,7 +90,10 @@ router.get('/detail/:recycleid', function(req, res) {
 		);
 });
 
-router.post('/', function(req, res) {
+router.post('/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'recycle', 'opsupport'),
+	function(req, res) {
 	var arrRecycleId = req.body.arrRecycleId;
 	Recycle.getRecyclesByRecycleIds(arrRecycleId)
 		.then(

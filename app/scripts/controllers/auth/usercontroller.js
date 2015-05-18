@@ -13,7 +13,7 @@ define(['../module', 'bootstrap-toggle'],function(controllers){
     	$scope.saveChange = function(){
     		$scope.isSaveCompleted = false;
     		if ($scope.mode == 'edit'){
-    			$scope.currentedit.newval.password = md5.createHash($scope.currentedit.newval.password || '');
+    			$scope.currentedit.newval.password = $scope.currentedit.newval.password;
     			userService.saveUserChange(
 						$scope.currentedit.newval.userId,
 						$scope.currentedit.newval.legalName,
@@ -22,7 +22,7 @@ define(['../module', 'bootstrap-toggle'],function(controllers){
 						$scope.currentedit.newval.role
     			);
     		}else if($scope.mode == 'create'){
-    			$scope.currentedit.newval.password = md5.createHash($scope.currentedit.newval.password || '');
+    			$scope.currentedit.newval.password = $scope.currentedit.newval.password;
     			userService.createNewUser(
 						$scope.currentedit.newval.legalName,
 						$scope.currentedit.newval.userName,

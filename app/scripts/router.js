@@ -1,100 +1,94 @@
-define(["./appx"],function(app){
-	return app
-//	.run([
-//					'$rootScope',
-//					'$state',
-//					'$stateParams',
-//					function ($rootScope, $state, $stateParams) {
-//					    $rootScope.$state = $state;
-//					    $rootScope.$stateParams = $stateParams
-//					}
-//	                ])
-	               .config([	'$routeProvider',
-								'$locationProvider',
-								function($routeProvider, $locationProvider){
-									$routeProvider
-										.when('/',{
-													templateUrl:'/views/tpl/welcome.html',
-													controller:'welcomectrl'
-										})
-										.when('/register',{
-											templateUrl:'/views/tpl/register.html',
-											controller:'registerctrl'
-										})
-										.when('/register/success',{
-											templateUrl:'/views/tpl/registersuccess.html'
-										})
-										.when('/test',{
-											templateUrl:'/views/tpl/test.html'
-										})
-										.when('/queuesys/queue',{
-											templateUrl:'/views/tpl/queue.html',
-											controller: 'queue'
-										})
-										.when('/queuesys/externalsys',{
-											templateUrl:'/views/tpl/externalsys.html',
-											controller: 'externalSysController'
-										})
-										.when('/queuesys/queueclass',{
-											templateUrl:'/views/tpl/queueclass.html',
-											controller: 'queueclass'
-										})
-										.when('/queuesys/window',{
-											templateUrl:'/views/tpl/window.html',
-											controller: 'windowController'
-										})
-
-										.when('/queuesys/user/login',{
-											templateUrl:'/views/tpl/login.html',
-											controller: 'userLoginController'
-										})
-										.when('/queuesys/userwindow',{
-											templateUrl:'/views/tpl/userwindow.html',
-											controller: 'userWindowController'
-										})
-										.when('/queuesys/user/choosewindow',{
-											templateUrl:'/views/tpl/choosewindow.html',
-											controller: 'chooseWindowController'
-										})
-										.when('/queuesys/queue/userqueue',{
-											templateUrl:'/views/tpl/userqueue.html',
-											controller: 'userQueueController'
-										})
-										.when('/queuesys/queue/fetchqueue',{
-											templateUrl:'/views/tpl/fetchqueuenumber.html',
-											controller: 'fetchQueueNumberController'
-										})
-										.when('/opsupport/draw/',{
-											templateUrl:'/views/tpl/draw.html',
-											controller: 'drawController'
-										})
-										.when('/auth/user',{
-											templateUrl:'/views/tpl/auth/user.html',
-											controller: 'userController'
-										})
-										.when('/auth/permission',{
-											templateUrl:'/views/tpl/auth/permission.html',
-											controller: 'permissionController'
-										})
-										.when('/auth/role',{
-											templateUrl:'/views/tpl/auth/role.html',
-											controller: 'roleController'
-										})
-										.when('/auth/grant',{
-											templateUrl:'/views/tpl/auth/grant.html',
-											controller: 'grantController'
-										})
-										.when('/auth/login',{
-											templateUrl:'/views/tpl/auth/login.html',
-											controller: 'userLoginController'
-										})
-										.otherwise({
-											redirectTo:'/'
-										});
-							//		$locationProvider.html5Mode(true);//以后再研究2
-								}  
-							])
-							})
+define(["./appx"],
+	function(app){
+		return app
+			.config(['$routeProvider', '$locationProvider',
+			    function($routeProvider, $locationProvider){
+					$routeProvider
+					.when('/',{
+								templateUrl:'/views/tpl/welcome.html'
+					})
+					.when('/register',{
+						templateUrl:'/views/tpl/register.html',
+						controller:'registerctrl'
+					})
+					.when('/register/success',{
+						templateUrl:'/views/tpl/registersuccess.html'
+					})
+					.when('/test',{
+						templateUrl:'/views/tpl/test.html'
+					})
+					.when('/queuesys/queue',{
+						templateUrl:'/views/tpl/queue.html',
+						controller: 'queue'
+					})
+					.when('/queuesys/externalsys',{
+						templateUrl:'/views/tpl/externalsys.html',
+						controller: 'externalSysController'
+					})
+					.when('/queuesys/queueclass',{
+						templateUrl:'/views/tpl/queueclass.html',
+						controller: 'queueclass'
+					})
+					.when('/queuesys/window',{
+						templateUrl:'/views/tpl/window.html',
+						controller: 'windowController'
+					})
+	
+					.when('/queuesys/user/login',{
+						templateUrl:'/views/tpl/login.html',
+						controller: 'userLoginController'
+					})
+					.when('/queuesys/userwindow',{
+						templateUrl:'/views/tpl/userwindow.html',
+						controller: 'userWindowController'
+					})
+					.when('/queuesys/user/choosewindow',{
+						templateUrl:'/views/tpl/choosewindow.html',
+						controller: 'chooseWindowController'
+					})
+					.when('/queuesys/queue/userqueue',{
+						templateUrl:'/views/tpl/userqueue.html',
+						controller: 'userQueueController'
+					})
+					.when('/queuesys/queue/fetchqueue',{
+						templateUrl:'/views/tpl/fetchqueuenumber.html',
+						controller: 'fetchQueueNumberController'
+					})
+					.when('/opsupport/draw/',{
+						templateUrl:'/views/tpl/draw.html',
+						controller: 'drawController'
+					})
+					.when('/auth/user',{
+						templateUrl:'/views/tpl/auth/user.html',
+						controller: 'userController'
+					})
+					.when('/auth/permission',{
+						templateUrl:'/views/tpl/auth/permission.html',
+						controller: 'permissionController'
+					})
+					.when('/auth/role',{
+						templateUrl:'/views/tpl/auth/role.html',
+						controller: 'roleController'
+					})
+					.when('/auth/grant',{
+						templateUrl:'/views/tpl/auth/grant.html',
+						controller: 'grantController'
+					})
+					.when('/auth/login',{
+						templateUrl:'/views/tpl/auth/login.html',
+						controller: 'userLoginController'
+					})
+					.otherwise({
+						redirectTo:'/'
+					});
+					//		$locationProvider.html5Mode(true);//以后再研究2
+				}  
+		]);
+//		.run(['$http', 'AuthService',function ($http, AuthService) {
+//				$http.defaults.headers.common['Authorization'] = 'Bearer ' + AuthService.getAccessToken(); // jshint ignore:line
+//		}]);
+	}
+);
 //angular.module('appx', ['ngRoute','angular-md5'])
 //.config(
 //[

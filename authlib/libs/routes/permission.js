@@ -8,9 +8,11 @@ var Result = require('./result');
 var PermissionInfo = require('./permissioninfo');
 var RBAC = require('../rbac/index');
 var rbac = require('../rbac/initrbac');
-
+var RBACMidware = require('../rbac/rbacmidware');
 //get permission list
-router.get('/', //passport.authenticate('bearer', { session: false }),
+router.get('/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'list', 'permission'),
 	function(req, res) {
 		rbac.getPermissions(function(err, permissions){
 			var result = null;
@@ -25,7 +27,9 @@ router.get('/', //passport.authenticate('bearer', { session: false }),
 );
 
 //create new permission
-router.post('/', //passport.authenticate('bearer', { session: false }),
+router.post('/',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'create', 'permission'),
 	function(req, res) {
 		var permissionInfo = req.body.permissionInfo;
 		rbac.createPermission(permissionInfo.action, permissionInfo.resource, true,
@@ -41,7 +45,9 @@ router.post('/', //passport.authenticate('bearer', { session: false }),
 	}
 );
 //delete permission
-router.post('/delete', //passport.authenticate('bearer', { session: false }),
+router.post('/delete',
+	passport.authenticate('bearer', { session: false }),
+	RBACMidware.can(rbac, 'delete', 'permission'),
 	function(req, res) {
 		var permInfo = req.body.permissionInfo;
 		var permname = RBAC.Permission.createName(permInfo.action, permInfo.resource);

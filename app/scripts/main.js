@@ -16,7 +16,8 @@ require.config({
 		'domReady':'lib/domReady',
 		'boot':'boot',
 		'appx':'appx',
-		'router':'router'
+		'router':'router',
+		'appconfig':'appconfig'
 	},
 	shim:{
 		'bootstrap':{
