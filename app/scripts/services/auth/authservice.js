@@ -6,6 +6,7 @@ define(['../module', 'moment'],function(services, moment){
 		var _authToken = {};
 		var _updateAuthToken = function(data){
 			_authToken = _authToken || {};
+			data = data || {};
 			_authToken.access_token  = data.access_token || '';
 			_authToken.expires_in    = data.expires_in || '';
 			_authToken.refresh_token = data.refresh_token || '';
@@ -27,7 +28,11 @@ define(['../module', 'moment'],function(services, moment){
 				.then(
 					function(recv){
 						var data = recv.data;
-						_updateAuthToken(data);						
+						if(recv.status !== 200){
+							$rootScope.$broadcast( 'users.login', false);
+							return;
+						}
+						_updateAuthToken(data);
 						//开始计时刷新accessToken
 						var interval =(Number(_authToken.expires_in)-Number(_authToken.expires_in)*0.1)*1000;
 						$timeout(function(){_refreshToken(interval);},interval);
@@ -56,21 +61,32 @@ define(['../module', 'moment'],function(services, moment){
 					function(recv){
 						var data = recv.data;
 						_updateAuthToken(data);
-						//$rootScope.$broadcast( 'users.refreshtoken', true);
 					},
 					function(err){
 						_updateAuthToken(null);
-						//$rootScope.$broadcast( 'users.refreshtoken', false);
 					}
-				);			
+				);
 		};
 		var _getAccessToken = function(){
 			return _authToken.access_token || '';
 		};
+		var _destroyAuthToken = function(){
+			_updateAuthToken(null);
+		};
+		var _logout = function(){
+			_destroyAuthToken();
+			$rootScope.$broadcast( 'users.logout', true);
+		};
+		var _isLogin = function(){
+			return AuthValue.isLogin;
+		};
 		return{
+			destroyAuthToken   :   _destroyAuthToken,
 			getAccessToken     :   _getAccessToken,
 			requestAccessToken :   _requestAccessToken,
-			refreshToken       :  _refreshToken
+			refreshToken       :   _refreshToken,
+			logout             :   _logout,
+			isLogin            :   _isLogin
 		};
 	}]);
 });

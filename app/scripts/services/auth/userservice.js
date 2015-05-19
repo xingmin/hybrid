@@ -83,7 +83,6 @@ define(['../module', 'moment'],function(services, moment){
     			$rootScope.$broadcast( 'users.delete', data.code);
     		});
 		};
-		
 		return{
 			getUsers : _getUsers,
 			createNewUser : _createNewUser,

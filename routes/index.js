@@ -12,7 +12,7 @@ module.exports = function(app){
 	var draw = require('./opsupport/draw');
 	var recycle = require('./opsupport/recycle');
 	var auth = require('../authlib/libs/initauth');
-
+	auth(app);
 	app.use('/', home);
 	app.use('/users', users);
 	app.use('/patient', patient);
@@ -29,5 +29,5 @@ module.exports = function(app){
 	app.use('/opsupport/draw', draw);
 	app.use('/opsupport/recycle', recycle);
 	
-	auth(app);
+	
 }

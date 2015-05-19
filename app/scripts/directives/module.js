@@ -1,4 +1,4 @@
-define(['angular'], function(angular) {
+define(['angular',  'services/mainservice',], function(angular) {
     'use strict';
-    return angular.module('webapp.directives', []);
+    return angular.module('webapp.directives', ['webapp.services']);
  });
