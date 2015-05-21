@@ -19,12 +19,12 @@ router.get('/',
 	function(req, res) {
 		User.find().exec()
 			.then(
-					function(users){
-						res.json(new Result(0, '', UserInfo.convertFromUsers(users)));
-					},
-					function(err){
-						res.json(new Result(1, err.message));
-					}
+				function(users){
+					res.json(new Result(0, '', UserInfo.convertFromUsers(users)));
+				},
+				function(err){
+					res.json(new Result(1, err.message));
+				}
 			);
 	}
 );
@@ -91,7 +91,7 @@ router.delete('/:userId',
 	function(req, res) {
 		var userId = req.params.userId;
 		User.findByIdAndRemove(userId, {}, function(err, user){
-			var result;
+			var result = null;
 			if(err){
 				result = new Result(1, err, null);
 			}else{
@@ -114,6 +114,26 @@ router.post('/checkpassword/',
 			result = new Result(1, err, null);
 			res.json(result);
 		});
+	}
+);
+router.get('/checkperm',
+	passport.authenticate('bearer', { session: false }),
+	function(req, res) {
+		var action = req.query.action;
+		var resource = req.query.resource;
+		var perm = {action: action, resource: resource};
+		if(!req.user) {
+			return (new Result(1, '用户验证信息失败', perm)).json(res);
+		}
+		req.user.can(rbac, action, resource, function(err, can) {
+			if(err) {
+				return (new Result(3, err, perm)).json(res);
+			}
+			if(!can) {
+				return (new Result(2, '此用户没有权限', perm)).json(res);
+			}
+			return (new Result(0, '此用户拥有此权限', perm)).json(res);
+		});	
 	}
 );
 module.exports = router;

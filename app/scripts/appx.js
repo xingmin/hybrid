@@ -14,7 +14,7 @@ define(["angular",
                                     'webapp.services',
                                     'webapp.filters',
                                     'webapp.directives',
-                                    'webapp.controllers'                               
+                                    'webapp.controllers'                    
                                     ]);
 })
 

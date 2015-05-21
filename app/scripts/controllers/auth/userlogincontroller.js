@@ -1,8 +1,8 @@
 define(['../module'],function(controllers,$){
     'use strict';
     controllers.controller('userLoginController',
-    		['$scope','$http','$timeout','$location','AuthService',
-    		 function($scope,$http,$timeout, $location, AuthService){
+    		['$scope','$http','$timeout','$location','AuthService','AccessEntryService',
+    		 function($scope,$http,$timeout, $location, AuthService, AccessEntryService){
     	$scope.formData = {userloginid:'',userpassword:''}
     	$scope.msgs=[];
     	$scope.$on('users.login',function(event, passed){
@@ -15,6 +15,7 @@ define(['../module'],function(controllers,$){
     	});
     	$scope.login=function(){
     		AuthService.requestAccessToken($scope.formData.userloginid, $scope.formData.userpassword);
-    	}
+    	};
+
     }]);
 })

@@ -15,6 +15,15 @@ define(['../module', 'moment'],function(services, moment){
 			//如果从服务端刷新token失败，则重新置为未登录状态。
 			AuthValue.isLogin = data ? true : false;
 		};
+		var _checkPermission = function(action, resource){
+			//return $http.get('/authapi/users/checkperm', {params:{"action": action, "resource": resource}});
+			return $http.get('/authapi/users/checkperm?action='+action+'&resource='+resource);
+//			return $http({
+//				method:'GET',
+//				url:'/authapi/users/checkperm', 
+//				params:{"action": action, "resource": resource}
+//			});
+		};
 		var _requestAccessToken = function(username, password){
 			$http.post('/authapi/oauth/token',
 					{
@@ -86,7 +95,8 @@ define(['../module', 'moment'],function(services, moment){
 			requestAccessToken :   _requestAccessToken,
 			refreshToken       :   _refreshToken,
 			logout             :   _logout,
-			isLogin            :   _isLogin
+			isLogin            :   _isLogin,
+			checkPermission    :   _checkPermission
 		};
 	}]);
 });

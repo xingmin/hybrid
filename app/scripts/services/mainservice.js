@@ -6,4 +6,5 @@ define(['./auth/userservice',
         './socketservice',
         './indexedDbService',
         './drawService',
-        './recycleService'],function(){});
+        './recycleService',
+        './accessentryservice'],function(){});

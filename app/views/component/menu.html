@@ -1,0 +1,23 @@
+<ul class="nav nav-tabs">	
+	<li class="active"><a href="#/">Home</a></li>
+	<li class="dropdown" ng-hide = "!accessEntry.opsupport.enable">
+		<a class="dropdown-toggle" data-toggle="dropdown">
+		{{accessEntry.opsupport.accessname}}<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu" role="menu">
+			<li ng-hide = "!accessEntry.opsupport.draw.enable"><a href="#{{accessEntry.opsupport.draw.url}}">{{accessEntry.opsupport.draw.accessname}}</a></li>
+		</ul>
+	</li>
+	<li class="dropdown" ng-hide = "!accessEntry.auth.enable">
+		<a class="dropdown-toggle" data-toggle="dropdown">
+		{{accessEntry.auth.accessname}}<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu" role="menu">
+			<li><a ng-hide="!accessEntry.auth.user.enable" href="#{{accessEntry.auth.user.url}}">{{accessEntry.auth.user.accessname}}</a></li>
+			<li><a ng-hide="!accessEntry.auth.role.enable"  href="#{{accessEntry.auth.role.url}}">{{accessEntry.auth.role.accessname}}</a></li>
+			<li><a ng-hide="!accessEntry.auth.permission.enable"  href="#{{accessEntry.auth.permission.url}}">{{accessEntry.auth.permission.accessname}}</a></li>
+			<li><a ng-hide="!accessEntry.auth.grant.enable"  href="#{{accessEntry.auth.grant.url}}">{{accessEntry.auth.grant.accessname}}</a></li>
+		</ul>
+	</li>
+	<li class="pull-right"><login login-target='#/auth/login'></login></li>
+</ul>
