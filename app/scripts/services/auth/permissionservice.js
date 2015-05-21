@@ -4,9 +4,10 @@ define(['../module'],function(services){
 		var _permissions = [];
 		var _init = false;
 		var _getAllPermissonList = function(){
-			if(_init){
-				return _permissions;
-			}
+//			if(_init){
+//				return _permissions;
+//			}
+			_permissions = [];
 			$http.get('/authapi/permission/').success(
 				function(data){
 					if(data.code === 0){
@@ -17,7 +18,7 @@ define(['../module'],function(services){
 					$rootScope.$broadcast( 'permission.refreshed', data.code);
 				}
 			);
-			_init = true;
+//			_init = true;
 			return _permissions;
 		};
 		var _createNewPermission = function(action, resource){

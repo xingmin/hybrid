@@ -6,9 +6,10 @@ define(['../module', 'moment'],function(services, moment){
 		var _users = [];
 		var _init = false;
 		var _getUsers = function(){
-			if(_init){
-				return _users;
-			}
+//			if(_init){
+//				return _users;
+//			}
+			_users = [];
 			$http.get('/authapi/users/').success(function(data){
 				if(data.code === 0){
 					data.value.forEach(function(val){
@@ -17,7 +18,7 @@ define(['../module', 'moment'],function(services, moment){
 				}
 				$rootScope.$broadcast( 'users.refresh', data.code);
 			});
-			_init = true;
+//			_init = true;
 			return _users;
 		};
 		

@@ -5,9 +5,10 @@ define(['../module', 'lodash'],function(services, _){
 		var _roles = [];
 		var _init = false;
 		var _getRoles = function(){
-			if(_init){
-				return _roles;
-			}
+//			if(_init){
+//				return _roles;
+//			}
+			_roles = [];
 			$http.get('/authapi/roles/')
 				.then(
 					function(recv){
@@ -24,7 +25,7 @@ define(['../module', 'lodash'],function(services, _){
 						console.log(err);
 					}
 				)
-			_init = true;
+//			_init = true;
 			return _roles;
 		};
 		
