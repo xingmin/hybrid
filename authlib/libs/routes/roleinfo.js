@@ -18,6 +18,7 @@ RoleInfo.convertFromRoles = function(roles){
 			name          : role.name
 		});
 	});
+
 	return arrRoleInfo;
 };
 module.exports = RoleInfo;

@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var User = require('../model/user');
-var PinYin = require('pinyin');
+//var PinYin = require('pinyin');
 
 var UserInfo  = function(info){
 	this.userId = info.userId;

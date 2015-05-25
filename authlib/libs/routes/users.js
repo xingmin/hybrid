@@ -14,10 +14,13 @@ var RBACMidware = require('../rbac/rbacmidware');
 
 //get user list
 router.get('/',
-	passport.authenticate('bearer', { session: false }),
+    passport.authenticate('bearer', { session: false }),
 	RBACMidware.can(rbac, 'list', 'user'),
 	function(req, res) {
 		var py = req.query.py;
+		if(py && py.length>0){
+			py = py.toLowerCase();
+		}
 		var critiral = {
 		};
 		if (py) { critiral.legalNamePY = {$regex: '^'+py}; }
@@ -38,6 +41,9 @@ router.post('/',
 	RBACMidware.can(rbac, 'create', 'user'),
 	function(req, res) {
 		var userinfo = req.body.userinfo;
+		if(userinfo.legalNamePY && userinfo.legalNamePY.length>0) {
+			userinfo.legalNamePY = userinfo.legalNamePY.toLowerCase();
+		}
 		var user = UserInfo.prototype.convertToUser.call(userinfo);
 		user.save(function(err){
 			var result = null;

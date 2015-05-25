@@ -1,5 +1,4 @@
-
-<div class="title control-group">	
+<div class="title control-group">
 	
 	<h3>领用记录</h3>
 </div>
@@ -69,8 +68,8 @@
         <td>
         </td>
         <td>
-        	<edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
-           <delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+            <edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
+            <delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
 		</td>
 	</tr>
 	<tr ng-repeat="drawDetail in draw.drawDetails">
@@ -147,7 +146,7 @@
 		<div class="form-group" >
 			<label  for="id" class="col-md-4 control-label">ID</label>
 			<div class="col-md-8" >
-			<span  name="id" >{{currentedit.newval.id}}</span>
+				<span  id="id" name="id" >{{currentedit.newval.id}}</span>
 			</div>
 		</div>
 		<div class="form-group">
@@ -159,6 +158,12 @@
 		<div class="form-group">
 			<label  for="receiver" class="col-md-4 control-label">领用人</label>
 			<div class="col-md-8 controls">
+                <!--<pyinput show-columns="DRAW.receiver.showColumns"-->
+                         <!--fullfill-column="legalName"-->
+                         <!--selected-item="DRAW.receiver.selectedItem"-->
+                         <!--py="DRAW.receiver.py"-->
+                         <!--query="DRAW.receiver.queryByPinyin()">-->
+                <!--</pyinput>-->
 			<input type="text" class="form-control" id="receiver"  name="receiver" ng-model="currentedit.newval.receiver" placeholder="请录入领用人"/>
 			</div>
 		</div>
@@ -175,7 +180,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label  for="drawTime" class="col-md-4 control-label">时间</label>
+			<label class="col-md-4 control-label">时间</label>
 			<div class="col-md-8 controls">
 			{{currentedit.newval.drawTime | formatDateFilter}}
 			</div>
@@ -217,7 +222,7 @@
 </editdlg>
 </form>
 
-<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
+<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deleteCurrent()">
 	<table class="table table-bordered table-hover">
 	    <tr>
 		    <td>ID</td>

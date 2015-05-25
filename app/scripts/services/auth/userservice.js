@@ -1,8 +1,8 @@
-define(['../module', 'moment'],function(services, moment){
+define(['../module'],function(services){
 	'use strict';
 	services.factory("userService",
-			['$http', '$rootScope', 'md5','$timeout',
-			 function($http, $rootScope, md5, $timeout){
+			['$http', '$rootScope', 'md5',
+			 function($http, $rootScope, md5){
 		var _users = [];
 		var _init = false;
 		var _getUsers = function(py){
@@ -25,12 +25,14 @@ define(['../module', 'moment'],function(services, moment){
 			return _users;
 		};
 		
-		var _createNewUser = function(legalname, username, password, role){
+		var _createNewUser = function(legalname, username, password, role, empCode, legalNamePY){
 			var userInfo = {
 				userName  : username,
 				legalName : legalname,
 				password  : md5.createHash(password || ''),
-				role      : role
+				role      : role,
+                empCode    : empCode,
+                legalNamePY : legalNamePY
 			};
 			$http.post('/authapi/users/',
 				{
@@ -45,12 +47,14 @@ define(['../module', 'moment'],function(services, moment){
 				}
 			);
 		};
-		var _saveUserChange = function(userid, legalname, username, password, role){
+		var _saveUserChange = function(userid, legalname, username, password, role, empCode, legalNamePY){
 			var userInfo = {
 				userId    : userid,
 				userName  : username,
 				legalName : legalname,
-				role      : role
+				role      : role,
+                empCode    : empCode,
+                legalNamePY : legalNamePY
 			};
 			if(password){
 				userInfo.password = md5.createHash(password);
@@ -67,6 +71,8 @@ define(['../module', 'moment'],function(services, moment){
 							user.legalName = userInfo.legalName;
 							user.password =  userInfo.password;
 							user.role = userInfo.role;
+                            user.empCode = userInfo.empCode;
+                            user.legalNamePY = userInfo.legalNamePY;
 							return false;
 						}
 						return true;

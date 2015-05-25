@@ -15,19 +15,23 @@ define(['../module', 'bootstrap-toggle'],function(controllers){
     		if ($scope.mode == 'edit'){
     			$scope.currentedit.newval.password = $scope.currentedit.newval.password;
     			userService.saveUserChange(
-						$scope.currentedit.newval.userId,
-						$scope.currentedit.newval.legalName,
-						$scope.currentedit.newval.userName,
-						$scope.currentedit.newval.password,
-						$scope.currentedit.newval.role
+                    $scope.currentedit.newval.userId,
+                    $scope.currentedit.newval.legalName,
+                    $scope.currentedit.newval.userName,
+                    $scope.currentedit.newval.password,
+                    $scope.currentedit.newval.role,
+					$scope.currentedit.newval.empCode,
+                    $scope.currentedit.newval.legalNamePY
     			);
     		}else if($scope.mode == 'create'){
     			$scope.currentedit.newval.password = $scope.currentedit.newval.password;
     			userService.createNewUser(
-						$scope.currentedit.newval.legalName,
-						$scope.currentedit.newval.userName,
-						$scope.currentedit.newval.password,
-						$scope.currentedit.newval.role
+                    $scope.currentedit.newval.legalName,
+                    $scope.currentedit.newval.userName,
+                    $scope.currentedit.newval.password,
+                    $scope.currentedit.newval.role,
+                    $scope.currentedit.newval.empCode,
+                    $scope.currentedit.newval.legalNamePY
     			);	
     		}
     	};
@@ -67,7 +71,7 @@ define(['../module', 'bootstrap-toggle'],function(controllers){
     		}else{
     			$scope.msgs.push('保存失败');
     		}
-    		$scope.isSaveCompleted = true;
+    		$scope.IsHideModal = true;
     	});
     	$scope.selectRole = function(role){
     		$scope.currentedit.newval.role = role.name;
