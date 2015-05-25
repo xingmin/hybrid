@@ -1,4 +1,5 @@
 var extendAuthUser = require('../rbac/extendauthuser');
+var extendUser = require('./extenduser');
 
 var mongoose = require('mongoose'),
 	crypto = require('crypto'),
@@ -65,7 +66,7 @@ User.statics.checkUserNamePassword = function(username, password, cb){
 		}		 
 	});
 };
-
+extendUser(User);
 extendAuthUser(User);
 
 module.exports = mongoose.model('User', User);

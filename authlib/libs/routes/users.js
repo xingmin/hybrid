@@ -17,7 +17,11 @@ router.get('/',
 	passport.authenticate('bearer', { session: false }),
 	RBACMidware.can(rbac, 'list', 'user'),
 	function(req, res) {
-		User.find().exec()
+		var py = req.query.py;
+		var critiral = {
+		};
+		if (py) { critiral.legalNamePY = {$regex: '^'+py}; }
+		User.find(critiral).exec()
 			.then(
 				function(users){
 					res.json(new Result(0, '', UserInfo.convertFromUsers(users)));
@@ -60,18 +64,12 @@ router.post('/update',
 					res.json(result);
 					return;
 				}
-				if(userinfo.userName){
-					user.username = userinfo.userName;
-				}
-				if(userinfo.legalName){
-					user.legalname = userinfo.legalName;
-				}
-				if(userinfo.password){
-					user.password = userinfo.password;
-				}
-				if(userinfo.role){
-					user.role = userinfo.role;
-				}		
+				if (userinfo.userName) { user.username = userinfo.userName; }
+				if (userinfo.legalName){ user.legalname = userinfo.legalName;}
+				if (userinfo.password) { user.password = userinfo.password;}
+				if (userinfo.role) { user.role = userinfo.role;}
+				if (userinfo.legalNamePY){ user.legalNamePY = userinfo.legalNamePY;}
+				if (userinfo.empCode){ user.empcode = userinfo.empCode; }
 				user.save(function(err){
 					var result = null;
 					if(err){
@@ -136,4 +134,5 @@ router.get('/checkperm',
 		});	
 	}
 );
+
 module.exports = router;

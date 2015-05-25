@@ -5,12 +5,15 @@ define(['../module', 'moment'],function(services, moment){
 			 function($http, $rootScope, md5, $timeout){
 		var _users = [];
 		var _init = false;
-		var _getUsers = function(){
+		var _getUsers = function(py){
 //			if(_init){
 //				return _users;
 //			}
 			_users = [];
-			$http.get('/authapi/users/').success(function(data){
+			var params = {};
+			if(py){ params.py = py;}
+			$http.get('/authapi/users/', {"params": params})
+				.success(function(data){
 				if(data.code === 0){
 					data.value.forEach(function(val){
 						_users.splice(-1, 0, val);	

@@ -5,4 +5,5 @@ node_modules/
 .settings/
 npm-debug.log
 logs/*
-app/node_modules/
+app/bower_components/
+.idea

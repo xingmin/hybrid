@@ -30,6 +30,7 @@
     "passport-http": "^0.2.x",
     "passport-http-bearer": "^1.0.x",
     "passport-oauth2-client-password": "^0.1.x",
+    "pinyin": "^2.4.2",
     "q": "^1.1.2",
     "rbac": "^3.0.6",
     "serve-favicon": "^2.2.0",
