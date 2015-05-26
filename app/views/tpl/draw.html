@@ -141,6 +141,7 @@
 <form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
 <editdlg module-name="领用记录" dlgid="editmodal" is-hide="{{isSaveCompleted}}" module-class="modal-dialog-lg">
 <div class="row">
+    <div class="col-md-12"> <msgbox messages="DRAW.msgs"></msgbox></div>
 	<div class="col-md-4">
 		<div class="form-group" >
 			<label  for="id" class="col-md-4 control-label">ID</label>
@@ -215,8 +216,8 @@
 				 {{drawDetail.recycle.recycleTime | formatDateFilter}}
 				</td>
 				<td>
-				<a href="javascript:void(0);"
-					ng-hide="!_.isEmpty(drawDetail.recycle.id)"
+				<a
+					ng-hide="_.isEmpty(drawDetail.recycle.id)"
 					ng-click="deleteDrawDetail(currentedit.newval.drawDetails, drawDetail)">删除
 				</a >
 				</td>
@@ -265,6 +266,7 @@
 <form  name="formRecycle" class="form-horizontal" ng-submit="recycle.saveRecycle(formRecycle.$valid)" role="form" novalidate>
 <editdlg module-name="回收条形码" dlgid="recyclemodal" is-hide="{{recycle.isRecycleSaved}}" module-class="modal-dialog-lg">
 	<div class="row">
+        <div class="col-md-12"> <msgbox messages="recycle.msgs"></msgbox></div>
 		<div class="col-md-4">
 			<div class="form-group">
 				<label class="col-md-4 control-label">送还人</label>
@@ -314,6 +316,7 @@
 				</tr>
 			</table>
 		</div>
+
 	</div>
 </editdlg>
 </form>

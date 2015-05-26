@@ -1,8 +1,10 @@
 define(['./module'],function(controllers){
     'use strict';
     controllers.controller('drawController',
-        ['$scope','$http','$timeout', '$filter', 'drawService','recycleService', '_','moment','indexedDbService','userService',
-        function($scope, $http, $timeout,$filter, drawService, recycleService, _, moment, indexedDbService, userService){
+        ['$scope','$http','$timeout', '$filter',
+            'drawService','recycleService', '_','moment','indexedDbService','userService','AuthValue',
+        function($scope, $http, $timeout,$filter,
+                 drawService, recycleService, _, moment, indexedDbService, userService, AuthValue){
             //$scope.moment = moment;
             //$scope._ = _;
             $scope.draws = drawService.queryDraws();
@@ -34,7 +36,7 @@ define(['./module'],function(controllers){
             indexedDbService.getAppConfig('drawPageSize').then(
                 function(data){
                     if(data && data.length>0){
-                        $scope.queryParam.pageSize = data[0];
+                        $scope.queryParam.pageSize = data;
                         $scope.query();
                     }
                 }
@@ -48,7 +50,7 @@ define(['./module'],function(controllers){
                         $scope.currentedit.newval.consumer,
                         $scope.DRAW.receiver.selectedItem.empCode,//$scope.currentedit.newval.receiver,
                         $scope.currentedit.newval.remark,
-                        $scope.DRAW.drawer.selectedItem.empCode,//$scope.currentedit.newval.drawer,
+                        $scope.DRAW.drawer.selectedItem.empCode || $scope.currentedit.oldval.empCode,//$scope.currentedit.newval.drawer,
                         $scope.currentedit.newval.drawDetails
                     );
                 }
@@ -57,20 +59,24 @@ define(['./module'],function(controllers){
                         $scope.currentedit.newval.consumer,
                         $scope.DRAW.receiver.selectedItem.empCode,
                         $scope.currentedit.newval.remark,
-                        $scope.DRAW.drawer.selectedItem.empCode,//$scope.currentedit.newval.drawer,
+                        $scope.DRAW.drawer.selectedItem.empCode || AuthValue.currentUser.empCode,//$scope.currentedit.newval.drawer,
                         $scope.currentedit.newval.drawDetails
                     );
                 }
             };
-            $scope.$on('draws.create', function(event, status){
-                if (status){
+            $scope.$on('draws.create', function(event, data){
+                if (data.status ===0 ){
                     $scope.isSaveCompleted = true;
-                };
+                }else{
+                    $scope.DRAW.msgs.push(data.errmsg);
+                }
             });
-            $scope.$on('draws.update', function(event, status){
-                if (status){
+            $scope.$on('draws.update', function(event, data){
+                if (data.status ===0 ){
                     $scope.isSaveCompleted = true;
-                };
+                }else{
+                    $scope.DRAW.msgs.push(data.errmsg);
+                }
             });
             //create --新建
             //edit --编辑
@@ -78,6 +84,8 @@ define(['./module'],function(controllers){
                 $scope.mode = mode;
                 if(mode == 'create'){
                     $scope.currentedit={newval:{},oldval:{}};
+                    //默认分发人为当前登录的用户
+                    $scope.currentedit.newval.drawer = AuthValue.currentUser.empCode;
                 }
             };
             $scope.deleteCurrent = function() {
@@ -106,6 +114,7 @@ define(['./module'],function(controllers){
                 && arrDrawDetail.splice(arrDrawDetail.indexOf(drawDetail),1);
             };
             $scope.DRAW = {};
+            $scope.DRAW.msgs = [];
             $scope.DRAW.isDrawDeletable = function(draw){
                 if(draw && draw.drawDetails && _.isArray(draw.drawDetails)){
                     var deletable=draw.drawDetails.every(function(drawDetail){
@@ -149,6 +158,7 @@ define(['./module'],function(controllers){
             $scope.recycle.msgs = [];
             $scope.recycle.barcodeCollecter = '';
             $scope.recycle.initRecycleModal = function(){
+                $scope.recycle.recycler.py = AuthValue.currentUser.legalName;
                 $scope.recycle.barcodeCollecter='';
                 $scope.recycle.recycleDetails=[];
             };
@@ -187,17 +197,20 @@ define(['./module'],function(controllers){
             $scope.recycle.saveRecycle = function(){
                 $scope.recycle.isRecycleSaved = false;
                 recycleService.createNewRecycle(
-                    $scope.recycle.returner.selectedItem.empCode,//$scope.recycle.returner,
-                    $scope.recycle.recycler.selectedItem.empCode,//$scope.recycle.recycler,
+                    $scope.recycle.returner.selectedItem.empCode || '',//$scope.recycle.returner,
+                    $scope.recycle.recycler.selectedItem.empCode || AuthValue.currentUser.empCode,//$scope.recycle.recycler,
                     $scope.recycle.remark,
                     $scope.recycle.recycleDetails,
                     drawService.getDraws()
                 );
             };
-            $scope.$on('recycles.create', function(event, status){
-                if (status){
+            $scope.$on('recycles.create', function(event, data){
+                if (data.status === 0){
                     $scope.recycle.isRecycleSaved = true;
-                };
+                    $scope.recycle.msgs.push('创建回收记录成功!');
+                }else{
+                    $scope.recycle.msgs.push(data.errmsg);
+                }
             });
 
         }]

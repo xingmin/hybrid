@@ -4,6 +4,7 @@ define(['../module', 'moment'],function(services, moment){
 			['$http', '$rootScope', 'md5','$timeout','AuthValue','userService',
 			 function($http, $rootScope, md5, $timeout, AuthValue, userService){
 		var _authToken = {};
+        AuthValue.currentUser = {};
 		var _updateAuthToken = function(data){
 			_authToken = _authToken || {};
 			data = data || {};
@@ -88,15 +89,19 @@ define(['../module', 'moment'],function(services, moment){
 			return AuthValue.isLogin;
 		};
         var _getUserByToken = function(){
+            for(var i in  AuthValue.currentUser){
+                delete AuthValue.currentUser[i];
+            }
             if( !AuthValue.isLogin ){
-                AuthValue.currentUser = {};
                 return;
             }
             //token是在authinterceptor中加入header中的
             $http.get('/authapi/users/getuserbytoken').success(function(data){
                 var user = {};
                 if(data.code === 0) user = data.value;
-                AuthValue.currentUser = user;
+                for(var i in user){
+                    AuthValue.currentUser[i] = user[i];
+                }
             });
         };
 		return{

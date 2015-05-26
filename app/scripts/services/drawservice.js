@@ -80,8 +80,9 @@ define(['./module', 'moment'],function(services, moment){
             ).then(
                 function(resp){
                     var data = resp.data;
+                    $rootScope.$broadcast('draws.update', data);
                     if(data.status !== 0){
-                        throw new Error(data.errmsg);
+                        return null;
                     }
                     var targetDraw = null;
                     _draws.every(function (draw) {
@@ -96,7 +97,6 @@ define(['./module', 'moment'],function(services, moment){
                         }
                         return true;
                     });
-                    $rootScope.$broadcast('draws.update', true);
                     return targetDraw;
                 }).then(
                     function(newDraw){
@@ -131,12 +131,12 @@ define(['./module', 'moment'],function(services, moment){
                 }
             ).then(function(receive){
                     var data = receive.data;
+                    $rootScope.$broadcast('draws.create', data);
                     if(data.status === 0){
                         _draws.splice(0, 0, data.value);
-                        $rootScope.$broadcast('draws.create', true);
                         return data.value;
                     }else{
-                        throw new Error(data.errmsg);
+                        return null;
                     }
                 })//从数据库加载保存成功后的Details记录
                 .then(

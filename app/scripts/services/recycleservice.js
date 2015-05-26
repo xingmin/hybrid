@@ -10,19 +10,22 @@ define(['./module'],function(services){
                 'recycleDetails': recycleDetails
             }).then(
                 function(recv){
-                    if(recv.data.status !== 0){
-                        throw new Error(recv.data.errmsg);
+                    var data = recv.data;
+                    $rootScope.$broadcast('recycles.create', data);
+                    if(data.status !== 0){
+                        return null;
                     }
-                    var recycle = recv.data.value;
-                    $rootScope.$broadcast('recycles.create', true);
+                    var recycle = data.value;
                     return recycle;//recycle对象
                 }
             ).then(
                 function(recycle){
+                    if (!recycle) return null;
                     return _getRecycleDetails(recycle.id);
                 }
             ).then(
                 function(recv){
+                    if (!recv) return;
                     //更新当前界面的数据
                     var recycleDetails = recv.data.value;
                     angular.forEach(recycleDetails, function(recycleDetail){
