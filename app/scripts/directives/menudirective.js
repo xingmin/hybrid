@@ -1,9 +1,10 @@
 define(['./module'],function(directives){
     'use strict';	
-    directives.directive("menudirective",['AccessEntryService', function(AccessEntryService){
+    directives.directive("menudirective",['AccessEntryService', 'AuthValue', function(AccessEntryService, AuthValue){
 		  return{
 		    restrict: 'E',
 		    controller: function($scope, $element, $attrs){
+				$scope.currentUser = AuthValue.currentUser;
 		    	$scope.accessEntry = AccessEntryService.accessEntry;
 		    	$scope.$on( 'users.login', function(event, stat){
 		    		if(stat){

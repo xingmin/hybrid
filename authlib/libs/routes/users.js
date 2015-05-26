@@ -143,4 +143,11 @@ router.get('/checkperm',
 	}
 );
 
+router.get('/getuserbytoken',
+    passport.authenticate('bearer', { session: false }),
+    function(req, res) {
+        var result = new Result(0, '',  UserInfo.convertFromUsers(req.user));
+        result.json(res);
+    }
+);
 module.exports = router;

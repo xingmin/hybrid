@@ -1,8 +1,8 @@
 define(['../module', 'moment'],function(services, moment){
 	'use strict';
 	services.factory("AuthService",
-			['$http', '$rootScope', 'md5','$timeout','AuthValue',
-			 function($http, $rootScope, md5, $timeout, AuthValue){
+			['$http', '$rootScope', 'md5','$timeout','AuthValue','userService',
+			 function($http, $rootScope, md5, $timeout, AuthValue, userService){
 		var _authToken = {};
 		var _updateAuthToken = function(data){
 			_authToken = _authToken || {};
@@ -14,15 +14,14 @@ define(['../module', 'moment'],function(services, moment){
 			AuthValue.authToken = _authToken;
 			//如果从服务端刷新token失败，则重新置为未登录状态。
 			AuthValue.isLogin = data ? true : false;
+            _getUserByToken();
 		};
 		var _checkPermission = function(action, resource){
-			//return $http.get('/authapi/users/checkperm', {params:{"action": action, "resource": resource}});
-			return $http.get('/authapi/users/checkperm?action='+action+'&resource='+resource);
-//			return $http({
-//				method:'GET',
-//				url:'/authapi/users/checkperm', 
-//				params:{"action": action, "resource": resource}
-//			});
+			var params = {
+                action: action,
+                resource: resource
+			};
+			return $http.get('/authapi/users/checkperm', {params: params});
 		};
 		var _requestAccessToken = function(username, password){
 			$http.post('/authapi/oauth/token',
@@ -33,8 +32,7 @@ define(['../module', 'moment'],function(services, moment){
 						'password'      : md5.createHash(password || ''),
 						'grant_type'    : 'password'
 					}
-				)
-				.then(
+				).then(
 					function(recv){
 						var data = recv.data;
 						if(recv.status !== 200){
@@ -89,6 +87,18 @@ define(['../module', 'moment'],function(services, moment){
 		var _isLogin = function(){
 			return AuthValue.isLogin;
 		};
+        var _getUserByToken = function(){
+            if( !AuthValue.isLogin ){
+                AuthValue.currentUser = {};
+                return;
+            }
+            //token是在authinterceptor中加入header中的
+            $http.get('/authapi/users/getuserbytoken').success(function(data){
+                var user = {};
+                if(data.code === 0) user = data.value;
+                AuthValue.currentUser = user;
+            });
+        };
 		return{
 			destroyAuthToken   :   _destroyAuthToken,
 			getAccessToken     :   _getAccessToken,
