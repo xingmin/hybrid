@@ -5,9 +5,7 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
             'drawService','recycleService','indexedDbService','userService','AuthValue',
         function($scope, $http, $timeout,$filter,
                  drawService, recycleService, indexedDbService, userService, AuthValue){
-            //$scope.moment = moment;
-            //$scope._ = _;
-            $scope.draws = drawService.queryDraws();
+            $scope.draws = [];//drawService.queryDraws();
             $scope.$on('draws.refresh', function(event, status){
                 if (status){
                     $scope.draws = drawService.getDraws();
@@ -37,11 +35,12 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
                 function(data){
                     if(data && data.length>0){
                         $scope.queryParam.pageSize = data;
-                        $scope.query();
                     }
                 }
             ).finally(
-                function(){ $scope.query(); }
+                function(){
+                    $scope.query();
+                }
             );
             $scope.saveChange = function() {
                 $scope.isSaveCompleted = false;
@@ -65,18 +64,22 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
                 }
             };
             $scope.$on('draws.create', function(event, data){
+                var msg = '创建成功';
                 if (data.status ===0 ){
                     $scope.isSaveCompleted = true;
                 }else{
-                    $scope.DRAW.msgs.push(data.errmsg);
+                    msg = data.errmsg;
                 }
+                $scope.DRAW.msgs.push(data.errmsg);
             });
             $scope.$on('draws.update', function(event, data){
+                var msg = "保存成功";
                 if (data.status ===0 ){
                     $scope.isSaveCompleted = true;
                 }else{
-                    $scope.DRAW.msgs.push(data.errmsg);
+                    msg = "保存失败"+data.errmsg;
                 }
+                $scope.DRAW.msgs.push(msg);
             });
             //create --新建
             //edit --编辑
@@ -94,15 +97,24 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
                 drawService.deleteDraw(cur.id);
             };
             $scope.$on('draws.delete', function(event, status){
+                var msg = '删除失败';
                 if (status){
                     $scope.IsHideModal = true;
-                };
+                    msg='删除成功';
+                }
+                $scope.msgs.push(msg);
             });
             $scope.addDrawDetail = function(event, barcode){
                 if(event.which === 13){
                     if( !angular.isArray($scope.currentedit.newval.drawDetails)){
                         $scope.currentedit.newval.drawDetails=[];
                     }
+                    //var barCodeRegex =/^[A-z 0-9]+$/;
+                    //if (!barCodeRegex.test(barcode)){
+                    //    $scope.DRAW.msgs.push("不是有效的条形码!");
+                    //    event.preventDefault();
+                    //    return;
+                    //};
                     $scope.currentedit.newval.drawDetails.push({'barcode':barcode});
                     $scope.scanner.barcodeCollecter = '';
                     event.preventDefault();
@@ -124,9 +136,6 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
                     return deletable;
                 }
                 return false;
-            };
-            $scope.DRAW.isDrawDetailDeletable = function (drawDetail){
-                return !drawDetail.recycle || !_.isEmpty(drawDetail.recycle.id)
             };
             $scope.DRAW.receiver = {
                 "py":"",
@@ -208,12 +217,13 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
                 );
             };
             $scope.$on('recycles.create', function(event, data){
+                var msg = "创建回收记录成功!";
                 if (data.status === 0){
                     $scope.recycle.isRecycleSaved = true;
-                    $scope.recycle.msgs.push('创建回收记录成功!');
                 }else{
-                    $scope.recycle.msgs.push(data.errmsg);
+                    msg = data.errmsg;
                 }
+                $scope.recycle.msgs.push(msg);
             });
 
         }]

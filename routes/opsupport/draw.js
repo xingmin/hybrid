@@ -9,6 +9,7 @@ var moment = require('moment');
 var passport = require('passport');
 var rbac = require('../../authlib/libs/rbac/initrbac');
 var RBACMidware = require('../../authlib/libs/rbac/rbacmidware');
+var _=require('lodash');
 
 router.post('/create',
 	passport.authenticate('bearer', { session: false }),
@@ -28,6 +29,15 @@ router.post('/create',
 //			return new DrawDetail({'barcode':drawDetail.barcode});
 //		});
 //	}
+    var barCodeRegex =/^[A-z 0-9]+$/;
+    var nonLegalBarcode = _.find(arrDrawDetail, function(detail){
+        return !barCodeRegex.test(detail.barcode);
+    });
+    if (nonLegalBarcode){
+        var resdata = new ResData(2, _.result(nonLegalBarcode, 'barcode')+'不是有效的条形码号!');
+        resdata.sendJson(res);
+        return;
+    }
 	var draw = new Draw({
 		'consumer' : consumer,
 		'receiver' : receiver,
