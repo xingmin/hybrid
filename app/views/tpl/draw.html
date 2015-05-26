@@ -48,10 +48,10 @@
     		{{draw.consumer}}
         </td>
         <td>
-    		{{draw.receiver}}
+    		{{draw.receiver | userFilter}}
         </td>
         <td>
-    		{{draw.drawer}}
+    		{{draw.drawer | userFilter}}
         </td>
         <td>
     		{{draw.drawTime | formatDateFilter}}
@@ -92,16 +92,16 @@
 	    	 
 	        </td>
 	        <td>
-	          {{drawDetail.barcode}}
+                {{drawDetail.barcode}}
 			</td>
 			<td>
-			{{drawDetail.useFlag | useTranFilter}}
+			    {{drawDetail.useFlag | useTranFilter}}
 			</td>
 			<td>
-			{{drawDetail.recycle.recycler}}
+			    {{drawDetail.recycle.recycler | userFilter}}
 			</td>
 			<td>
-			 {{drawDetail.recycle.recycleTime | formatDateFilter}}
+			    {{drawDetail.recycle.recycleTime | formatDateFilter}}
 			</td>
 			<td>
 			</td>
@@ -127,10 +127,9 @@
 		</div>
 		<div class="btn-group pagination" style="float:left">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-target="#test" data-toggle="collapse">
-		    设置
-		      <span class="caret"></span>
+		    设置<span class="caret"></span>
 		    </button>
-		    <div class="dropdown-menu collapse" id="test">				 
+		    <div class="dropdown-menu collapse" id="test">
 				<div class="input-group">
 			         <span class="input-group-addon">页大小</span>
 			         <input type="text" id="pagesize" class="form-control"  name="pagesize" ng-model="queryParam.pageSize" placeholder="页大小"/>
@@ -156,21 +155,27 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label  for="receiver" class="col-md-4 control-label">领用人</label>
+			<label class="col-md-4 control-label">领用人</label>
 			<div class="col-md-8 controls">
-                <!--<pyinput show-columns="DRAW.receiver.showColumns"-->
-                         <!--fullfill-column="legalName"-->
-                         <!--selected-item="DRAW.receiver.selectedItem"-->
-                         <!--py="DRAW.receiver.py"-->
-                         <!--query="DRAW.receiver.queryByPinyin()">-->
-                <!--</pyinput>-->
-			<input type="text" class="form-control" id="receiver"  name="receiver" ng-model="currentedit.newval.receiver" placeholder="请录入领用人"/>
+			<pyinput show-columns="DRAW.receiver.showColumns"
+					 fullfill-column="legalName"
+					 selected-item="DRAW.receiver.selectedItem"
+					 py="DRAW.receiver.py"
+					 query="DRAW.receiver.queryByPinyin()">
+			</pyinput>
+			<!--<input type="text" class="form-control" id="receiver"  name="receiver" ng-model="currentedit.newval.receiver" placeholder="请录入领用人"/>-->
 			</div>
 		</div>
 		<div class="form-group">
-			<label  for="drawer" class="col-md-4 control-label">记录人</label>
+			<label class="col-md-4 control-label">记录人</label>
 			<div class="col-md-8 controls">
-			<input type="text" class="form-control" id="drawer"  name="drawer" ng-model="currentedit.newval.drawer" required placeholder="请录入记录人"/>
+            <pyinput show-columns="DRAW.drawer.showColumns"
+                     fullfill-column="legalName"
+                     selected-item="DRAW.drawer.selectedItem"
+                     py="DRAW.drawer.py"
+                     query="DRAW.drawer.queryByPinyin()">
+            </pyinput>
+			<!--<input type="text" class="form-control" id="drawer"  name="drawer" ng-model="currentedit.newval.drawer" required placeholder="请录入记录人"/>-->
 			</div>
 		</div>
 		<div class="form-group">
@@ -204,7 +209,7 @@
 					{{drawDetail.useFlag | useTranFilter}}
 				</td>
 				<td>
-				{{drawDetail.recycle.recycler}}{{drawDetail.recycle.id}}
+				{{drawDetail.recycle.recycler | userFilter }}{{drawDetail.recycle.id}}
 				</td>
 				<td>
 				 {{drawDetail.recycle.recycleTime | formatDateFilter}}
@@ -239,13 +244,13 @@
 	     <tr>
 		    <td>领用人</td>
 		 	<td>
-		 		{{currentedit.newval.receiver}}
+		 		{{currentedit.newval.receiver | userFilter}}
 		     </td>
 	    </tr>
 	    <tr>
 	    	<td>记录人</td>
 		 	<td>
-		 		{{currentedit.newval.drawer}}
+		 		{{currentedit.newval.drawer | userFilter}}
 		     </td>
 	    </tr>
 	    <tr>
@@ -262,15 +267,27 @@
 	<div class="row">
 		<div class="col-md-4">
 			<div class="form-group">
-				<label  for="returner" class="col-md-4 control-label">送还人</label>
+				<label class="col-md-4 control-label">送还人</label>
 				<div class="col-md-8 controls">
-					<input type="text" class="form-control" id="returner"  name="returner" ng-model="recycle.returner" placeholder="请录入送还人"/>
+                    <pyinput show-columns="recycle.returner.showColumns"
+                             fullfill-column="legalName"
+                             selected-item="recycle.returner.selectedItem"
+                             py="recycle.returner.py"
+                             query="recycle.returner.queryByPinyin()">
+                    </pyinput>
+					<!--<input type="text" class="form-control" id="returner"  name="returner" ng-model="recycle.returner" placeholder="请录入送还人"/>-->
 				</div>
 			</div>
 			<div class="form-group">
-				<label  for="recycler" class="col-md-4 control-label">记录人</label>
+				<label class="col-md-4 control-label">记录人</label>
 				<div class="col-md-8 controls">
-					<input type="text" class="form-control" id="recycler"  name="recycler" ng-model="recycle.recycler" placeholder="请录入记录人"/>
+                    <pyinput show-columns="recycle.recycler.showColumns"
+                             fullfill-column="legalName"
+                             selected-item="recycle.recycler.selectedItem"
+                             py="recycle.recycler.py"
+                             query="recycle.recycler.queryByPinyin()">
+                    </pyinput>
+					<!--<input type="text" class="form-control" id="recycler"  name="recycler" ng-model="recycle.recycler" placeholder="请录入记录人"/>-->
 				</div>
 			</div>
 		</div>

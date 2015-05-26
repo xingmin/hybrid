@@ -18,12 +18,14 @@ router.get('/',
 	RBACMidware.can(rbac, 'list', 'user'),
 	function(req, res) {
 		var py = req.query.py;
+		var empCode = req.query.empCode;
 		if(py && py.length>0){
 			py = py.toLowerCase();
 		}
 		var critiral = {
 		};
 		if (py) { critiral.legalNamePY = {$regex: '^'+py}; }
+        if (empCode) { critiral.empcode = empCode; }
 		User.find(critiral).exec()
 			.then(
 				function(users){

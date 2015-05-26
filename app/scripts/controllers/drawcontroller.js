@@ -1,8 +1,8 @@
 define(['./module'],function(controllers){
     'use strict';
     controllers.controller('drawController',
-        ['$scope','$http','$timeout','drawService','recycleService', '_','moment','indexedDbService','userService',
-        function($scope, $http, $timeout, drawService, recycleService, _, moment, indexedDbService, userService){
+        ['$scope','$http','$timeout', '$filter', 'drawService','recycleService', '_','moment','indexedDbService','userService',
+        function($scope, $http, $timeout,$filter, drawService, recycleService, _, moment, indexedDbService, userService){
             //$scope.moment = moment;
             //$scope._ = _;
             $scope.draws = drawService.queryDraws();
@@ -46,18 +46,18 @@ define(['./module'],function(controllers){
                 if ($scope.mode == 'edit') {
                     drawService.saveChangeDraw($scope.currentedit.newval.id,
                         $scope.currentedit.newval.consumer,
-                        $scope.currentedit.newval.receiver,//$scope.DRAW.receiver.selectedItem.empCode,//
+                        $scope.DRAW.receiver.selectedItem.empCode,//$scope.currentedit.newval.receiver,
                         $scope.currentedit.newval.remark,
-                        $scope.currentedit.newval.drawer,
+                        $scope.DRAW.drawer.selectedItem.empCode,//$scope.currentedit.newval.drawer,
                         $scope.currentedit.newval.drawDetails
                     );
                 }
                 if ($scope.mode == 'create') {
                     drawService.createNewDraw(
                         $scope.currentedit.newval.consumer,
-                        $scope.currentedit.newval.receiver,
+                        $scope.DRAW.receiver.selectedItem.empCode,
                         $scope.currentedit.newval.remark,
-                        $scope.currentedit.newval.drawer,
+                        $scope.DRAW.drawer.selectedItem.empCode,//$scope.currentedit.newval.drawer,
                         $scope.currentedit.newval.drawDetails
                     );
                 }
@@ -74,7 +74,6 @@ define(['./module'],function(controllers){
             });
             //create --新建
             //edit --编辑
-            //del --删除
             $scope.changeEditMode = function(mode){
                 $scope.mode = mode;
                 if(mode == 'create'){
@@ -122,14 +121,28 @@ define(['./module'],function(controllers){
                 "selectedItem" : {},
                 "showColumns":["empCode","legalName"],
                 "queryByPinyin":function(){
-                    return userService.getUsers($scope.DRAW.receiver.py);
+                    return userService.getUsersPromise({py: $scope.DRAW.receiver.py});
+                }
+            };
+            $scope.DRAW.drawer = {
+                "py":"",
+                "selectedItem" : {},
+                "showColumns":["empCode","legalName"],
+                "queryByPinyin":function(){
+                    return userService.getUsersPromise({py: $scope.DRAW.drawer.py});
                 }
             };
             $scope.$watch('currentedit.newval', function(){
                 $timeout(function(){
-                    $scope.DRAW.receiver.py = $scope.currentedit.newval.receiver || '';
+                    $scope.DRAW.receiver.py =
+                        $scope.currentedit.newval.receiver
+                            ? $filter('userFilter')($scope.currentedit.newval.receiver): '';
+                    $scope.DRAW.drawer.py =
+                        $scope.currentedit.newval.drawer
+                            ? $filter('userFilter')($scope.currentedit.newval.drawer): '';
                 },600);
             });
+
             //下面是回收的操作
             $scope.recycle = {};
             $scope.recycle.isRecycleSaved = false;
@@ -138,6 +151,22 @@ define(['./module'],function(controllers){
             $scope.recycle.initRecycleModal = function(){
                 $scope.recycle.barcodeCollecter='';
                 $scope.recycle.recycleDetails=[];
+            };
+            $scope.recycle.recycler = {
+                "py":"",
+                "selectedItem" : {},
+                "showColumns":["empCode","legalName"],
+                "queryByPinyin":function(){
+                    return userService.getUsersPromise({py: $scope.recycle.recycler.py});
+                }
+            };
+            $scope.recycle.returner = {
+                "py":"",
+                "selectedItem" : {},
+                "showColumns":["empCode","legalName"],
+                "queryByPinyin":function(){
+                    return userService.getUsersPromise({py: $scope.recycle.returner.py});
+                }
             };
             $scope.recycle.initRecycleModal();
             $scope.recycle.collectBarcode = function(event, barcode){
@@ -158,8 +187,8 @@ define(['./module'],function(controllers){
             $scope.recycle.saveRecycle = function(){
                 $scope.recycle.isRecycleSaved = false;
                 recycleService.createNewRecycle(
-                    $scope.recycle.returner,
-                    $scope.recycle.recycler,
+                    $scope.recycle.returner.selectedItem.empCode,//$scope.recycle.returner,
+                    $scope.recycle.recycler.selectedItem.empCode,//$scope.recycle.recycler,
                     $scope.recycle.remark,
                     $scope.recycle.recycleDetails,
                     drawService.getDraws()

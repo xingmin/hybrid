@@ -5,19 +5,23 @@ define(['../module'],function(services){
 			 function($http, $rootScope, md5){
 		var _users = [];
 		var _init = false;
-		var _getUsers = function(py){
+        var _getUsersPromise = function(options){
+            var params = {};
+            if(options && options.py){ params.py = options.py;}
+            if(options && options.empCode) { params.empCode = options.empCode;}
+            return $http.get('/authapi/users/', {"params": params});
+        };
+		var _getUsers = function(options){
 //			if(_init){
 //				return _users;
 //			}
-			_users = [];
-			var params = {};
-			if(py){ params.py = py;}
-			$http.get('/authapi/users/', {"params": params})
-				.success(function(data){
+            _getUsersPromise(options).success(function(data){
 				if(data.code === 0){
-					data.value.forEach(function(val){
-						_users.splice(-1, 0, val);	
-					});
+                    //_users = data.value;
+                    _users.splice(0, _users.length);
+                    data.value.forEach(function(val){
+						_users.splice(-1, 0, val);
+                    });
 				}
 				$rootScope.$broadcast( 'users.refresh', data.code);
 			});
@@ -83,17 +87,20 @@ define(['../module'],function(services){
 		};
 		var _delUser = function(userid){
 			$http.delete('/authapi/users/'+userid).success(function(data){
-    			if(data.code === 0){
-    				angular.forEach( _users, function(val,index){
-    					if(val.userId == userid){
-    						_users.splice(index,1);						
-    					}    				
-    				})
-    			}
-    			$rootScope.$broadcast( 'users.delete', data.code);
+    			if(data.code !== 0){
+                    $rootScope.$broadcast( 'users.delete', data.code);
+					return;
+				}
+				angular.forEach( _users, function(val,index){
+					if(val.userId == userid){
+						_users.splice(index,1);
+					}
+				});
+                $rootScope.$broadcast( 'users.delete', data.code);
     		});
 		};
 		return{
+            getUsersPromise: _getUsersPromise,
 			getUsers : _getUsers,
 			createNewUser : _createNewUser,
 			saveUserChange : _saveUserChange,

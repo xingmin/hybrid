@@ -77,8 +77,12 @@ define(['./module', 'moment'],function(services, moment){
                     'drawer':drawer,
                     'drawDetails' : drawDetails
                 }
-            ).success(function(data){
-                if(data.status === 0) {
+            ).then(
+                function(resp){
+                    var data = resp.data;
+                    if(data.status !== 0){
+                        throw new Error(data.errmsg);
+                    }
                     var targetDraw = null;
                     _draws.every(function (draw) {
                         if (draw.id === id) {
@@ -94,16 +98,12 @@ define(['./module', 'moment'],function(services, moment){
                     });
                     $rootScope.$broadcast('draws.update', true);
                     return targetDraw;
-                }else{
-                    throw new Error(data.errmsg);
-                }
-            }).then(
-                function(newDraw){
-                    if(!newDraw){
-                        return;
-                    }
-                    _getDrawDetailsByDrawId(newDraw.id)
-                        .success(function(data){
+                }).then(
+                    function(newDraw){
+                        if(!newDraw){
+                            return;
+                        }
+                        _getDrawDetailsByDrawId(newDraw.id).success(function(data){
                             newDraw.drawDetails = data.value;
                             angular.forEach(newDraw.drawDetails, function(detail){
                                 recycleService.getRecycleById(detail.recycleId).then(
@@ -113,11 +113,11 @@ define(['./module', 'moment'],function(services, moment){
                                 );
                             });
                         });
-                },
-                function(err){
-                    //$rootScope.$broadcast('draws.update', err.message);
-                    $rootScope.$broadcast('draws.update', false);
-                }
+                    },
+                    function(err){
+                        //$rootScope.$broadcast('draws.update', err.message);
+                        $rootScope.$broadcast('draws.update', false);
+                    }
             );
         };
         var _createNewDraw = function(consumer, receiver, remark, drawer, drawDetails){
@@ -141,21 +141,17 @@ define(['./module', 'moment'],function(services, moment){
                 })//从数据库加载保存成功后的Details记录
                 .then(
                 function(newDraw){
-                    if(newDraw){
-                        _getDrawDetailsByDrawId(newDraw.id)
-                            .success(function(data){
-                                newDraw.drawDetails = data.value;
-                                angular.forEach(newDraw.drawDetails, function(detail){
-                                    recycleService.getRecycleById(detail.recycleId)
-                                        .then(
-                                        function(recv){
-                                            detail.recycle = recv.data.value;
-                                        }
-                                    );
-                                });
-
-                            });
-                    }
+                    if(!newDraw){ return; }
+                    _getDrawDetailsByDrawId(newDraw.id).success(function(data){
+                        newDraw.drawDetails = data.value;
+                        angular.forEach(newDraw.drawDetails, function(detail){
+                            recycleService.getRecycleById(detail.recycleId).then(
+                                function(recv){
+                                    detail.recycle = recv.data.value;
+                                }
+                            );
+                        });
+                    });
                 },
                 function(err){
                     $rootScope.$broadcast('draws.create', false);

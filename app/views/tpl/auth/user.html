@@ -84,15 +84,16 @@
        <td>
     		{{user.userName}}
         </td>
+		<td>
+			{{user.role}}
+		</td>
         <td>
             {{user.legalNamePY}}
         </td>
         <td>
             {{user.empCode}}
         </td>
-       <td>
-    		{{user.role}}
-        </td>
+
         <td>
         	<edit ng-Model="user"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
           | <delete ng-Model="user" del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>

@@ -4,6 +4,10 @@ define(['../module', 'bootstrap-toggle'],function(controllers){
     		['$scope','$http','$timeout','userService','md5','roleFactory',
     		 function($scope,$http,$timeout, userService, md5,roleFactory){
     	$scope.users = userService.getUsers();
+        //$scope.$on( 'users.refresh', function(event, code){
+        //    if (code !== 0) return;
+        //    $scope.users = userService.getUsers();
+        //});
     	$scope.roles = roleFactory.getRoles();
     	$scope.IsHideModal = true;
     	$scope.msgs=[];
