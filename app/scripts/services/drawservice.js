@@ -51,9 +51,9 @@ define(['./module', 'moment'],function(services, moment){
                             draw.drawDetails = data.value;
                             angular.forEach(draw.drawDetails, function (drawDetail) {
                                 if(!drawDetail || !drawDetail.recycleId) return;
-                                recycleService.getRecycleById(drawDetail.recycleId).then(
-                                    function (recv) {
-                                        drawDetail.recycle = recv.data.value;
+                                recycleService.getRecycleById(drawDetail.recycleId).success(
+                                    function (data) {
+                                        drawDetail.recycle = data.value;
                                     }
                                 );
                             });
@@ -145,9 +145,9 @@ define(['./module', 'moment'],function(services, moment){
                     _getDrawDetailsByDrawId(newDraw.id).success(function(data){
                         newDraw.drawDetails = data.value;
                         angular.forEach(newDraw.drawDetails, function(detail){
-                            recycleService.getRecycleById(detail.recycleId).then(
-                                function(recv){
-                                    detail.recycle = recv.data.value;
+                            recycleService.getRecycleById(detail.recycleId).success(
+                                function(data){
+                                    detail.recycle = data.value;
                                 }
                             );
                         });

@@ -1,10 +1,10 @@
-define(['./module'],function(controllers){
+define(['./module', "lodash", "moment"],function(controllers, _, moment){
     'use strict';
     controllers.controller('drawController',
         ['$scope','$http','$timeout', '$filter',
-            'drawService','recycleService', '_','moment','indexedDbService','userService','AuthValue',
+            'drawService','recycleService','indexedDbService','userService','AuthValue',
         function($scope, $http, $timeout,$filter,
-                 drawService, recycleService, _, moment, indexedDbService, userService, AuthValue){
+                 drawService, recycleService, indexedDbService, userService, AuthValue){
             //$scope.moment = moment;
             //$scope._ = _;
             $scope.draws = drawService.queryDraws();
@@ -124,6 +124,9 @@ define(['./module'],function(controllers){
                     return deletable;
                 }
                 return false;
+            };
+            $scope.DRAW.isDrawDetailDeletable = function (drawDetail){
+                return !drawDetail.recycle || !_.isEmpty(drawDetail.recycle.id)
             };
             $scope.DRAW.receiver = {
                 "py":"",

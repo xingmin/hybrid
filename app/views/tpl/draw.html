@@ -217,8 +217,8 @@
 				</td>
 				<td>
 				<a
-					ng-hide="_.isEmpty(drawDetail.recycle.id)"
-					ng-click="deleteDrawDetail(currentedit.newval.drawDetails, drawDetail)">删除
+					ng-hide="drawDetail.recycle && !_.isEmpty(drawDetail.recycle.id)"
+					ng-click="deleteDrawDetail(currentedit.newval.drawDetails, drawDetail)">删除{{drawDetail.recycle.id}}
 				</a >
 				</td>
 			</tr>
