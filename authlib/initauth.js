@@ -3,7 +3,7 @@ var addAuth = function(app){
 	var passport = require('passport');
 	var methodOverride = require('method-override');
 	
-	var libs = path.resolve(__dirname, '../..')  + '/authlib/libs/';
+	var libs = path.resolve(__dirname)+"/";
 	var db = require(libs + 'db/mongoose');
 	//var db = require('./rbac/init-rbac-storage');
 	require(libs + 'auth/auth');	

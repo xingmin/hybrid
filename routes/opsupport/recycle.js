@@ -7,8 +7,8 @@ var ResData = require("../resdata.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
 var passport = require('passport');
-var rbac = require('../../authlib/libs/rbac/initrbac');
-var RBACMidware = require('../../authlib/libs/rbac/rbacmidware');
+var rbac = require('../../authlib/rbac/initrbac');
+var RBACMidware = require('../../authlib/rbac/rbacmidware');
 
 router.post('/create',
 	passport.authenticate('bearer', { session: false }),

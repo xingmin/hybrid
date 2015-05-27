@@ -3,7 +3,7 @@ var passport = require('passport');
 var router = express.Router();
 var path = require('path');
 
-var libs = path.resolve(__dirname, '../..')  + '/libs/';
+var libs = path.resolve(__dirname, '../..');
 var log = require(libs + 'log')(module);
 
 var db = require(libs + 'db/mongoose');

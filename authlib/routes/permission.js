@@ -2,7 +2,7 @@ var express = require('express');
 var passport = require('passport');
 var path = require('path');
 var router = express.Router();
-var libs = path.resolve(__dirname, '../..')+ '/libs/';
+var libs = path.resolve(__dirname, '../')+"/";
 
 var Result = require('./result');
 var PermissionInfo = require('./permissioninfo');

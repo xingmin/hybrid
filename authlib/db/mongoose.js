@@ -1,9 +1,9 @@
 var path = require('path');
 var mongoose = require('mongoose');
 
-var libs = path.resolve(__dirname, '../..')  + '/libs/';
+var libs = path.resolve(__dirname, '../')+"/";
 
-var log = require('../../../log')(module);
+var log = require('../../log')(module);
 var config = require(libs + 'config');
 
 mongoose.connect(config.get('mongoose:uri'));

@@ -3,7 +3,7 @@ var oauth2orize = require('oauth2orize');
 var passport = require('passport');
 var crypto = require('crypto');
 
-var libs = path.resolve(__dirname, '../..') + '/libs/';
+var libs = path.resolve(__dirname, '../')+"/";
 
 var config = require(libs + 'config');
 //var log = require(libs + 'log')(module);
