@@ -12,8 +12,11 @@
 		<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateEnd">
 	</div>
  	<div class="form-group">
-		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="queryParam.barcode" placeholder="查询条形码"/>
+		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="queryParam.barcode" placeholder="条形码"/>
     </div>
+	<div class="form-group">
+		<input type="text" class="form-control" id="qconsumer"  name="qconsumer" ng-model="queryParam.consumer" placeholder="手术间"/>
+	</div>
  	<div class="form-group">
 		<button type="button" class="btn btn-primary" ng-click="query()">查询</button>
 	</div>
@@ -23,8 +26,11 @@
 	<div class="form-group">
 		<button type="button" data-target="#recyclemodal" data-toggle="modal"  class="btn btn-primary" ng-click="recycle.initRecycleModal()">回收</button>
 	</div>
+    <div class="form-group">
+        <exportbtn data-target="#drawbox"></exportbtn>
+    </div>
 </form>
-
+<div  id="drawbox">
 <table class="table table-bordered table-hover">
 	<tr>
 		<th>ID</th>
@@ -108,6 +114,7 @@
 	</tr>
 	</tbody>
 </table>
+</div>
   <div class="container-fluid">
  <div class="row">
  		<div class="pull-left">

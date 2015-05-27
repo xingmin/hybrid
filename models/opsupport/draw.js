@@ -41,7 +41,7 @@ Draw.prototype.init = function(id){
 	return defered.promise;
 };
 
-Draw.prototype.getDrawRecordsPageInfo = function(dateBegin, dateEnd, barcode, pageSize){
+Draw.prototype.getDrawRecordsPageInfo = function(dateBegin, dateEnd, barcode, consumer, pageSize){
 	var defered = Q.defer();
 	var config = require('../connconfig').hybrid;
 	var conn = new sql.Connection(config);
@@ -50,6 +50,7 @@ Draw.prototype.getDrawRecordsPageInfo = function(dateBegin, dateEnd, barcode, pa
 		request.input('BDate', sql.DateTime, dateBegin);
 		request.input('EDate', sql.DateTime, dateEnd);
 		request.input('Barcode', sql.VarChar(50), barcode);
+		request.input('Consumer', sql.NVarChar(100), consumer);
 		request.input('PageSize', sql.Int, pageSize);
 		return customdefer.request_defered(request, 'proc_getDrawRecordPageInfo');
 	}).then(function(data){
@@ -68,7 +69,7 @@ Draw.prototype.getDrawRecordsPageInfo = function(dateBegin, dateEnd, barcode, pa
 	return defered.promise;
 };
 
-Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd, barcode, pageNo, pageSize){
+Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd, barcode, consumer, pageNo, pageSize){
 	var defered = Q.defer();
 	var config = require('../connconfig').hybrid;
 	var conn = new sql.Connection(config);
@@ -77,6 +78,7 @@ Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd, barcode, page
 		request.input('BDate', sql.DateTime, dateBegin);
 		request.input('EDate', sql.DateTime, dateEnd);
 		request.input('Barcode', sql.VarChar(50), barcode);
+        request.input('Consumer', sql.NVarChar(100), consumer);
 		request.input('PageNo', sql.Int, pageNo);
 		request.input('PageSize', sql.Int, pageSize);
 		return customdefer.request_defered(request, 'proc_getDrawRecordByDate');

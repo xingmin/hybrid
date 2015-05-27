@@ -7,6 +7,7 @@ define(['./module', 'moment'],function(services, moment){
             dateBegin  : moment().format('YYYY-MM-DD'),
             dateEnd    : moment().format('YYYY-MM-DD'),
             barcode    : '',
+            consumer   : '',
             pageNo     : 1,
             pageSize   : 1,
             pageCount  : 0,
@@ -15,11 +16,12 @@ define(['./module', 'moment'],function(services, moment){
         var _getDrawDetailsByDrawId  = function(drawId){
             return $http.get('/opsupport/draw/getdetail/'+drawId);
         };
-        var _getDrawsByDate = function(dBegin, dEnd, barcode, pageSize, pageNo){
+        var _getDrawsByDate = function(dBegin, dEnd, barcode, consumer, pageSize, pageNo){
             var params = {
                 b: dBegin,
                 e: dEnd,
                 barcode: barcode,
+                consumer: consumer,
                 pagesize: pageSize,
                 pageno: pageNo
             };
@@ -29,6 +31,7 @@ define(['./module', 'moment'],function(services, moment){
             _getDrawsByDate(_queryParam.dateBegin,
                 _queryParam.dateEnd,
                 _queryParam.barcode,
+                _queryParam.consumer,
                 _queryParam.pageSize,
                 _queryParam.pageNo).then(function (receive) {
                     var data = receive.data;
@@ -138,7 +141,7 @@ define(['./module', 'moment'],function(services, moment){
                     }else{
                         return null;
                     }
-                })//´ÓÊý¾Ý¿â¼ÓÔØ±£´æ³É¹¦ºóµÄDetails¼ÇÂ¼
+                })//ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½Detailsï¿½ï¿½Â¼
                 .then(
                 function(newDraw){
                     if(!newDraw){ return; }

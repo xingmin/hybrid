@@ -131,6 +131,7 @@ router.get('/q',
 	var dateBegin = req.query.b;
 	var dateEnd = req.query.e;
 	var barcode = req.query.barcode;
+	var consumer = req.query.consumer;
 	var pageNo = req.query.pageno;
 	var pageSize = req.query.pagesize;
 	
@@ -143,8 +144,8 @@ router.get('/q',
 	var qb = new Date(dateBegin);
 	var qe = new Date(dateEnd);
 	
-	var promise1 = Draw.prototype.getDrawRecordsPageInfo(qb, qe, barcode,pageSize);
-	var promise2 = Draw.prototype.getDrawRecordsByDate(qb, qe, barcode, pageNo, pageSize);
+	var promise1 = Draw.prototype.getDrawRecordsPageInfo(qb, qe, barcode, consumer, pageSize);
+	var promise2 = Draw.prototype.getDrawRecordsByDate(qb, qe, barcode, consumer, pageNo, pageSize);
 	
 	Q.all([promise1, promise2])
 		.then(
