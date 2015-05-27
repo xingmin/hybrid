@@ -13,7 +13,7 @@ require.config({
         'filesaver':'../bower_components/FileSaver/FileSaver',
 		//'modal-carousel':'../bower_components/bootstrap-modal-carousel/dist/js/bootstrap-modal-carousel',
 		'lodash':'../bower_components/lodash/lodash',
-		'socketio':'/socket.io/socket.io',
+		//'socketio':'/socket.io/socket.io',
 		'moment':'../bower_components/moment/moment',
 		'domReady':'lib/domReady',
 		'boot':'boot',

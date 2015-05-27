@@ -35,6 +35,7 @@ define(['../module', 'moment'],function(services, moment){
 					}
             ).success(
                 function(data){
+					if(!data) return;
                     _updateAuthToken(data);
                     //开始计时刷新accessToken
                     var interval =(Number(_authToken.expires_in)-Number(_authToken.expires_in)*0.1)*1000;
@@ -92,7 +93,7 @@ define(['../module', 'moment'],function(services, moment){
             //token是在authinterceptor中加入header中的
             $http.get('/authapi/users/getuserbytoken').success(function(data){
                 var user = {};
-                if(data.code === 0) user = data.value;
+                if(data && data.code === 0) user = data.value;
                 for(var i in user){
                     AuthValue.currentUser[i] = user[i];
                 }
