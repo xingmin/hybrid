@@ -77,10 +77,10 @@ define(['./module'],function(services){
 					});
 			}
 		};
-
-		service.refreshAccessEntry = function(){
-			_traverse(_accessEntry, _checkPerm);
-		};
+		 var _refreshAccessEntry=function(){
+			 _traverse(_accessEntry, _checkPerm);
+		 };
+		service.refreshAccessEntry = _refreshAccessEntry;
 		service.accessEntry = _accessEntry;
 		return service;
 	}]);

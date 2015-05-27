@@ -33,23 +33,17 @@ define(['../module', 'moment'],function(services, moment){
 						'password'      : md5.createHash(password || ''),
 						'grant_type'    : 'password'
 					}
-				).then(
-					function(recv){
-						var data = recv.data;
-						if(recv.status !== 200){
-							$rootScope.$broadcast( 'users.login', false);
-							return;
-						}
-						_updateAuthToken(data);
-						//开始计时刷新accessToken
-						var interval =(Number(_authToken.expires_in)-Number(_authToken.expires_in)*0.1)*1000;
-						$timeout(function(){_refreshToken(interval);},interval);
-						$rootScope.$broadcast( 'users.login', true);
-					},
-					function(err){
-						$rootScope.$broadcast( 'users.login', false);
-					}
-				);
+            ).success(
+                function(data){
+                    _updateAuthToken(data);
+                    //开始计时刷新accessToken
+                    var interval =(Number(_authToken.expires_in)-Number(_authToken.expires_in)*0.1)*1000;
+                    $timeout(function(){_refreshToken(interval);},interval);
+                    $rootScope.$broadcast( 'users.login', true);
+                }
+            ).error(function(err){
+                $rootScope.$broadcast( 'users.login', false);
+            });
 		};
 		var _refreshToken = function(interval){
 			$timeout(function(){_refreshToken(interval);},interval);

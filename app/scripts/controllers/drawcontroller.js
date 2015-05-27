@@ -18,7 +18,27 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
             $scope.currentedit={newval:{},oldval:{}};
             $scope.isSaveCompleted = false;
             $scope.queryParam = drawService.getQueryParam();
-            $scope.query = function(){ drawService.queryDraws(); };
+            $scope.queryParamCheck = function() {
+                var pass = true;
+                var msg = "";
+                if (!/^[A-z0-9]*$/.test($scope.queryParam.barcode)) {
+                    pass = false;
+                    msg += "条形码格式验证不正确；";
+                }
+                if(!moment($scope.queryParam.dateBegin).isValid()){
+                    pass = false;
+                    msg += "查询开始日期格式验证不正确；";
+                }
+                if(!moment($scope.queryParam.dateEnd).isValid()){
+                    pass = false;
+                    msg += "查询截至日期格式验证不正确；";
+                }
+                if(msg) {
+                    $scope.msgs.push(msg);
+                }
+                return pass;
+            };
+            $scope.query = function(){ $scope.queryParamCheck() && drawService.queryDraws(); };
             //把pagesize保存在indexeddb
             $scope.$watch('queryParam.pageSize', function(newVal, oldVal){
                 if(newVal === oldVal){
@@ -109,12 +129,12 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
                     if( !angular.isArray($scope.currentedit.newval.drawDetails)){
                         $scope.currentedit.newval.drawDetails=[];
                     }
-                    //var barCodeRegex =/^[A-z0-9]+$/;
-                    //if (!barCodeRegex.test(barcode)){
-                    //    $scope.DRAW.msgs.push("不是有效的条形码!");
-                    //    event.preventDefault();
-                    //    return;
-                    //};
+                    var barCodeRegex =/^[A-z0-9]+$/;
+                    if (!barCodeRegex.test(barcode)){
+                        $scope.DRAW.msgs.push("不是有效的条形码!");
+                        event.preventDefault();
+                        return;
+                    };
                     $scope.currentedit.newval.drawDetails.push({'barcode':barcode});
                     $scope.scanner.barcodeCollecter = '';
                     event.preventDefault();

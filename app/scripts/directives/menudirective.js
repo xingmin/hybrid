@@ -7,14 +7,10 @@ define(['./module'],function(directives){
 				$scope.currentUser = AuthValue.currentUser;
 		    	$scope.accessEntry = AccessEntryService.accessEntry;
 		    	$scope.$on( 'users.login', function(event, stat){
-		    		if(stat){
-		    			AccessEntryService.refreshAccessEntry();
-		    		};
+					AccessEntryService.refreshAccessEntry();
 		    	});
 		    	$scope.$on( 'users.logout', function(event, stat){
-		    		if(stat){
-		    			AccessEntryService.refreshAccessEntry();
-		    		};
+					AccessEntryService.refreshAccessEntry();
 		    	});
 		    },
 		    replace: true,

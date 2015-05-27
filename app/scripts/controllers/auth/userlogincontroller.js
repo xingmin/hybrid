@@ -7,11 +7,11 @@ define(['../module'],function(controllers,$){
     	$scope.msgs=[];
     	$scope.$on('users.login',function(event, passed){
     		if(passed){
-    			$scope.msgs.push('Login successfull!')
+    			$scope.msgs.push('Login successfull!');
     			$location.path('/');
     		}else{
     			$scope.msgs.push('Login failed!')
-    		}    		
+    		}
     	});
     	$scope.login=function(){
     		AuthService.requestAccessToken($scope.formData.userloginid, $scope.formData.userpassword);

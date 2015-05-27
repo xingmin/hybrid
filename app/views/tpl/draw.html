@@ -3,7 +3,7 @@
 	<h3>领用记录</h3>
 </div>
 <msgbox messages="msgs"></msgbox>
-<form class="form-inline">
+<form class="form-inline" data-toggle="validator">
 	<div class="form-group">
 		<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateBegin">
 	</div>
@@ -13,7 +13,7 @@
 	</div>
  	<div class="form-group">
 		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="queryParam.barcode" placeholder="查询条形码"/>
- 	</div>
+    </div>
  	<div class="form-group">
 		<button type="button" class="btn btn-primary" ng-click="query()">查询</button>
 	</div>
