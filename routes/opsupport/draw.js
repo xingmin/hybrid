@@ -29,12 +29,12 @@ router.post('/create',
 //			return new DrawDetail({'barcode':drawDetail.barcode});
 //		});
 //	}
-    var barCodeRegex =/^[A-z 0-9]+$/;
+    var barCodeRegex =/^[A-z0-9]+$/;
     var nonLegalBarcode = _.find(arrDrawDetail, function(detail){
         return !barCodeRegex.test(detail.barcode);
     });
     if (nonLegalBarcode){
-        var resdata = new ResData(2, _.result(nonLegalBarcode, 'barcode')+'²»ÊÇÓĞĞ§µÄÌõĞÎÂëºÅ!');
+        var resdata = new ResData(2, _.result(nonLegalBarcode, 'barcode')+'ä¸æ˜¯æœ‰æ•ˆçš„æ¡å½¢ç å·!');
         resdata.sendJson(res);
         return;
     }

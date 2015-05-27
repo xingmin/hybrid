@@ -109,7 +109,7 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
                     if( !angular.isArray($scope.currentedit.newval.drawDetails)){
                         $scope.currentedit.newval.drawDetails=[];
                     }
-                    //var barCodeRegex =/^[A-z 0-9]+$/;
+                    //var barCodeRegex =/^[A-z0-9]+$/;
                     //if (!barCodeRegex.test(barcode)){
                     //    $scope.DRAW.msgs.push("不是有效的条形码!");
                     //    event.preventDefault();
