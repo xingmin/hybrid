@@ -1,0 +1,41 @@
+<form  name="dlgform" class="form-horizontal" ng-submit="saveChange(dlgform.$valid)" role="form" novalidate>
+<editdlg module-name="手术室" dlgid="editmodal" is-hide="{{isSaveCompleted}}"  >
+	<div class="form-group" >
+		<label  for="opname" class="col-md-3 control-label">手术室</label>
+		<div class="col-md-4 controls" >
+			<input type="text" class="form-control" id="opname"  name="opname" ng-model="currentedit.newval.name" required placeholder="请输入手术室"/>
+		</div>
+	</div>
+</editdlg>
+</form>
+<div class="title control-group">
+	<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary pull-right" ng-click="changeEditMode('create')">新建</button>
+	<h3>手术室</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>手术室</th>
+    	<th></th>
+    </tr>
+    <tr ng-repeat="oproom in oprooms">
+       <td>
+    		{{oproom.name}}
+        </td>
+        <td>
+        	<delete ng-Model="role" del-data="currentedit" ng-click="changeEditMode('del')">
+				<a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a >
+			</delete>
+		</td>
+	</tr>
+</table>
+<deletedlg dlgid="delmodal" is-hide="{{IsHideModal}}" do-del="deletecur()">
+	<table class="table table-bordered table-hover">
+	    <tr>
+		    <td>名称</td>
+		     <td>
+		 		{{currentedit.newval.name}}
+		     </td>
+	    </tr>
+	</table>
+</deletedlg>

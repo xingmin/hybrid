@@ -6,14 +6,12 @@ var Q = require('q');
 var ResData = require("../resdata.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
-var passport = require('passport');
-var rbac = require('../../authlib/rbac/initrbac');
-var RBACMidware = require('../../authlib/rbac/rbacmidware');
+var auth = require('../../authlib/index');
 var _=require('lodash');
 
 router.post('/create',
-	passport.authenticate('bearer', { session: false }),
-	RBACMidware.can(rbac, 'draw', 'opsupport'),
+	auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'draw', 'opsupport'),
 	function(req, res) {
 	var consumer = req.body.consumer;
 	var receiver = req.body.receiver;
@@ -61,8 +59,8 @@ router.post('/create',
 });
 
 router.post('/update',
-	passport.authenticate('bearer', { session: false }),
-	RBACMidware.can(rbac, 'draw', 'opsupport'),
+    auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'draw', 'opsupport'),
 	function(req, res) {
 	var id = req.body.id;
 	var consumer = req.body.consumer;
@@ -104,8 +102,8 @@ router.post('/update',
 });
 
 router.post('/delete',
-	passport.authenticate('bearer', { session: false }),
-	RBACMidware.can(rbac, 'draw', 'opsupport'),
+    auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'draw', 'opsupport'),
 	function(req, res) {
 	var id = req.body.id;
 	var draw = new Draw({id:id});
@@ -125,8 +123,8 @@ router.post('/delete',
 });
 
 router.get('/q',
-	passport.authenticate('bearer', { session: false }),
-	RBACMidware.can(rbac, 'draw', 'opsupport'),
+    auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'draw', 'opsupport'),
 	function(req, res) {
 	var dateBegin = req.query.b;
 	var dateEnd = req.query.e;
@@ -163,8 +161,8 @@ router.get('/q',
 });
 
 router.get('/getdetail/:drawId',
-	passport.authenticate('bearer', { session: false }),
-	RBACMidware.can(rbac, 'draw', 'opsupport'),
+    auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'draw', 'opsupport'),
 	function(req, res) {
 	var drawId = req.param('drawId');
 	var draw = new Draw({id:drawId});
