@@ -7,10 +7,6 @@ define(["./appx"],
 					.when('/',{
 						templateUrl:'/views/tpl/welcome.html'
 					})
-					.when('/opsupport/draw',{
-						templateUrl:'/views/tpl/draw.html',
-						controller: 'drawController'
-					})
 					.when('/auth/user',{
 						templateUrl:'/views/tpl/auth/user.html',
 						controller: 'userController'
@@ -31,6 +27,14 @@ define(["./appx"],
 						templateUrl:'/views/tpl/auth/login.html',
 						controller: 'userLoginController'
 					})
+                    .when('/opsupport/draw',{
+                        templateUrl:'/views/tpl/draw.html',
+                        controller: 'drawController'
+                    })
+                    .when('/opsupport/oproom',{
+                        templateUrl:'/views/tpl/opsupport/oproom.html',
+                        controller: 'oproomController'
+                    })
 					.otherwise({
 						redirectTo:'/'
 					});

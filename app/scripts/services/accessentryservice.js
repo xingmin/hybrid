@@ -18,7 +18,13 @@ define(['./module'],function(services){
 					accessname: '领用',
 					perm: {resource:'opsupport', action: 'access-entry'},
 					url: '/opsupport/draw',
-					enable: false,
+					enable: false
+				},
+				'oproom': {
+					accessname: '手术室定义',
+					perm: {resource:'oproom', action: 'access-entry'},
+					url: '/opsupport/oproom',
+					enable: true
 				}
            },
            "auth": {

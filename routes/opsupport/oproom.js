@@ -1,18 +1,16 @@
 var express = require('express');
-var passport = require('passport');
 var path = require('path');
 var router = express.Router();
 var Result = require('../result');
 var auth = require('../../authlib/index');
 var OpRoom = require('../../models/opsupport/oproom');
-
+var log = require('../../log')(module);
 //get operation room
 router.get('/',
-	//auth.passport.authenticate('bearer', { session: false }),
-	//auth.RBACMidware.can(rbac, 'list', 'role'),
+	auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'list', 'oproom'),
 	function(req, res) {
         var critiral = {
-            deletedFlag: 0
         };
         OpRoom.find(critiral).exec()
         .then(
@@ -28,8 +26,8 @@ router.get('/',
 
 //create new operation room
 router.post('/',
-	//auth.passport.authenticate('bearer', { session: false }),
-	//auth.RBACMidware.can(rbac, 'create', 'role'),
+	auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'create', 'oproom'),
 	function(req, res) {
 		var name = req.body.name;
         var room = new OpRoom();
@@ -37,28 +35,39 @@ router.post('/',
         room.save(function(err){
             var result = null;
             if(err){
-                result = new Result(1, err, null);
+                result = new Result(1, err.message, null);
+                log.error(err.message);
             }else{
                 result = new Result(0, 'save succeeded!',  room);
             }
-            result.json();
+            result.json(res);
         });
 	}
 );
 //delete operation room
 router.delete('/:name',
-	//auth.passport.authenticate('bearer', { session: false }),
-	//auth.RBACMidware.can(rbac, 'delete', 'role'),
+	auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'delete', 'oproom'),
 	function(req, res) {
 		var name = req.params.name;
-        OpRoom.update({name: name, deletedFlag: 0}, {$set: {deletedFlag: 1}}, function(err){
+        //OpRoom.update({name: name, deletedFlag: 0}, {$set: {deletedFlag: 1}}, function(err){
+        //    var result = null;
+        //    if(err){
+        //        result = new Result(1, err.message, null);
+        //        log.error(err.message);
+        //    }else{
+        //        result = new Result(0, 'save delete succeeded!', null);
+        //    }
+        //    result.json(res);
+        //});
+        OpRoom.findOneAndRemove({name: name}, {}, function(err){
             var result = null;
             if(err){
                 result = new Result(1, err, null);
             }else{
                 result = new Result(0, 'save delete succeeded!', null);
             }
-            result.json();
+            res.json(result);
         });
 	}
 );

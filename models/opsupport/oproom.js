@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var conn = require('../../db/mongoose'),
 	Schema = mongoose.Schema,
 	OpRoom = new Schema({
@@ -7,7 +8,7 @@ var conn = require('../../db/mongoose'),
 			required: true
 		},
 		deletedFlag: {
-			type: Int,
+			type: Number,
 			default: 0
 		},
 		created: {

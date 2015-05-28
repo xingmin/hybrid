@@ -5,11 +5,10 @@ define(['../module'],function(controllers,$){
     		 function($scope, $http, $timeout, oproomService){
     	$scope.msgs=[];
     	$scope.oprooms = oproomService.getOprooms();
-    	$scope.$on('oprooms.refresh', function(data){
-    		if(data.code === 0){
-    			$scope.msgs.push('获取成功');
-    		}
-    	});
+        //
+    	//$scope.$on('oprooms.refresh', function(data){
+         //   $scope.oprooms = oproomService.oprooms;
+    	//});
     	$scope.IsHideModal = true;
     	$scope.mode = '';
     	$scope.currentedit={newval:{},oldval:{}};
@@ -20,13 +19,9 @@ define(['../module'],function(controllers,$){
                 oproomService.saveNewOproom($scope.currentedit.newval.name);
     		}
     	};
-    	$scope.$on('oproomService.created', function(event, code){
-    		if(code === 0){
-    			$scope.msgs.push('保存成功');
-    		}else{
-    			$scope.msgs.push('保存失败');
-    		}
-    		$scope.isSaveCompleted = true;	
+    	$scope.$on('oprooms.created', function(event, data){
+            $scope.msgs.push(data.msg);
+    		$scope.isSaveCompleted = true;
     	});
     	//create --新建
     	//edit --编辑
@@ -42,13 +37,9 @@ define(['../module'],function(controllers,$){
     		$scope.IsHideModal = false;
             oproomService.delOproom(cur.name);
     	};
-    	$scope.$on('oproomService.deleted', function(event, code){
+    	$scope.$on('oprooms.deleted', function(event, data){
     		$scope.currentedit={newval:{},oldval:{}};
-    		if(code === 0){    			
-				$scope.msgs.push('删除成功');				
-    		}else{
-    			$scope.msgs.push('删除失败');
-    		}
+            $scope.msgs.push(data.msg);
     		$scope.IsHideModal = true;
     	});
     }]);
