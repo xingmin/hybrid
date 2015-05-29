@@ -10,8 +10,9 @@ router.get('/',
 	auth.passport.authenticate('bearer', { session: false }),
 	auth.RBACMidware.can(auth.rbac, 'list', 'oproom'),
 	function(req, res) {
-        var critiral = {
-        };
+        var name = req.query.name;
+        var critiral = {};
+        if (name) { critiral.name = {$regex: '^'+name}; }
         OpRoom.find(critiral).exec()
         .then(
             function(rooms){

@@ -2,9 +2,9 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
     'use strict';
     controllers.controller('drawController',
         ['$scope','$http','$timeout', '$filter',
-            'drawService','recycleService','indexedDbService','userService','AuthValue',
+            'drawService','recycleService','indexedDbService','userService','AuthValue','oproomService',
         function($scope, $http, $timeout,$filter,
-                 drawService, recycleService, indexedDbService, userService, AuthValue){
+                 drawService, recycleService, indexedDbService, userService, AuthValue, oproomService){
             $scope.draws = [];//drawService.queryDraws();
             $scope.$on('draws.refresh', function(event, status){
                 if (status){

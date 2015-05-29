@@ -1,6 +1,8 @@
-define(['directives/eucd',
-        'directives/dropdownlist',
-        'directives/logindirective',
-        'directives/menudirective',
-        'directives/exportbtn',
-        ],function(){});
+define(
+    ['directives/eucd',
+    'directives/dropdownlist',
+    'directives/logindirective',
+    'directives/menudirective',
+    'directives/exportbtn',
+    'directives/oproomdropdown'
+    ],function(){});
