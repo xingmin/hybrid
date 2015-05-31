@@ -28,7 +28,7 @@ define(["./appx"],
 						controller: 'userLoginController'
 					})
                     .when('/opsupport/draw',{
-                        templateUrl:'/views/tpl/draw.html',
+                        templateUrl:'/views/tpl/opsupport/draw.html',
                         controller: 'drawController'
                     })
                     .when('/opsupport/oproom',{

@@ -48,16 +48,16 @@ define(['./module', 'lodash'],function(directives, _){
                 };
             },
 			template:
-			'<input type="text" class="form-control dropdown-toggle" data-toggle="dropdown" required ng-model="py" />'
-			+'<ul class="dropdown-menu" role="menu" style="margin-left:15px;">'
-			+"<li ng-repeat=\"item in menuItmes track by $index\" ng-hide=\"!menuItmes[$index].matched\">"
-			+'<ul class="list-inline" ng-click="selectMenuItem($index)">'
-			+'<li ng-repeat="col in showColumns">'
-			+'<a href="javascript:void(0);" >{{item[col]}}</a>'
-			+'</li>'
-			+'</ul>'
-			+'</li>'
-			+'</ul>',
+			"<input type=\"text\" class=\"form-control dropdown-toggle\" data-toggle=\"dropdown\" required ng-model=\"py\" />"
+			+"<ul class=\"dropdown-menu\" role=\"menu\" style=\"margin-left:15px;max-height: 160px;overflow-y: auto\">"
+			+"    <li ng-repeat=\"item in menuItmes track by $index\" ng-hide=\"!menuItmes[$index].matched\">"
+			+"        <ul class=\"list-inline\" ng-click=\"selectMenuItem($index)\">"
+			+"            <li ng-repeat=\"col in showColumns\">"
+			+"            <a href=\"javascript:void(0);\" >{{item[col]}}</a>"
+			+"            </li>"
+			+"        </ul>"
+			+"    </li>"
+			+"</ul>",
 			link: function(scope, element, attrs){
 			}
 		}

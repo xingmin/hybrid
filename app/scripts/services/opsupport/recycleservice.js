@@ -1,4 +1,4 @@
-define(['./module'],function(services){
+define(['../module'],function(services){
 	'use strict';
 	services.factory("recycleService",['$http', '$rootScope',function($http, $rootScope){
         var _service = {};
@@ -16,7 +16,7 @@ define(['./module'],function(services){
                         return null;
                     }
                     var recycle = data.value;
-                    return recycle;//recycle¶ÔÏó
+                    return recycle;//recycleï¿½ï¿½ï¿½ï¿½
                 }
             ).then(
                 function(recycle){
@@ -26,7 +26,7 @@ define(['./module'],function(services){
             ).then(
                 function(recv){
                     if (!recv) return;
-                    //¸üÐÂµ±Ç°½çÃæµÄÊý¾Ý
+                    //ï¿½ï¿½ï¿½Âµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     var recycleDetails = recv.data.value;
                     angular.forEach(recycleDetails, function(recycleDetail){
                         draws.every(function(draw){

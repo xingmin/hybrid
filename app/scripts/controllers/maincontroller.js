@@ -3,6 +3,6 @@ define(['controllers/auth/rolecontroller',
     'controllers/auth/permissioncontroller',
     'controllers/auth/grantcontroller',
     'controllers/auth/userlogincontroller',
-    './drawcontroller',
+    './opsupport/drawcontroller',
     './opsupport/oproomcontroller',
 ],function(){});

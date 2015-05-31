@@ -5,8 +5,8 @@ define(['./auth/userservice',
     './auth/authinterceptor',
    // './socketservice',
     './indexedDbService',
-    './drawService',
-    './recycleService',
+    './opsupport/drawService',
+    './opsupport/recycleService',
     './accessentryservice',
     './opsupport/oproomservice'
 ],function(){});

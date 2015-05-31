@@ -5,11 +5,31 @@
 <msgbox messages="msgs"></msgbox>
 <form class="form-inline" data-toggle="validator">
 	<div class="form-group">
-		<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateBegin">
+		<!--<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateBegin">-->
+		<div class="input-group">
+			<input type="text"
+				   class="form-control"
+				   ng-model="queryParam.dateBegin"
+				   datepicker-popup
+				   is-open="DRAW.dateBeginPickerOpen">
+			<div class="input-group-addon" ng-click="DRAW.toggleDateBeginPicker($event)">
+				<i class="glyphicon glyphicon-calendar"></i>
+			</div>
+		</div>
 	</div>
 	<div class="form-group">
 	<label>~</label>
-		<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateEnd">
+		<!--<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateEnd">-->
+        <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   ng-model="queryParam.dateEnd"
+                   datepicker-popup
+                   is-open="DRAW.dateEndPickerOpen">
+            <div class="input-group-addon" ng-click="DRAW.toggleDateEndPicker($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </div>
+        </div>
 	</div>
  	<div class="form-group">
 		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="queryParam.barcode" placeholder="条形码"/>

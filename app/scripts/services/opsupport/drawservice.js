@@ -1,4 +1,4 @@
-define(['./module', 'moment'],function(services, moment){
+define(['../module', 'moment'],function(services, moment){
 	'use strict';
 	services.factory("drawService", ['$http', '$rootScope' ,'recycleService',function($http, $rootScope,recycleService){
         var service  = {};

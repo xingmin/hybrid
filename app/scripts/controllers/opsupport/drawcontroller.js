@@ -1,4 +1,4 @@
-define(['./module', "lodash", "moment"],function(controllers, _, moment){
+define(['../module', "lodash", "moment"],function(controllers, _, moment){
     'use strict';
     controllers.controller('drawController',
         ['$scope','$http','$timeout', '$filter',
@@ -183,6 +183,16 @@ define(['./module', "lodash", "moment"],function(controllers, _, moment){
                             ? $filter('userFilter')($scope.currentedit.newval.drawer): '';
                 },600);
             });
+            $scope.DRAW.dateBeginPickerOpen = false;
+            $scope.DRAW.toggleDateBeginPicker = function($event) {
+                $event.stopPropagation();
+                $scope.DRAW.dateBeginPickerOpen = !$scope.dateBeginPickerOpen;
+            };
+            $scope.DRAW.dateEndPickerOpen = false;
+            $scope.DRAW.toggleDateEndPicker = function($event) {
+                $event.stopPropagation();
+                $scope.DRAW.dateEndPickerOpen = !$scope.dateEndPickerOpen;
+            };
 
             //下面是回收的操作
             $scope.recycle = {};
