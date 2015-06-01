@@ -9,6 +9,7 @@ require.config({
 		'bootstrap':'../bower_components/bootstrap/dist/js/bootstrap',
 		'bootstrap-toggle':'../bower_components/bootstrap-toggle/js/bootstrap2-toggle',
 		'bootstrap-datepicker':'../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker',
+		'bootstrap-datetimepicker': '../bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker',
 		'bootstrap-validator':'../bower_components/bootstrap-validator/dist/validator',
         'filesaver':'../bower_components/FileSaver/FileSaver',
 		//'modal-carousel':'../bower_components/bootstrap-modal-carousel/dist/js/bootstrap-modal-carousel',
@@ -55,7 +56,11 @@ require.config({
 		'angular-bootstrap':{
 			deps:['angular'],
 			exports:'angular-bootstrap'	
-		}
+		},
+        'bootstrap-datetimepicker':{
+            deps:['angular-bootstrap'],
+            exports:'bootstrap-datetimepicker'
+        }
 	},
 	deps:['boot']
 });

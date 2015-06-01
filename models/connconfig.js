@@ -21,8 +21,8 @@ module.exports = {
 //		driver:'tds'
 	},	
 	"hybrid":{
-		user: 'sa',
-		password: 'system',
+		user: 'hybrid',
+		password: 'hybrid',
 		server: '127.0.0.1', // You can use 'localhost\\instance' to connect to named instance
 		database: 'hybrid',
 //		driver:'tds'
