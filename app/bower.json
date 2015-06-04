@@ -27,6 +27,7 @@
     "holderjs": "~2.7.1",
     "bootstrap-validator": "~0.8.1",
     "FileSaver": "*",
-    "bootstrap-ui-datetime-picker": "~1.1.0"
+    "bootstrap-ui-datetime-picker": "~1.1.0",
+    "angular-ui-select": "~0.12.0"
   }
 }

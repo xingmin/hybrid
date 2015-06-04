@@ -38,7 +38,41 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 }
                 return pass;
             };
-            $scope.query = function(){ $scope.queryParamCheck() && drawService.queryDraws(); };
+            $scope.query = function(){
+                $scope.queryParam.receiver = $scope.SEARCH.receiver.selected? ($scope.SEARCH.receiver.selected.empCode || ''): '';
+                $scope.queryParamCheck() && drawService.queryDraws();
+            };
+            $scope.SEARCH = {};
+            $scope.SEARCH.users=null;
+            //userService.getAllUsersQ().then(
+            //    function(users){
+            //        $scope.SEARCH.users = users;
+            //    },
+            //    function(users){
+            //        $scope.SEARCH.users = users;
+            //    }
+            //);
+            $scope.SEARCH.receiver = {};
+            $scope.SEARCH.refreshUser = function(py){
+                //var regex = new RegExp('^'+py);
+                //_.forEach($scope.SEARCH.users, function(user){
+                //    user.matched = regex.test( user.legalNamePY);
+                //});
+                userService.getUsersPromise({py: py}).success(
+                    function(data){
+                        if(data.code === 0){
+                            $scope.SEARCH.users = data.value;
+                            $scope.SEARCH.users.splice(0, 0, {legalName:'无', legalNamePY:''});
+                        }else{
+                            $scope.SEARCH.users = [];
+                        }
+                    }
+                ).error(
+                    function(err){
+                        $scope.SEARCH.users = [];
+                    }
+                );
+            };
             //把pagesize保存在indexeddb
             $scope.$watch('queryParam.pageSize', function(newVal, oldVal){
                 if(newVal === oldVal){

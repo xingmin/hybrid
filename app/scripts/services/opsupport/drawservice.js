@@ -8,6 +8,7 @@ define(['../module', 'moment'],function(services, moment){
             dateEnd    : moment().format('YYYY-MM-DD'),
             barcode    : '',
             consumer   : '',
+            receiver   : '',
             pageNo     : 1,
             pageSize   : 1,
             pageCount  : 0,
@@ -16,12 +17,13 @@ define(['../module', 'moment'],function(services, moment){
         var _getDrawDetailsByDrawId  = function(drawId){
             return $http.get('/opsupport/draw/getdetail/'+drawId);
         };
-        var _getDrawsByDate = function(dBegin, dEnd, barcode, consumer, pageSize, pageNo){
+        var _getDrawsByDate = function(dBegin, dEnd, barcode, consumer, receiver, pageSize, pageNo){
             var params = {
                 b: dBegin,
                 e: dEnd,
                 barcode: barcode,
                 consumer: consumer,
+                receiver: receiver,
                 pagesize: pageSize,
                 pageno: pageNo
             };
@@ -32,6 +34,7 @@ define(['../module', 'moment'],function(services, moment){
                 _queryParam.dateEnd,
                 _queryParam.barcode,
                 _queryParam.consumer,
+                _queryParam.receiver,
                 _queryParam.pageSize,
                 _queryParam.pageNo).then(function (receive) {
                     var data = receive.data;

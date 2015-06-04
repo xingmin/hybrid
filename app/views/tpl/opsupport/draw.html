@@ -3,53 +3,66 @@
 	<h3>领用记录</h3>
 </div>
 <msgbox messages="msgs"></msgbox>
-<form class="form-inline" data-toggle="validator">
-	<div class="form-group">
-		<!--<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateBegin">-->
+<ul class="list-inline">
+	<li class="col-md-2">
 		<div class="input-group">
 			<input type="text"
 				   class="form-control"
 				   ng-model="queryParam.dateBegin"
-                   datetime-picker="yyyy-MM-dd HH:mm"
+				   datetime-picker="yyyy-MM-dd HH:mm"
 				   is-open="DRAW.dateBeginPickerOpen">
 			<div class="input-group-addon" ng-click="DRAW.toggleDateBeginPicker($event)">
 				<i class="glyphicon glyphicon-calendar"></i>
 			</div>
 		</div>
-	</div>
-	<div class="form-group">
-	<label>~</label>
-		<!--<input class="datepicker" data-date-format="yyyy-mm-dd" ng-model="queryParam.dateEnd">-->
-        <div class="input-group">
-            <input type="text"
-                   class="form-control"
-                   ng-model="queryParam.dateEnd"
-                   datetime-picker="yyyy-MM-dd HH:mm"
-                   is-open="DRAW.dateEndPickerOpen">
-            <div class="input-group-addon" ng-click="DRAW.toggleDateEndPicker($event)">
-                <i class="glyphicon glyphicon-calendar"></i>
-            </div>
-        </div>
-	</div>
- 	<div class="form-group">
+	</li>
+	<li class="col-md-2">
+		<div class="input-group">
+			<input type="text"
+				   class="form-control"
+				   ng-model="queryParam.dateEnd"
+				   datetime-picker="yyyy-MM-dd HH:mm"
+				   is-open="DRAW.dateEndPickerOpen">
+			<div class="input-group-addon" ng-click="DRAW.toggleDateEndPicker($event)">
+				<i class="glyphicon glyphicon-calendar"></i>
+			</div>
+		</div>
+
+	</li>
+	<li class="col-md-2">
 		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="queryParam.barcode" placeholder="条形码"/>
-    </div>
-	<div class="form-group">
-		<input type="text" class="form-control" id="qconsumer"  name="qconsumer" ng-model="queryParam.consumer" placeholder="手术间"/>
-	</div>
- 	<div class="form-group">
+
+	</li>
+	<li class="col-md-1">
+		<ui-select ng-model="SEARCH.receiver.selected"
+				   theme="bootstrap"
+				   ng-disabled="disabled"
+				   reset-search-input="false"
+				   title="选择领用人">
+			<ui-select-match placeholder="选择领用人">{{$select.selected.legalName}}</ui-select-match>
+			<ui-select-choices repeat="user in SEARCH.users track by $index"
+							   refresh="SEARCH.refreshUser($select.search)"
+							   refresh-delay="300">
+				<div ng-bind="user.legalName"></div>
+			</ui-select-choices>
+		</ui-select>
+	</li>
+	<li class="col-md-1">
+		<input type="text" class="form-control col-md-3" id="qconsumer"  name="qconsumer" ng-model="queryParam.consumer" placeholder="手术间"/>
+	</li>
+	<li class="col-md-3">
+
 		<button type="button" class="btn btn-primary" ng-click="query()">查询</button>
-	</div>
-	<div class="form-group">
+
 		<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary" ng-click="changeEditMode('create')">领用</button>
-	</div>
-	<div class="form-group">
+
 		<button type="button" data-target="#recyclemodal" data-toggle="modal"  class="btn btn-primary" ng-click="recycle.initRecycleModal()">回收</button>
-	</div>
-    <div class="form-group">
-        <exportbtn data-target="#drawbox"></exportbtn>
-    </div>
-</form>
+
+		<exportbtn data-target="#drawbox"></exportbtn>
+	</li>
+
+</ul>
+
 <div  id="drawbox">
 <table class="table table-bordered table-hover">
 	<tr>
@@ -94,6 +107,8 @@
         </td>
         <td>
         </td>
+		<td>
+		</td>
         <td>
             <edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
             <delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
@@ -173,22 +188,22 @@
 <editdlg module-name="领用记录" dlgid="editmodal" is-hide="{{isSaveCompleted}}" module-class="modal-dialog-lg">
 <div class="row">
     <div class="col-md-12"> <msgbox messages="DRAW.msgs"></msgbox></div>
-	<div class="col-md-4">
+	<div class="col-md-3">
 		<div class="form-group" >
-			<label  for="id" class="col-md-4 control-label">ID</label>
+			<label  for="id" class="col-md-3 control-label">ID</label>
 			<div class="col-md-8" >
 				<span  id="id" name="id" >{{currentedit.newval.id}}</span>
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-md-4 control-label">手术间</label>
+			<label  class="col-md-3 control-label">手术间</label>
 			<div class="col-md-8 controls">
                 <oproominput oproom="currentedit.newval.consumer"></oproominput>
 			    <!--<input type="text" class="form-control" id="consumer"  name="consumer" ng-model="currentedit.newval.consumer" required placeholder="请录入手术间"/>-->
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-4 control-label">领用人</label>
+			<label class="col-md-3 control-label">领用人</label>
 			<div class="col-md-8 controls">
 			<pyinput show-columns="DRAW.receiver.showColumns"
 					 fullfill-column="legalName"
@@ -200,7 +215,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-4 control-label">记录人</label>
+			<label class="col-md-3 control-label">记录人</label>
 			<div class="col-md-8 controls">
             <pyinput show-columns="DRAW.drawer.showColumns"
                      fullfill-column="legalName"
@@ -212,13 +227,13 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label  for="remark" class="col-md-4 control-label">备注</label>
+			<label  for="remark" class="col-md-3 control-label">备注</label>
 			<div class="col-md-8 controls">
 			<input type="text" class="form-control" id="remark"  name="remark" ng-model="currentedit.newval.remark"/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-4 control-label">时间</label>
+			<label class="col-md-3 control-label">时间</label>
 			<div class="col-md-8 controls">
 			{{currentedit.newval.drawTime | formatDateFilter}}
 			</div>
@@ -299,9 +314,9 @@
 <editdlg module-name="回收条形码" dlgid="recyclemodal" is-hide="{{recycle.isRecycleSaved}}" module-class="modal-dialog-lg">
 	<div class="row">
         <div class="col-md-12"> <msgbox messages="recycle.msgs"></msgbox></div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<div class="form-group">
-				<label class="col-md-4 control-label">送还人</label>
+				<label class="col-md-3 control-label">送还人</label>
 				<div class="col-md-8 controls">
                     <pyinput show-columns="recycle.returner.showColumns"
                              fullfill-column="legalName"
@@ -313,7 +328,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-4 control-label">记录人</label>
+				<label class="col-md-3 control-label">记录人</label>
 				<div class="col-md-8 controls">
                     <pyinput show-columns="recycle.recycler.showColumns"
                              fullfill-column="legalName"

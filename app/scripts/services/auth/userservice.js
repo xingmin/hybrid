@@ -1,9 +1,10 @@
 define(['../module'],function(services){
 	'use strict';
 	services.factory("userService",
-			['$http', '$rootScope', 'md5',
-			 function($http, $rootScope, md5){
+			['$http', '$rootScope', 'md5', '$q',
+			 function($http, $rootScope, md5, $q){
 		var _users = [];
+        var _allUsers = null;
 		var _init = false;
         var _getUsersPromise = function(options){
             var params = {};
@@ -28,7 +29,23 @@ define(['../module'],function(services){
 //			_init = true;
 			return _users;
 		};
-		
+        var _getAllUsersQ = function(){
+            var defered = $q.defer();
+			_getUsersPromise()
+                .success(function(data){
+                    if(data.code === 0){
+                        _allUsers = data.value;
+                    }else{
+                        _allUsers = [];
+                    }
+                    defered.resolve(_allUsers);
+                })
+                .error(function(err){
+                    _allUsers = [];
+                    defered.reject(_allUsers);
+                });
+			return defered.promise;
+        };
 		var _createNewUser = function(legalname, username, password, role, empCode, legalNamePY){
 			var userInfo = {
 				userName  : username,
@@ -99,7 +116,12 @@ define(['../module'],function(services){
                 $rootScope.$broadcast( 'users.delete', data.code);
     		});
 		};
+        var _getAllUsers = function(){
+         return _allUsers;
+        };
 		return{
+            getAllUsers : _getAllUsers,
+            getAllUsersQ: _getAllUsersQ,
             getUsersPromise: _getUsersPromise,
 			getUsers : _getUsers,
 			createNewUser : _createNewUser,

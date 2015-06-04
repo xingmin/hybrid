@@ -6,6 +6,7 @@ require.config({
 		'angular-route':'../bower_components/angular-route/angular-route',
 		'angular-md5':'../bower_components/angular-md5/angular-md5',
 		'angular-bootstrap':'../bower_components/angular-bootstrap/ui-bootstrap-tpls',
+		'angular-ui-select':'../bower_components/angular-ui-select/dist/select',
 		'bootstrap':'../bower_components/bootstrap/dist/js/bootstrap',
 		'bootstrap-toggle':'../bower_components/bootstrap-toggle/js/bootstrap2-toggle',
 		'bootstrap-datepicker':'../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker',
@@ -57,10 +58,14 @@ require.config({
 			deps:['angular'],
 			exports:'angular-bootstrap'	
 		},
-        'bootstrap-datetimepicker':{
-            deps:['angular-bootstrap'],
-            exports:'bootstrap-datetimepicker'
-        }
+		'bootstrap-datetimepicker':{
+			deps:['angular-bootstrap'],
+			exports:'bootstrap-datetimepicker'
+		},
+		'angular-ui-select':{
+			deps:['angular', 'bootstrap'],
+			exports:'angular-ui-select'
+		}
 	},
 	deps:['boot']
 });
