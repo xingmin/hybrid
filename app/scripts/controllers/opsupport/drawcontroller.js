@@ -11,6 +11,12 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                     $scope.draws = drawService.getDraws();
                 };
             });
+            $scope.allUsers = null;
+            userService.getAllUsersQ().then(
+                function(users){
+                    $scope.allUsers = users;
+                }
+            );
             $scope.scanner = {barcodeCollecter : ''};
             $scope.IsHideModal = true;
             $scope.msgs=[];
@@ -44,14 +50,6 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             };
             $scope.SEARCH = {};
             $scope.SEARCH.users=null;
-            //userService.getAllUsersQ().then(
-            //    function(users){
-            //        $scope.SEARCH.users = users;
-            //    },
-            //    function(users){
-            //        $scope.SEARCH.users = users;
-            //    }
-            //);
             $scope.SEARCH.receiver = {};
             $scope.SEARCH.refreshUser = function(py){
                 //var regex = new RegExp('^'+py);
@@ -101,18 +99,18 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 if ($scope.mode == 'edit') {
                     drawService.saveChangeDraw($scope.currentedit.newval.id,
                         $scope.currentedit.newval.consumer,
-                        $scope.DRAW.receiver.selectedItem.empCode,//$scope.currentedit.newval.receiver,
+                        ($scope.DRAW.receiver.selected ? ($scope.DRAW.receiver.selected.empCode || '') : ""),
                         $scope.currentedit.newval.remark,
-                        $scope.DRAW.drawer.selectedItem.empCode || $scope.currentedit.oldval.empCode,//$scope.currentedit.newval.drawer,
+                        ($scope.DRAW.drawer.selected ? ($scope.DRAW.drawer.selected.empCode || '') : ""),
                         $scope.currentedit.newval.drawDetails
                     );
                 }
                 if ($scope.mode == 'create') {
                     drawService.createNewDraw(
                         $scope.currentedit.newval.consumer,
-                        $scope.DRAW.receiver.selectedItem.empCode,
+                        ($scope.DRAW.receiver.selected ? ($scope.DRAW.receiver.selected.empCode || '') : ""),
                         $scope.currentedit.newval.remark,
-                        $scope.DRAW.drawer.selectedItem.empCode || AuthValue.currentUser.empCode,//$scope.currentedit.newval.drawer,
+                        ($scope.DRAW.drawer.selected ? ($scope.DRAW.drawer.selected.empCode || '') : ""),
                         $scope.currentedit.newval.drawDetails
                     );
                 }
@@ -142,7 +140,7 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 if(mode == 'create'){
                     $scope.currentedit={newval:{},oldval:{}};
                     //默认分发人为当前登录的用户
-                    $scope.currentedit.newval.drawer = AuthValue.currentUser.empCode;
+                    $scope.DRAW.drawer.selected = $filter('userEmpCodeFilter')(AuthValue.currentUser.empCode);
                 }
             };
             $scope.deleteCurrent = function() {
@@ -191,30 +189,17 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 }
                 return false;
             };
-            $scope.DRAW.receiver = {
-                "py":"",
-                "selectedItem" : {},
-                "showColumns":["empCode","legalName"],
-                "queryByPinyin":function(){
-                    return userService.getUsersPromise({py: $scope.DRAW.receiver.py});
-                }
-            };
-            $scope.DRAW.drawer = {
-                "py":"",
-                "selectedItem" : {},
-                "showColumns":["empCode","legalName"],
-                "queryByPinyin":function(){
-                    return userService.getUsersPromise({py: $scope.DRAW.drawer.py});
-                }
-            };
+            $scope.DRAW.receiver = {};
+            $scope.DRAW.drawer = {};
+
             $scope.$watch('currentedit.newval', function(){
                 $timeout(function(){
-                    $scope.DRAW.receiver.py =
-                        $scope.currentedit.newval.receiver
-                            ? $filter('userFilter')($scope.currentedit.newval.receiver): '';
-                    $scope.DRAW.drawer.py =
-                        $scope.currentedit.newval.drawer
-                            ? $filter('userFilter')($scope.currentedit.newval.drawer): '';
+                    $scope.DRAW.receiver.selected =
+                        $scope.currentedit.newval.receiver ? $filter('userEmpCodeFilter')($scope.currentedit.newval.receiver): null;
+                    $scope.DRAW.drawer.selected =
+                        $scope.mode === 'create'
+                            ? $filter('userEmpCodeFilter')(AuthValue.currentUser.empCode)
+                            :($scope.currentedit.newval.drawer ? $filter('userEmpCodeFilter')($scope.currentedit.newval.drawer): null);
                 },600);
             });
             $scope.DRAW.dateBeginPickerOpen = false;
@@ -234,26 +219,12 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             $scope.recycle.msgs = [];
             $scope.recycle.barcodeCollecter = '';
             $scope.recycle.initRecycleModal = function(){
-                $scope.recycle.recycler.py = AuthValue.currentUser.legalName;
+                $scope.recycle.recycler.selected = AuthValue.currentUser;
                 $scope.recycle.barcodeCollecter='';
                 $scope.recycle.recycleDetails=[];
             };
-            $scope.recycle.recycler = {
-                "py":"",
-                "selectedItem" : {},
-                "showColumns":["empCode","legalName"],
-                "queryByPinyin":function(){
-                    return userService.getUsersPromise({py: $scope.recycle.recycler.py});
-                }
-            };
-            $scope.recycle.returner = {
-                "py":"",
-                "selectedItem" : {},
-                "showColumns":["empCode","legalName"],
-                "queryByPinyin":function(){
-                    return userService.getUsersPromise({py: $scope.recycle.returner.py});
-                }
-            };
+            $scope.recycle.recycler = {};
+            $scope.recycle.returner = {};
             $scope.recycle.initRecycleModal();
             $scope.recycle.collectBarcode = function(event, barcode){
                 if(event.which === 13){
@@ -273,8 +244,8 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             $scope.recycle.saveRecycle = function(){
                 $scope.recycle.isRecycleSaved = false;
                 recycleService.createNewRecycle(
-                    $scope.recycle.returner.selectedItem.empCode || '',//$scope.recycle.returner,
-                    $scope.recycle.recycler.selectedItem.empCode || AuthValue.currentUser.empCode,//$scope.recycle.recycler,
+                    ($scope.recycle.returner.selected? ($scope.recycle.returner.selected.empCode || '') : ""),//$scope.recycle.returner,
+                    ($scope.recycle.recycler.selected? ($scope.recycle.recycler.selected.empCode || '') : ""),//|| AuthValue.currentUser.empCode,//$scope.recycle.recycler,
                     $scope.recycle.remark,
                     $scope.recycle.recycleDetails,
                     drawService.getDraws()

@@ -31,6 +31,10 @@ define(['../module'],function(services){
 		};
         var _getAllUsersQ = function(){
             var defered = $q.defer();
+			if(_allUsers !== null){
+				defered.resolve(_allUsers);
+				return defered.promise;
+			}
 			_getUsersPromise()
                 .success(function(data){
                     if(data.code === 0){
