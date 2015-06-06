@@ -1,4 +1,5 @@
 define(['filters/formatdatefilter',
         'filters/usetranfilter',
-        'filters/userfilter'
+        'filters/userfilter',
+        'filters/oproomsfilter'
         ],function(){});

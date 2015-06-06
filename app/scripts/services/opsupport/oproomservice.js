@@ -3,6 +3,7 @@ define(['../module', 'lodash'],function(services, _){
 	services.factory("oproomService",['$http','$rootScope', '$q',function($http, $rootScope, $q){
 		var service = {};
 		var _oprooms = [];
+		var _allOpRooms = null;
 		var _init = false;
 		var _getOprooms = function(options){
 //			if(_init){
@@ -31,6 +32,27 @@ define(['../module', 'lodash'],function(services, _){
 			var params = {};
 			if(options.name) params.name = options.name;
 			return $http.get('/opsupport/oprooms/', {params: params});
+		};
+		var _getAllOpRoomsQ = function(){
+			var defered = $q.defer();
+			if(_allOpRooms !== null){
+				defered.resolve(_allOpRooms);
+				return defered.promise;
+			}
+			_getOproomsPromise()
+				.success(function(data){
+					if(data.code === 0){
+						_allOpRooms = data.value;
+					}else{
+						_allOpRooms = [];
+					}
+					defered.resolve(_allOpRooms);
+				})
+				.error(function(err){
+					_allOpRooms = [];
+					defered.reject(_allOpRooms);
+				});
+			return defered.promise;
 		};
 		var _saveNewOproom = function(name){
 			$http.post('/opsupport/oprooms/',
@@ -75,6 +97,7 @@ define(['../module', 'lodash'],function(services, _){
                 }
             );
 		};
+		service.getAllOpRooms = _getAllOpRoomsQ
 		service.getOproomsPromise = _getOproomsPromise;
         service.getOprooms = _getOprooms;
         service.saveNewOproom = _saveNewOproom;

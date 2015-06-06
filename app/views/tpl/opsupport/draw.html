@@ -198,7 +198,18 @@
 		<div class="form-group">
 			<label  class="col-md-4 control-label">手术间</label>
 			<div class="col-md-8 controls">
-                <oproominput oproom="currentedit.newval.consumer"></oproominput>
+				<ui-select ng-model="DRAW.consumer.selected"
+						   theme="bootstrap"
+						   ng-disabled="disabled"
+						   reset-search-input="false"
+						   title="请录入手术间">
+					<ui-select-match placeholder="请录入手术间">{{$select.selected.name}}</ui-select-match>
+					<ui-select-choices repeat="oproom in DRAW.oprooms | oproomsPinyinFilter:$select.search track by $index"
+									   refresh-delay="0">
+						<div ng-bind="oproom.name"></div>
+					</ui-select-choices>
+				</ui-select>
+                <!--<oproominput oproom="currentedit.newval.consumer"></oproominput>-->
 			    <!--<input type="text" class="form-control" id="consumer"  name="consumer" ng-model="currentedit.newval.consumer" required placeholder="请录入手术间"/>-->
 			</div>
 		</div>

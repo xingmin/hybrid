@@ -98,7 +98,7 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 $scope.isSaveCompleted = false;
                 if ($scope.mode == 'edit') {
                     drawService.saveChangeDraw($scope.currentedit.newval.id,
-                        $scope.currentedit.newval.consumer,
+                        ($scope.DRAW.consumer.selected ? ($scope.DRAW.consumer.consumer.name || '') : ""),
                         ($scope.DRAW.receiver.selected ? ($scope.DRAW.receiver.selected.empCode || '') : ""),
                         $scope.currentedit.newval.remark,
                         ($scope.DRAW.drawer.selected ? ($scope.DRAW.drawer.selected.empCode || '') : ""),
@@ -107,7 +107,7 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 }
                 if ($scope.mode == 'create') {
                     drawService.createNewDraw(
-                        $scope.currentedit.newval.consumer,
+                        ($scope.DRAW.consumer.selected ? ($scope.DRAW.consumer.selected.name || '') : ""),
                         ($scope.DRAW.receiver.selected ? ($scope.DRAW.receiver.selected.empCode || '') : ""),
                         $scope.currentedit.newval.remark,
                         ($scope.DRAW.drawer.selected ? ($scope.DRAW.drawer.selected.empCode || '') : ""),
@@ -191,9 +191,17 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             };
             $scope.DRAW.receiver = {};
             $scope.DRAW.drawer = {};
-
+            $scope.DRAW.consumer = {};
+            $scope.DRAW.oprooms = null;
+            oproomService.getAllOpRooms().then(
+                function(oprooms){
+                    $scope.DRAW.oprooms = oprooms;
+                }
+            );
             $scope.$watch('currentedit.newval', function(){
                 $timeout(function(){
+                    $scope.DRAW.consumer.selected =
+                        $scope.currentedit.newval.consumer ? $filter('oproomsNameFilter')($scope.currentedit.newval.consumer): null;
                     $scope.DRAW.receiver.selected =
                         $scope.currentedit.newval.receiver ? $filter('userEmpCodeFilter')($scope.currentedit.newval.receiver): null;
                     $scope.DRAW.drawer.selected =
