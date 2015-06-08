@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var Q = require('q');
-var ResData = require("../resdata.js");
+var Result = require("./result.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
-var auth = require('../../authlib/index');
-var BarCode = require('../../models/opsupport/barcode');
+var auth = require('../authlib/index');
+var BarCode = require('../models/barcode');
 
 router.get('/barcode/getchargeinfo',
     auth.passport.authenticate('bearer', { session: false }),
@@ -14,14 +14,10 @@ router.get('/barcode/getchargeinfo',
         var barCode = req.query.barcode;
         BarCode.getChargeInfoByBarCode(barCode).then(
             function(data){
-                var resdata;
-                resdata = new ResData(0,'',data);
-                resdata.sendJson(res);
+                (new Result(0,'',data)).json(res);
             },
             function(data){
-                var resdata;
-                resdata = new ResData(data.status, data.message);
-                resdata.sendJson(res);
+                (new Result(1, data.message, null)).json(res);
             }
         );
     });

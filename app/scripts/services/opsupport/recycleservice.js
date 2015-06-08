@@ -16,7 +16,7 @@ define(['../module'],function(services){
                         return null;
                     }
                     var recycle = data.value;
-                    return recycle;//recycle����
+                    return recycle;
                 }
             ).then(
                 function(recycle){
@@ -26,7 +26,6 @@ define(['../module'],function(services){
             ).then(
                 function(recv){
                     if (!recv) return;
-                    //���µ�ǰ���������
                     var recycleDetails = recv.data.value;
                     angular.forEach(recycleDetails, function(recycleDetail){
                         draws.every(function(draw){

@@ -21,11 +21,11 @@
         }
     },
     "his": {
-        "user": "liuxingmin@172.30.244.81",
-        "password": "xflxmin17",
-        "server": "172.30.244.67",
+        "user": "sa",
+        "password": "*",
+        "server": "*",
         "database": "chisdb_yszx",
-        "driver":"tds"
+        "connectTimeout": 0
     },
     "hybrid-sql":{
       "user": "hybrid",

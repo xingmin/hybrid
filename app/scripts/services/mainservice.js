@@ -8,5 +8,6 @@ define(['./auth/userservice',
     './opsupport/drawService',
     './opsupport/recycleService',
     './accessentryservice',
-    './opsupport/oproomservice'
+    './opsupport/oproomservice',
+    './hisservice'
 ],function(){});

@@ -7,7 +7,6 @@ var ResData = require("../resdata.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
 var auth = require('../../authlib/index');
-var BarCode = require('../../models/opsupport/barcode');
 
 router.post('/create',
 	auth.passport.authenticate('bearer', { session: false }),

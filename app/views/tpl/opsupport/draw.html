@@ -386,6 +386,9 @@
 						<input type="checkbox"  ng-model="detail.useFlag" ng-true-value="1" ng-false-value="0"/>
 					</td>
 					<td>
+						<span tooltipHtmlUnsafe="{{detail.chargeHtml}}">{{detail.chargeInfo.inpatientNo}}</span>
+					</td>
+					<td>
 						<a href="javascript:void(0);" ng-click="recycle.deleteBarcode(recycle.recycleDetails, detail)">删除</a >
 					</td>
 				</tr>

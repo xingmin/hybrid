@@ -2,9 +2,9 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
     'use strict';
     controllers.controller('drawController',
         ['$scope','$http','$timeout', '$filter',
-            'drawService','recycleService','indexedDbService','userService','AuthValue','oproomService',
+            'drawService','recycleService','indexedDbService','userService','AuthValue','oproomService','hisService',
         function($scope, $http, $timeout,$filter,
-                 drawService, recycleService, indexedDbService, userService, AuthValue, oproomService){
+                 drawService, recycleService, indexedDbService, userService, AuthValue, oproomService, hisService){
             $scope.draws = [];//drawService.queryDraws();
             $scope.$on('draws.refresh', function(event, status){
                 if (status){
@@ -234,12 +234,35 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             $scope.recycle.recycler = {};
             $scope.recycle.returner = {};
             $scope.recycle.initRecycleModal();
+            $scope.recycle.createBarCodeHtml = function(chargeInfo){
+                return "<table class=\"table table-bordered table-hover\">"+
+                    "<tr>"+
+                        "<th>住院号</th>"+
+                        "<th>姓名</th>"+
+                        "<th>价格</th>"+
+                    "</tr>"+
+                    "<tr>"+
+                        "<td>"+chargeInfo.inpatientNo+"</td>"+
+                        "<td>"+chargeInfo.name+"</td>"+
+                        "<td>"+chargeInfo.chargePrice+"</td>"+
+                    "</tr>"+
+                "</table>"
+            };
             $scope.recycle.collectBarcode = function(event, barcode){
                 if(event.which === 13){
                     if( !angular.isArray($scope.recycle.recycleDetails)){
                         $scope.recycle.recycleDetails=[];
                     }
                     $scope.recycle.recycleDetails.push({'barcode':barcode, 'useFlag':0});
+                    hisService.getBarCodeChargeInfo(barcode).then(
+                        function(chargeInfo){
+                            var detail = _.find($scope.recycle.recycleDetails, {barcode: barcode});
+                            if(detail) {
+                                detail.chargeInfo = chargeInfo;
+                                detail.chargeHtml = $scope.recycle.createBarCodeHtml(chargeInfo);
+                            }
+                        }
+                    );
                     $scope.recycle.barcodeCollecter = '';
                     event.preventDefault();
                 }
