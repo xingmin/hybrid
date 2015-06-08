@@ -2,6 +2,7 @@ var sql = require('mssql');
 var customdefer = require('../customdefer');
 var DrawDetail = require('./drawdetail');
 var Q = require('q');
+var Config = require('../config');
 
 function Draw(obj){
     this.id = obj.id;
@@ -16,7 +17,7 @@ function Draw(obj){
 Draw.prototype.init = function(id){
 	this.id = id;
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	
 	var conn = new sql.Connection(config);
 	var that = this;
@@ -43,7 +44,7 @@ Draw.prototype.init = function(id){
 
 Draw.prototype.getDrawRecordsPageInfo = function(dateBegin, dateEnd, barcode, consumer, receiver, pageSize){
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	var conn = new sql.Connection(config);
 	var promise = customdefer.conn_defered(conn).then(function(conn){
 		var request = new sql.Request(conn);
@@ -72,7 +73,7 @@ Draw.prototype.getDrawRecordsPageInfo = function(dateBegin, dateEnd, barcode, co
 
 Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd, barcode, consumer, receiver, pageNo, pageSize){
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	var conn = new sql.Connection(config);
 	var promise = customdefer.conn_defered(conn).then(function(conn){
 		var request = new sql.Request(conn);
@@ -111,7 +112,7 @@ Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd, barcode, cons
 
 Draw.prototype.saveNewDrawRecord = function(){
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	var conn = new sql.Connection(config);
 	var that = this;
 	
@@ -148,7 +149,7 @@ Draw.prototype.saveNewDrawRecord = function(){
 };
 Draw.prototype.updateDrawRecord = function(){
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	var conn = new sql.Connection(config);
 	var that = this;
 	
@@ -185,7 +186,7 @@ Draw.prototype.updateDrawRecord = function(){
 
 Draw.prototype.deleteDrawRecord = function(){
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	var conn = new sql.Connection(config);
 	var that = this;
 	
@@ -210,7 +211,7 @@ Draw.prototype.deleteDrawRecord = function(){
 
 Draw.prototype.getDrawDetails = function(){
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	var conn = new sql.Connection(config);
 	var that = this;
 	var promise = customdefer.conn_defered(conn).then(function(conn){

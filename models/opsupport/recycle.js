@@ -2,6 +2,7 @@ var sql = require('mssql');
 var customdefer = require('../customdefer');
 var RecycleDetail = require('./drawdetail');
 var Q = require('q');
+var Config = require('../config');
 
 function Recycle(obj){
     this.id = obj.id;
@@ -16,7 +17,7 @@ function Recycle(obj){
 Recycle.prototype.init = function(id){
 	this.id = id;
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	
 	var conn = new sql.Connection(config);
 	var that = this;
@@ -43,7 +44,7 @@ Recycle.prototype.init = function(id){
 
 Recycle.prototype.saveNewRecycle = function(){
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	var conn = new sql.Connection(config);
 	var that = this;
 	
@@ -86,7 +87,7 @@ Recycle.prototype.saveNewRecycle = function(){
 
 Recycle.prototype.getRecycleDetailsByRecycleId = function(recycleId){
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	var conn = new sql.Connection(config);
 	var promise = customdefer.conn_defered(conn).then(function(conn){
 		var request = new sql.Request(conn);
@@ -118,7 +119,7 @@ Recycle.prototype.getRecycleDetailsByRecycleId = function(recycleId){
 
 Recycle.getRecyclesByRecycleIds = function(recycleIds){
 	var defered = Q.defer();
-	var config = require('../connconfig').hybrid;
+	var config = Config.get('hybrid-sql');
 	var conn = new sql.Connection(config);
 	var promise = customdefer.conn_defered(conn).then(function(conn){
 		var request = new sql.Request(conn);

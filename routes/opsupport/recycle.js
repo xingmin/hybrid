@@ -6,13 +6,12 @@ var Q = require('q');
 var ResData = require("../resdata.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
-var passport = require('passport');
-var rbac = require('../../authlib/rbac/initrbac');
-var RBACMidware = require('../../authlib/rbac/rbacmidware');
+var auth = require('../../authlib/index');
+var BarCode = require('../../models/opsupport/barcode');
 
 router.post('/create',
-	passport.authenticate('bearer', { session: false }),
-	RBACMidware.can(rbac, 'recycle', 'opsupport'),
+	auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
 	function(req, res) {
 	var returner = req.body.returner;
 	var recycler = req.body.recycler;
@@ -50,8 +49,8 @@ router.post('/create',
 });
 
 router.get('/:id',
-	passport.authenticate('bearer', { session: false }),
-	RBACMidware.can(rbac, 'recycle', 'opsupport'),
+	auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
 	function(req, res) {
 	var recyleId = req.param('id');
 	var recyle = new Recycle({});
@@ -71,8 +70,8 @@ router.get('/:id',
 });
 
 router.get('/detail/:recycleid',
-	passport.authenticate('bearer', { session: false }),
-	RBACMidware.can(rbac, 'recycle', 'opsupport'),
+	auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
 	function(req, res) {
 	var recyleId = req.param('recycleid');
 	Recycle.prototype.getRecycleDetailsByRecycleId(recyleId)
@@ -91,8 +90,8 @@ router.get('/detail/:recycleid',
 });
 
 router.post('/',
-	passport.authenticate('bearer', { session: false }),
-	RBACMidware.can(rbac, 'recycle', 'opsupport'),
+	auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
 	function(req, res) {
 	var arrRecycleId = req.body.arrRecycleId;
 	Recycle.getRecyclesByRecycleIds(arrRecycleId)
@@ -108,4 +107,5 @@ router.post('/',
 				}
 		);
 });
+
 module.exports = router;
