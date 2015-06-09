@@ -8,7 +8,7 @@ var auth = require('../authlib/index');
 var BarCode = require('../models/barcode');
 
 router.get('/barcode/getchargeinfo',
-    auth.passport.authenticate('bearer', { session: false }),
+    //auth.passport.authenticate('bearer', { session: false }),
     //auth.RBACMidware.can(auth.rbac, 'query-barcode-info', 'his'),
     function(req, res) {
         var barCode = req.query.barcode;

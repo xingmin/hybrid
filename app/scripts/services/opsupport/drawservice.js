@@ -1,6 +1,6 @@
-define(['../module', 'moment'],function(services, moment){
+define(['../module', 'moment', 'lodash'],function(services, moment, _){
 	'use strict';
-	services.factory("drawService", ['$http', '$rootScope' ,'recycleService',function($http, $rootScope,recycleService){
+	services.factory("drawService", ['$http', '$rootScope' ,'recycleService', 'hisService',function($http, $rootScope,recycleService, hisService){
         var service  = {};
         var _draws = null;
         var _queryParam={
@@ -29,6 +29,25 @@ define(['../module', 'moment'],function(services, moment){
             };
             return $http.get('/opsupport/draw/q',{params: params});
         };
+        var _refreshDrawDetails = function(arrDrawDetail){
+            angular.forEach(arrDrawDetail, function(detail){
+                hisService.getBarCodeChargeInfo(detail.barcode).then(
+                    function(chargeInfo){
+                        if(!chargeInfo) return;
+                        if(detail) {
+                            detail.chargeInfo = chargeInfo;
+                            detail.chargeHtml = hisService.convertBarCodeInfoToHtml(chargeInfo);
+                        }
+                    }
+                );
+                if(!detail || !detail.recycleId) return;
+                recycleService.getRecycleById(detail.recycleId).then(
+                    function(recv){
+                        detail.recycle = recv.data.value;
+                    }
+                );
+            });
+        };
         var _queryDraws = function() {
             _getDrawsByDate(_queryParam.dateBegin,
                 _queryParam.dateEnd,
@@ -55,14 +74,7 @@ define(['../module', 'moment'],function(services, moment){
                                 return;
                             }
                             draw.drawDetails = data.value;
-                            angular.forEach(draw.drawDetails, function (drawDetail) {
-                                if(!drawDetail || !drawDetail.recycleId) return;
-                                recycleService.getRecycleById(drawDetail.recycleId).success(
-                                    function (data) {
-                                        drawDetail.recycle = data.value;
-                                    }
-                                );
-                            });
+                            _refreshDrawDetails(draw.drawDetails);
                         });
                     });
                 },
@@ -111,13 +123,7 @@ define(['../module', 'moment'],function(services, moment){
                         }
                         _getDrawDetailsByDrawId(newDraw.id).success(function(data){
                             newDraw.drawDetails = data.value;
-                            angular.forEach(newDraw.drawDetails, function(detail){
-                                recycleService.getRecycleById(detail.recycleId).then(
-                                    function(recv){
-                                        detail.recycle = recv.data.value;
-                                    }
-                                );
-                            });
+                            _refreshDrawDetails(newDraw.drawDetails);
                         });
                     },
                     function(err){
@@ -144,19 +150,13 @@ define(['../module', 'moment'],function(services, moment){
                     }else{
                         return null;
                     }
-                })//�����ݿ���ر���ɹ����Details��¼
+                })
                 .then(
                 function(newDraw){
                     if(!newDraw){ return; }
                     _getDrawDetailsByDrawId(newDraw.id).success(function(data){
                         newDraw.drawDetails = data.value;
-                        angular.forEach(newDraw.drawDetails, function(detail){
-                            recycleService.getRecycleById(detail.recycleId).success(
-                                function(data){
-                                    detail.recycle = data.value;
-                                }
-                            );
-                        });
+                        _refreshDrawDetails(newDraw.drawDetails);
                     });
                 },
                 function(err){

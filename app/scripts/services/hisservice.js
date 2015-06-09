@@ -1,4 +1,4 @@
-define(['./module', 'lodash'],function(services, _){
+define(['./module', 'lodash', 'moment'],function(services, _, moment){
 	'use strict';
 	services.factory("hisService",['$http','$q',function($http, $q){
 		var service = {};
@@ -23,8 +23,17 @@ define(['./module', 'lodash'],function(services, _){
 				});
 			return defered.promise;
 		};
-
+		var _convertBarCodeInfoToHtml = function(chargeInfo){
+			if (!chargeInfo) return null;
+			return "<ul class='list-unstyled text-left'>"+
+				"<li>ID:"+chargeInfo.inpatientNo+"</li>"+
+				"<li>姓名:"+chargeInfo.name+"</li>"+
+				"<li>价格:"+chargeInfo.chargePrice+"</li>"+
+				"<li>日期:"+ moment(chargeInfo.inputDate).format('YYYY-MM-DD HH:mm')+"</li>"+
+				"</ul>"
+		};
 		service.getBarCodeChargeInfo = _getBarCodeChargeInfo;
+		service.convertBarCodeInfoToHtml = _convertBarCodeInfoToHtml;
 		return service;
 	}]);
 });

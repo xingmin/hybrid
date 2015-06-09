@@ -1,7 +1,36 @@
 define(['../module'],function(services){
 	'use strict';
-	services.factory("recycleService",['$http', '$rootScope',function($http, $rootScope){
+	services.factory("recycleService",['$http', '$rootScope','hisService',function($http, $rootScope, hisService){
         var _service = {};
+        var _refreshRecycleDetails = function(recycleDetails, draws){
+            angular.forEach(recycleDetails, function(recycleDetail){
+                draws.every(function(draw){
+                    var founded = draw.drawDetails.every(function(drawDetail){
+                        if(recycleDetail.id === drawDetail.id){
+                            drawDetail.useFlag = recycleDetail.useFlag;
+                            drawDetail.recycleId = recycleDetail.recycleId;
+                            _getRecycleById(drawDetail.recycleId).then(
+                                function(recv){
+                                    drawDetail.recycle = recv.data.value;
+                                }
+                            );
+                            hisService.getBarCodeChargeInfo(drawDetail.barcode).then(
+                                function(chargeInfo){
+                                    if(!chargeInfo) return;
+                                    if(drawDetail) {
+                                        drawDetail.chargeInfo = chargeInfo;
+                                        drawDetail.chargeHtml = hisService.convertBarCodeInfoToHtml(chargeInfo);
+                                    }
+                                }
+                            );
+                            return false;
+                        }
+                        return true;
+                    });
+                    return founded;
+                });
+            });
+        };
 		var _createNewRecycle = function(returner, recycler, remark, recycleDetails, draws){
             $http.post('/opsupport/recycle/create/',{
                 'returner':returner,
@@ -27,24 +56,7 @@ define(['../module'],function(services){
                 function(recv){
                     if (!recv) return;
                     var recycleDetails = recv.data.value;
-                    angular.forEach(recycleDetails, function(recycleDetail){
-                        draws.every(function(draw){
-                            var founded = draw.drawDetails.every(function(drawDetail){
-                                if(recycleDetail.id === drawDetail.id){
-                                    drawDetail.useFlag = recycleDetail.useFlag;
-                                    drawDetail.recycleId = recycleDetail.recycleId;
-                                    _getRecycleById(drawDetail.recycleId).then(
-                                        function(recv){
-                                            drawDetail.recycle = recv.data.value;
-                                        }
-                                    );
-                                    return false;
-                                }
-                                return true;
-                            });
-                            return founded;
-                        });
-                    });
+                    _refreshRecycleDetails(recycleDetails, draws);
                 }
             ).then(
                 null,

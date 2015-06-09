@@ -73,7 +73,8 @@
 		<th>记录时间</th>
 		<th>备注</th>
 		<th>条形码</th>
-		<th>使用情况</th>
+		<th>使用</th>
+		<th>收费</th>
 		<th>回收者</th>
 		<th>送还人</th>
 		<th>回收时间</th>
@@ -109,6 +110,8 @@
         </td>
 		<td>
 		</td>
+		<td>
+		</td>
         <td>
             <edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
             <delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
@@ -138,6 +141,9 @@
 			</td>
 			<td>
 			    {{drawDetail.useFlag | useTranFilter}}
+			</td>
+			<td>
+				<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>
 			</td>
 			<td>
 			    {{drawDetail.recycle.recycler | userFilter}}
@@ -276,7 +282,7 @@
 					{{drawDetail.useFlag | useTranFilter}}
 				</td>
 				<td>
-				{{drawDetail.recycle.recycler | userFilter }}{{drawDetail.recycle.id}}
+				{{drawDetail.recycle.recycler | userFilter }}
 				</td>
 				<td>
 				 {{drawDetail.recycle.recycleTime | formatDateFilter}}
@@ -376,17 +382,18 @@
 				<tr>
 					<th>条形码</th>
 			    	<th>使用情况(使用√)</th>
+					<th>收费</th>
 			    	<th></th>
 			    </tr>
 				<tr ng-repeat="detail in recycle.recycleDetails track by $index">
 			        <td>
-			        	{{detail.barcode}}			        	
+			        	{{detail.barcode}}
 					</td>
 					<td>
 						<input type="checkbox"  ng-model="detail.useFlag" ng-true-value="1" ng-false-value="0"/>
 					</td>
 					<td>
-						<span tooltipHtmlUnsafe="{{detail.chargeHtml}}">{{detail.chargeInfo.inpatientNo}}</span>
+						<span tooltip-html-unsafe="{{detail.chargeHtml}}">{{detail.chargeInfo.inpatientNo}}</span>
 					</td>
 					<td>
 						<a href="javascript:void(0);" ng-click="recycle.deleteBarcode(recycle.recycleDetails, detail)">删除</a >
@@ -398,12 +405,3 @@
 	</div>
 </editdlg>
 </form>
-
-<script type="text/javascript">
-$('.datepicker').datepicker({
-	format : 'yyyy-mm-dd'
-});
-</script>
-
-
-

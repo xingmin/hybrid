@@ -22,10 +22,10 @@
     },
     "his": {
         "user": "sa",
-        "password": "*",
-        "server": "*",
+        "password": "system",
+        "server": "172.30.244.59",
         "database": "chisdb_yszx",
-        "connectTimeout": 0
+        "connectionTimeout": 60000
     },
     "hybrid-sql":{
       "user": "hybrid",
