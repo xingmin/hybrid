@@ -1,14 +1,15 @@
 define(['../module', "lodash", "moment"],function(controllers, _, moment){
     'use strict';
-    controllers.controller('drawController',
+    controllers.controller('recycleController',
         ['$scope','$http','$timeout', '$filter',
             'drawService','recycleService','indexedDbService','userService','AuthValue','oproomService','hisService',
         function($scope, $http, $timeout,$filter,
                  drawService, recycleService, indexedDbService, userService, AuthValue, oproomService, hisService){
-            $scope.draws = [];//drawService.queryDraws();
+            $scope.RECYCLE = {};
+            $scope.RECYCLE.recycles = [];//drawService.queryDraws();
             $scope.$on('draws.refresh', function(event, status){
                 if (status){
-                    $scope.draws = drawService.getDraws();
+                    $scope.RECYCLE.recycles = drawService.getDraws();
                 };
             });
             $scope.allUsers = null;

@@ -62,11 +62,16 @@ define(['./module', 'jquery','lodash'],function(directives, $,_){
                         $scope.draws
 					);
 				};
+				$scope.$on('recycles.create', function(evt, data){
+					if(data && data.status){
+						$element.children[0].modal('hide');
+					}
+				});
 			},
 			replace: true,
 			link: function(scope, element, attrs){
 				element.bind("click",function(){
-					$(element).modal('open');
+					$(element).modal('show');
 				});
 			}
 		}
@@ -76,15 +81,32 @@ define(['./module', 'jquery','lodash'],function(directives, $,_){
 		return{
 			restrict: 'AE',
 			require: 'ngModel',
-			templateUrl: 'views/component/delrecycle.tpl.html',
 			controller: function($scope, $element, $attrs){
-				$scope.doDelete = function(){
-					var recycleId = scope.deletedata.recycleId;
-					recycleService.deleteRecycle(recycleId).then(
-						function(stat){
-							$element.children[0].modal('hide');
-						}
-					);
+                var ModalInstanceCtrl = function ($scope, $modalInstance) {
+                    //$scope.productSelected = function (productID) {
+                    //	$modalInstance.close(productID);
+                    //};
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss("cancel");
+                    };
+                };
+				$scope.openModal = function () {
+					var modalInstance = $modal.open({
+							templateUrl: "views/component/delrecycle.tpl.html",
+							controller: ModalInstanceCtrl,
+							windowClass: "app-modal-window"
+					});
+					modalInstance.result.then(function () {
+                        var recycleId = $scope.deletedata.recycleId;
+                        recycleService.deleteRecycle(recycleId).then(
+                            function(stat){
+                                console.log('xxx');
+                            }
+                        );
+
+					}, function () {
+						// function executed on modal dismissal
+					});
 				};
 			},
 			replace: false,

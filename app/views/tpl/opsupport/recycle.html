@@ -31,72 +31,48 @@
 	</li>
 	<li class="col-md-2">
 		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="queryParam.barcode" placeholder="条形码"/>
-
 	</li>
-	<!--<li class="col-md-1">-->
-		<!--<ui-select ng-model="SEARCH.receiver.selected"-->
-				   <!--theme="bootstrap"-->
-				   <!--ng-disabled="disabled"-->
-				   <!--reset-search-input="false"-->
-				   <!--title="选择领用人">-->
-			<!--<ui-select-match placeholder="选择领用人">{{$select.selected.legalName}}</ui-select-match>-->
-			<!--<ui-select-choices repeat="user in SEARCH.users track by $index"-->
-							   <!--refresh="SEARCH.refreshUser($select.search)"-->
-							   <!--refresh-delay="300">-->
-				<!--<div ng-bind="user.legalName"></div>-->
-			<!--</ui-select-choices>-->
-		<!--</ui-select>-->
-	<!--</li>-->
-	<!--<li class="col-md-1">-->
-		<!--<input type="text" class="form-control col-md-3" id="qconsumer"  name="qconsumer" ng-model="queryParam.consumer" placeholder="手术间"/>-->
-	<!--</li>-->
 	<li class="col-md-3">
-
 		<button type="button" class="btn btn-primary" ng-click="query()">查询</button>
-
 		<button type="button" data-target="#recyclemodal" data-toggle="modal"  class="btn btn-primary" ng-click="recycle.initRecycleModal()">回收</button>
-
 		<exportbtn data-target="#recyclebox"></exportbtn>
 	</li>
-
 </ul>
 
 <div  id="recyclebox">
 <table class="table table-bordered table-hover">
 	<tr>
 		<th>ID</th>
-		<th>手术间</th>
-		<th>领用人</th>
-    	<th>记录人</th>
-		<th>记录时间</th>
-		<th>备注</th>
+		<th>归还人</th>
+		<th>记录人</th>
+    	<th>记录时间</th>
 		<th>条形码</th>
 		<th>使用</th>
 		<th>收费</th>
-		<th>回收者</th>
-		<th>送还人</th>
-		<th>回收时间</th>
+		<th>手术间</th>
+		<th>领用人</th>
+		<th>记录人</th>
+		<th>发放时间</th>
+		<th>备注</th>
     	<th></th>
     </tr>
-    <tbody  ng-repeat="draw in draws">
+    <tbody  ng-repeat="recycle in RECYCLE.recycles">
     <tr>
         <td>
-    		{{draw.id}}
+    		{{recycle.id}}
         </td>
     	<td>
-    		{{draw.consumer}}
+    		{{recycle.returner | userFilter}}
         </td>
         <td>
-    		{{draw.receiver | userFilter}}
+    		{{recycle.recycler | userFilter}}
         </td>
         <td>
-    		{{draw.drawer | userFilter}}
+			{{recycle.recycleTime | formatDateFilter}}
         </td>
         <td>
-    		{{draw.drawTime | formatDateFilter}}
         </td>
         <td>
-    		{{draw.remark}}
         </td>
         <td>
         </td>
@@ -111,46 +87,34 @@
 		<td>
 		</td>
         <td>
-            <edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
-            <delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+            <delrecycle ng-Model="recycle"><a href="javascript:void(0);">删除</a ></delrecycle>
 		</td>
 	</tr>
-	<tr ng-repeat="drawDetail in draw.drawDetails">
+	<tr ng-repeat="recycleDetail in recycle.recycleDetails">
+	        <td></td> <td></td> <td></td> <td></td>
 	        <td>
-    		 
-	        </td>
-	    	<td>
-	    		 
+				{{recycleDetail.barcode}}
 	        </td>
 	        <td>
-	    	 
+				{{recycleDetail.useFlag | useTranFilter}}
 	        </td>
 	        <td>
-	    	 
-	        </td>
-	        <td>
-	    		 
-	        </td>
-	        <td>
-	    	 
-	        </td>
-	        <td>
-                {{drawDetail.barcode}}
+				<span tooltip-html-unsafe="{{recycleDetail.chargeHtml}}">{{recycleDetail.chargeInfo.inpatientNo}}</span>
 			</td>
 			<td>
-			    {{drawDetail.useFlag | useTranFilter}}
+				{{recycleDetail.consumer}}
 			</td>
 			<td>
-				<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>
+				{{recycleDetail.receiver | userFilter}}
 			</td>
 			<td>
-			    {{drawDetail.recycle.recycler | userFilter}}
+				{{recycleDetail.drawer | userFilter}}
 			</td>
             <td>
-                {{drawDetail.recycle.returner | userFilter}}
+				{{recycleDetail.drawTime | formatDateFilter}}
             </td>
 			<td>
-			    {{drawDetail.recycle.recycleTime | formatDateFilter}}
+			    {{recycleDetail.remark}}
 			</td>
 			<td>
 			</td>
@@ -188,6 +152,3 @@
 		</div>
  </div>
  </div>
-
-
-
