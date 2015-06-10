@@ -1,8 +1,9 @@
-define(['../module'],function(services){
+define(['../module', 'lodash'],function(services, _){
 	'use strict';
 	services.factory("recycleService",['$http', '$rootScope','hisService',function($http, $rootScope, hisService){
         var _service = {};
         var _refreshRecycleDetails = function(recycleDetails, draws){
+            if(!_.isArray(draws) && draws.length<=0) return;
             angular.forEach(recycleDetails, function(recycleDetail){
                 draws.every(function(draw){
                     var founded = draw.drawDetails.every(function(drawDetail){

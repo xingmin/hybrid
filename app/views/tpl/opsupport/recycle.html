@@ -1,0 +1,193 @@
+<div class="title control-group">
+	
+	<h3>回收记录</h3>
+</div>
+<msgbox messages="msgs"></msgbox>
+<ul class="list-inline">
+	<li class="col-md-2">
+		<div class="input-group">
+			<input type="text"
+				   class="form-control"
+				   ng-model="queryParam.dateBegin"
+				   datetime-picker="yyyy-MM-dd HH:mm"
+				   is-open="RECYCLE.dateBeginPickerOpen">
+			<div class="input-group-addon" ng-click="DRAW.toggleDateBeginPicker($event)">
+				<i class="glyphicon glyphicon-calendar"></i>
+			</div>
+		</div>
+	</li>
+	<li class="col-md-2">
+		<div class="input-group">
+			<input type="text"
+				   class="form-control"
+				   ng-model="queryParam.dateEnd"
+				   datetime-picker="yyyy-MM-dd HH:mm"
+				   is-open="RECYCLE.dateEndPickerOpen">
+			<div class="input-group-addon" ng-click="DRAW.toggleDateEndPicker($event)">
+				<i class="glyphicon glyphicon-calendar"></i>
+			</div>
+		</div>
+
+	</li>
+	<li class="col-md-2">
+		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="queryParam.barcode" placeholder="条形码"/>
+
+	</li>
+	<!--<li class="col-md-1">-->
+		<!--<ui-select ng-model="SEARCH.receiver.selected"-->
+				   <!--theme="bootstrap"-->
+				   <!--ng-disabled="disabled"-->
+				   <!--reset-search-input="false"-->
+				   <!--title="选择领用人">-->
+			<!--<ui-select-match placeholder="选择领用人">{{$select.selected.legalName}}</ui-select-match>-->
+			<!--<ui-select-choices repeat="user in SEARCH.users track by $index"-->
+							   <!--refresh="SEARCH.refreshUser($select.search)"-->
+							   <!--refresh-delay="300">-->
+				<!--<div ng-bind="user.legalName"></div>-->
+			<!--</ui-select-choices>-->
+		<!--</ui-select>-->
+	<!--</li>-->
+	<!--<li class="col-md-1">-->
+		<!--<input type="text" class="form-control col-md-3" id="qconsumer"  name="qconsumer" ng-model="queryParam.consumer" placeholder="手术间"/>-->
+	<!--</li>-->
+	<li class="col-md-3">
+
+		<button type="button" class="btn btn-primary" ng-click="query()">查询</button>
+
+		<button type="button" data-target="#recyclemodal" data-toggle="modal"  class="btn btn-primary" ng-click="recycle.initRecycleModal()">回收</button>
+
+		<exportbtn data-target="#recyclebox"></exportbtn>
+	</li>
+
+</ul>
+
+<div  id="recyclebox">
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>ID</th>
+		<th>手术间</th>
+		<th>领用人</th>
+    	<th>记录人</th>
+		<th>记录时间</th>
+		<th>备注</th>
+		<th>条形码</th>
+		<th>使用</th>
+		<th>收费</th>
+		<th>回收者</th>
+		<th>送还人</th>
+		<th>回收时间</th>
+    	<th></th>
+    </tr>
+    <tbody  ng-repeat="draw in draws">
+    <tr>
+        <td>
+    		{{draw.id}}
+        </td>
+    	<td>
+    		{{draw.consumer}}
+        </td>
+        <td>
+    		{{draw.receiver | userFilter}}
+        </td>
+        <td>
+    		{{draw.drawer | userFilter}}
+        </td>
+        <td>
+    		{{draw.drawTime | formatDateFilter}}
+        </td>
+        <td>
+    		{{draw.remark}}
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+		<td>
+		</td>
+		<td>
+		</td>
+        <td>
+            <edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
+            <delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+		</td>
+	</tr>
+	<tr ng-repeat="drawDetail in draw.drawDetails">
+	        <td>
+    		 
+	        </td>
+	    	<td>
+	    		 
+	        </td>
+	        <td>
+	    	 
+	        </td>
+	        <td>
+	    	 
+	        </td>
+	        <td>
+	    		 
+	        </td>
+	        <td>
+	    	 
+	        </td>
+	        <td>
+                {{drawDetail.barcode}}
+			</td>
+			<td>
+			    {{drawDetail.useFlag | useTranFilter}}
+			</td>
+			<td>
+				<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>
+			</td>
+			<td>
+			    {{drawDetail.recycle.recycler | userFilter}}
+			</td>
+            <td>
+                {{drawDetail.recycle.returner | userFilter}}
+            </td>
+			<td>
+			    {{drawDetail.recycle.recycleTime | formatDateFilter}}
+			</td>
+			<td>
+			</td>
+	</tr>
+	</tbody>
+</table>
+</div>
+  <div class="container-fluid">
+ <div class="row">
+ 		<div class="pull-left">
+			<pagination 
+				total-items="queryParam.totalItems"
+				items-per-page="queryParam.pageSize"
+				ng-model="queryParam.pageNo"
+				class="pagination"
+				boundary-links="true"
+				max-size ="4"
+				first-text="首页"
+				previous-text="前页"
+				next-text="后页"
+				last-text="最后"
+				ng-change="query()">
+			</pagination>
+		</div>
+		<div class="btn-group pagination" style="float:left">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-target="#test" data-toggle="collapse">
+		    设置<span class="caret"></span>
+		    </button>
+		    <div class="dropdown-menu collapse" id="test">
+				<div class="input-group">
+			         <span class="input-group-addon">页大小</span>
+			         <input type="text" id="pagesize" class="form-control"  name="pagesize" ng-model="queryParam.pageSize" placeholder="页大小"/>
+			     </div>
+		    </div>
+		</div>
+ </div>
+ </div>
+
+
+
