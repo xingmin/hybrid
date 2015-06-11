@@ -4,6 +4,7 @@ var Recycle = require("../../models/opsupport/recycle.js");
 var RecycleDetail = require("../../models/opsupport/drawdetail.js");
 var Q = require('q');
 var ResData = require("../resdata.js");
+var Result = require("../result.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
 var auth = require('../../authlib/index');
@@ -106,5 +107,40 @@ router.post('/',
 				}
 		);
 });
+
+router.get('/',
+	auth.passport.authenticate('bearer', { session: false }),
+	//auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
+	function(req, res) {
+		var dateBegin = req.query.b;
+		var dateEnd = req.query.e;
+		var barcode = req.query.barcode;
+		var returner = req.query.returner;
+		var recycler = req.query.recycler;
+		var pageNo = req.query.pageno;
+		var pageSize = req.query.pagesize;
+
+		if (!pageSize || isNaN(pageSize)) {
+			pageSize = 5;
+		}
+		if (!pageNo || isNaN(pageNo)) {
+			pageNo = 1;
+		}
+		var qb = new Date(dateBegin);
+		var qe = new Date(dateEnd);
+
+		var promise1 = Recycle.prototype.getRecyclesPageInfo(qb, qe, barcode, returner, recycler, pageSize);
+		var promise2 = Recycle.prototype.getRecyclesByCriterial(qb, qe, barcode, returner, recycler, pageNo, pageSize);
+
+		Q.all([promise1, promise2])
+			.then(
+			function(arrData){
+				(new Result(0,'',{'pageInfo':arrData[0], 'pageData': arrData[1]})).json(res);
+			},
+			function(data){
+				resdata = (new Result(data.status, data.message)).json(res);
+			}
+		);
+	});
 
 module.exports = router;

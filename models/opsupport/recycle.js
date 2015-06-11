@@ -157,4 +157,74 @@ Recycle.getRecyclesByRecycleIds = function(recycleIds){
 	});
 	return defered.promise;
 };
+
+Recycle.prototype.getRecyclesPageInfo = function(dateBegin, dateEnd, barcode, returner, recycler, pageSize){
+	var defered = Q.defer();
+	var config = Config.get('hybrid-sql');
+	var conn = new sql.Connection(config);
+	var promise = customdefer.conn_defered(conn).then(function(conn){
+		var request = new sql.Request(conn);
+		request.input('BDate', sql.DateTime, dateBegin);
+		request.input('EDate', sql.DateTime, dateEnd);
+		request.input('Barcode', sql.VarChar(50), barcode);
+		request.input('Returner', sql.NVarChar(100), returner);
+		request.input('Recycler', sql.NVarChar(100), recycler);
+		request.input('PageSize', sql.Int, pageSize);
+		return customdefer.request_defered(request, 'proc_getRecyclesPageInfo');
+	}).then(function(data){
+		var records = data.recordset[0];
+		if(records && records.length>0){
+			defered.resolve({'totalRows':records[0].TotalRows||0, 'pageCount':records[0].PageCount||0});
+		}else{
+			defered.reject(new Error('proc_getRecyclesPageInfo error'));
+		}
+	},function(err){
+		if (err) {
+			console.log("executing proc_getDrawRecordPageInfo Error: " + err.message);
+		}
+		defered.reject(err);
+	});
+	return defered.promise;
+};
+
+Recycle.prototype.getRecyclesByCriterial = function(dateBegin, dateEnd, barcode, returner, recycler, pageNo, pageSize){
+	var defered = Q.defer();
+	var config = Config.get('hybrid-sql');
+	var conn = new sql.Connection(config);
+	var promise = customdefer.conn_defered(conn).then(function(conn){
+		var request = new sql.Request(conn);
+		request.input('BDate', sql.DateTime, dateBegin);
+		request.input('EDate', sql.DateTime, dateEnd);
+		request.input('Barcode', sql.VarChar(50), barcode);
+		request.input('Returner', sql.NVarChar(100), returner);
+		request.input('Recycler', sql.NVarChar(100), recycler);
+		request.input('PageNo', sql.Int, pageNo);
+		request.input('PageSize', sql.Int, pageSize);
+		return customdefer.request_defered(request, 'proc_getRecyclesByCriterial');
+	}).then(function(data){
+		var recycles = [];
+		data.recordset[0].forEach(function(value){
+            recycles.push((new Draw(
+				{
+					'id' : value.Id,
+					'returner' : value.Returner,
+                    'returnTime' : value.ReturnTime,
+					'recycler' : value.Recycler,
+                    'recycleTime' : value.RecycleTime,
+					'remark' : value.Remark
+				}
+			)));
+		});
+		defered.resolve(recycles);
+	},function(err){
+		if (err) {
+			console.log("executing proc_getRecyclesByCriterial Error: " + err.message);
+		}
+		defered.reject(err);
+	});
+	return defered.promise;
+};
+
+
+
 module.exports = Recycle;
