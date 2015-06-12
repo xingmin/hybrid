@@ -2,7 +2,7 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
 	'use strict';
 	services.factory("recycleService",['$http','$q', '$rootScope','hisService', 'baseOpSupportService',function($http, $q, $rootScope, hisService, baseOpSupportService){
         var _service = {};
-        var _refreshRecycleDetails = function(recycleDetails, draws){
+        var _refreshDrawDetails = function(recycleDetails, draws){
             if(!_.isArray(draws) && draws.length<=0) return;
             angular.forEach(recycleDetails, function(recycleDetail){
                 draws.every(function(draw){
@@ -38,30 +38,27 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
                 'recycler': recycler,
                 'remark': remark,
                 'recycleDetails': recycleDetails
-            }).then(
-                function(recv){
-                    var data = recv.data;
+            }).success(
+                function(data){
                     $rootScope.$broadcast('recycles.create', data);
                     if(data.status !== 0){
                         return null;
                     }
                     var recycle = data.value;
-                    return recycle;
-                }
-            ).then(
-                function(recycle){
+                    if(!_.isArray(_recycles)){
+                        _recycles = [];
+                    }
+                    _recycles.push(recycle);
                     if (!recycle) return null;
-                    return _getRecycleDetails(recycle.id);
+                    _getRecycleDetails(recycle.id).success(
+                        function(data){
+                            var recycleDetails = data.value;
+                            _refreshDrawDetails(recycleDetails, draws);
+                        }
+                    );
                 }
-            ).then(
-                function(recv){
-                    if (!recv) return;
-                    var recycleDetails = recv.data.value;
-                    _refreshRecycleDetails(recycleDetails, draws);
-                }
-            ).then(
-                null,
-                function(err){
+            ).error(
+                function(){
                     $rootScope.$broadcast('recycles.create', false);
                 }
             );
