@@ -225,6 +225,29 @@ Recycle.prototype.getRecyclesByCriterial = function(dateBegin, dateEnd, barcode,
 	return defered.promise;
 };
 
+Recycle.prototype.deleteRecycle = function(){
+	var defered = Q.defer();
+	var config = Config.get('hybrid-sql');
+	var conn = new sql.Connection(config);
+	var that = this;
 
+	var promise = customdefer.conn_defered(conn).then(function(conn){
+		var request = new sql.Request(conn);
+		request.input('Id', sql.Int, that.id);
+		return customdefer.request_defered(request, 'proc_deleteRecycle');
+	}).then(function(data){
+		if(data.ret === 0){
+			defered.resolve(data.ret);
+		}else{
+			defered.reject(new Error(data.recordset[0][0].errmsg));
+		}
+	},function(err){
+		if (err) {
+			console.log("executing proc_deleteRecycle Error: " + err.message);
+		}
+		defered.reject(err);
+	});
+	return defered.promise;
+};
 
 module.exports = Recycle;

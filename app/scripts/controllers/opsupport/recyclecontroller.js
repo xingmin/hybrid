@@ -55,7 +55,7 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             indexedDbService.getAppConfig('recyclePageSize').then(
                 function(data){
                     if(data && data.length>0){
-                        $scope.queryParam.pageSize = data;
+                        $scope.RECYCLE.queryParam.pageSize = data;
                     }
                 }
             ).finally(
@@ -73,6 +73,9 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 $event.stopPropagation();
                 $scope.RECYCLE.dateEndPickerOpen = !$scope.RECYCLE.dateEndPickerOpen;
             };
+            $scope.$on('recycle-delete', function(event, stat){
+                $scope.RECYCLE.msgs.push(stat.message);
+            });
         }]
     );
 });

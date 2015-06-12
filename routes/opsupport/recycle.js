@@ -143,5 +143,19 @@ router.get('/',
 			}
 		);
 	});
-
+router.delete('/:id',
+	auth.passport.authenticate('bearer', { session: false }),
+	//auth.RBACMidware.can(auth.rbac, 'draw', 'opsupport'),
+	function(req, res) {
+		var id = req.params.id;
+		var recycle = new Recycle({id:id});
+		recycle.deleteRecycle().then(
+			function(status){
+				(new Result(0, '')).json(res);
+			},
+			function(status){
+				(new Result(status.status, status.message)).json(res);
+			}
+		);
+	});
 module.exports = router;

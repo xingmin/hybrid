@@ -2,7 +2,7 @@
 	
 	<h3>回收记录</h3>
 </div>
-<!--<msgbox messages="msgs"></msgbox>-->
+<msgbox messages="RECYCLE.msgs"></msgbox>
 <ul class="list-inline">
 	<li class="col-md-2">
 		<div class="input-group">
@@ -87,7 +87,7 @@
 		<td>
 		</td>
         <td>
-            <delrecycle ng-Model="recycle"><a href="javascript:void(0);">删除</a ></delrecycle>
+            <delrecycle delete-data="recycle"><a href="javascript:void(0);">删除</a ></delrecycle>
 		</td>
 	</tr>
 	<tr ng-repeat="recycleDetail in recycle.recycleDetails">
@@ -146,7 +146,7 @@
 		    <div class="dropdown-menu collapse" id="test">
 				<div class="input-group">
 			         <span class="input-group-addon">页大小</span>
-			         <input type="text" id="pagesize" class="form-control"  name="pagesize" ng-model="queryParam.pageSize" placeholder="页大小"/>
+			         <input type="text" id="pagesize" class="form-control"  name="pagesize" ng-model="RECYCLE.queryParam.pageSize" placeholder="页大小"/>
 			     </div>
 		    </div>
 		</div>

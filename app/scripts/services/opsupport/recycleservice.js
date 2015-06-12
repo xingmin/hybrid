@@ -154,12 +154,32 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
                 );
             });
         };
+        var _deleteRecycle = function(id){
+            var defered = $q.defer();
+            $http.delete('/opsupport/recycle/'+id).success(
+                function(data){
+                    if(data.code !== 0) {
+                        defered.reject(false);
+                        return;
+                    }
+                    var index = _.findIndex(_recycles, {id: id});
+                    _.isArray(_recycles) && _recycles.splice(index, 1);
+                    defered.resolve(true);
+                }
+            ).error(
+                function(){
+                    defered.reject(false);
+                }
+            );
+            return defered.promise;
+        };
         _service.createNewRecycle = _createNewRecycle;
         _service.getRecycleById = _getRecycleById;
         _service.getRecycleDetails = _getRecycleDetails;
         _service.getRecyclesByRecycleIds = _getRecyclesByRecycleIds;
         _service.queryRecycles = _queryRecycles;
         _service.queryParam = _queryParam;
+        _service.deleteRecycle = _deleteRecycle;
         return _service;
 	}]);
 });

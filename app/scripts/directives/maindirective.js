@@ -4,5 +4,6 @@ define(
     'directives/logindirective',
     'directives/menudirective',
     'directives/exportbtn',
-    'directives/oproomdropdown'
+    'directives/oproomdropdown',
+    'directives/recycledirective'
     ],function(){});
