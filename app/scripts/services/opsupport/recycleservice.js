@@ -1,6 +1,6 @@
-define(['../module', 'lodash'],function(services, _){
+define(['../module', 'lodash', 'moment'],function(services, _, moment){
 	'use strict';
-	services.factory("recycleService",['$http','$q', '$rootScope','hisService',function($http, $q, $rootScope, hisService){
+	services.factory("recycleService",['$http','$q', '$rootScope','hisService', 'baseOpSupportService',function($http, $q, $rootScope, hisService, baseOpSupportService){
         var _service = {};
         var _refreshRecycleDetails = function(recycleDetails, draws){
             if(!_.isArray(draws) && draws.length<=0) return;
@@ -67,7 +67,7 @@ define(['../module', 'lodash'],function(services, _){
             );
         };
         var _getRecycleById = function(id){
-            return $http.get('/opsupport/recycle/'+id);
+            return baseOpSupportService.getRecycleById(id);
         };
         var _getRecycleDetails = function(id){
             return $http.get('/opsupport/recycle/detail/'+id);
@@ -96,7 +96,7 @@ define(['../module', 'lodash'],function(services, _){
                 pagesize: pageSize,
                 pageno: pageNo
             };
-            return $http.get('/opsupport/recycle/q',{params: params});
+            return $http.get('/opsupport/recycle/',{params: params});
         };
         var _recycles = null;
         var _queryRecycles = function() {
@@ -114,6 +114,7 @@ define(['../module', 'lodash'],function(services, _){
                     }
                     _queryParam.pageCount = data.value.pageInfo.pageCount;
                     _queryParam.totalItems = data.value.pageInfo.totalRows;
+                    _refreshRecycleDetails(_recycles);
                     defered.resolve(_recycles);
                     return _recycles;
                 },
@@ -123,10 +124,42 @@ define(['../module', 'lodash'],function(services, _){
             )
             return defered.promise;
         };
+        var _refreshRecycleDetails = function(recycles){
+            angular.forEach(recycles, function (recycle) {
+                _getRecycleDetails(recycle.id).success(function (data) {
+                    if (data.status !== 0) {
+                        return;
+                    }
+                    recycle.recycleDetails = data.value;
+                    _refreshRecycleDetailsRelatedDraw(recycle.recycleDetails);
+                });
+            });
+        };
+        var _refreshRecycleDetailsRelatedDraw = function(recycleDetails){
+            angular.forEach(recycleDetails, function(detail){
+                hisService.getBarCodeChargeInfo(detail.barcode).then(
+                    function(chargeInfo){
+                        if(!chargeInfo) return;
+                        if(detail) {
+                            detail.chargeInfo = chargeInfo;
+                            detail.chargeHtml = hisService.convertBarCodeInfoToHtml(chargeInfo);
+                        }
+                    }
+                );
+                if(!detail || !detail.drawId) return;
+                baseOpSupportService.getDrawById(detail.drawId).success(
+                    function(data){
+                        detail.draw = data.value;
+                    }
+                );
+            });
+        };
         _service.createNewRecycle = _createNewRecycle;
         _service.getRecycleById = _getRecycleById;
         _service.getRecycleDetails = _getRecycleDetails;
         _service.getRecyclesByRecycleIds = _getRecyclesByRecycleIds;
+        _service.queryRecycles = _queryRecycles;
+        _service.queryParam = _queryParam;
         return _service;
 	}]);
 });

@@ -204,7 +204,7 @@ Recycle.prototype.getRecyclesByCriterial = function(dateBegin, dateEnd, barcode,
 	}).then(function(data){
 		var recycles = [];
 		data.recordset[0].forEach(function(value){
-            recycles.push((new Draw(
+            recycles.push((new Recycle(
 				{
 					'id' : value.Id,
 					'returner' : value.Returner,

@@ -31,6 +31,10 @@ define(["./appx"],
                         templateUrl:'/views/tpl/opsupport/draw.html',
                         controller: 'drawController'
                     })
+					.when('/opsupport/recycle',{
+						templateUrl:'/views/tpl/opsupport/recycle.html',
+						controller: 'recycleController'
+					})
                     .when('/opsupport/oproom',{
                         templateUrl:'/views/tpl/opsupport/oproom.html',
                         controller: 'oproomController'

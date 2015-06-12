@@ -42,6 +42,7 @@ Draw.prototype.init = function(id){
 	return defered.promise;
 };
 
+
 Draw.prototype.getDrawRecordsPageInfo = function(dateBegin, dateEnd, barcode, consumer, receiver, pageSize){
 	var defered = Q.defer();
 	var config = Config.get('hybrid-sql');

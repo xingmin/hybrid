@@ -2,16 +2,16 @@
 	
 	<h3>回收记录</h3>
 </div>
-<msgbox messages="msgs"></msgbox>
+<!--<msgbox messages="msgs"></msgbox>-->
 <ul class="list-inline">
 	<li class="col-md-2">
 		<div class="input-group">
 			<input type="text"
 				   class="form-control"
-				   ng-model="queryParam.dateBegin"
+				   ng-model="RECYCLE.queryParam.dateBegin"
 				   datetime-picker="yyyy-MM-dd HH:mm"
 				   is-open="RECYCLE.dateBeginPickerOpen">
-			<div class="input-group-addon" ng-click="DRAW.toggleDateBeginPicker($event)">
+			<div class="input-group-addon" ng-click="RECYCLE.toggleDateBeginPicker($event)">
 				<i class="glyphicon glyphicon-calendar"></i>
 			</div>
 		</div>
@@ -20,21 +20,21 @@
 		<div class="input-group">
 			<input type="text"
 				   class="form-control"
-				   ng-model="queryParam.dateEnd"
+				   ng-model="RECYCLE.queryParam.dateEnd"
 				   datetime-picker="yyyy-MM-dd HH:mm"
 				   is-open="RECYCLE.dateEndPickerOpen">
-			<div class="input-group-addon" ng-click="DRAW.toggleDateEndPicker($event)">
+			<div class="input-group-addon" ng-click="RECYCLE.toggleDateEndPicker($event)">
 				<i class="glyphicon glyphicon-calendar"></i>
 			</div>
 		</div>
 
 	</li>
 	<li class="col-md-2">
-		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="queryParam.barcode" placeholder="条形码"/>
+		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="RECYCLE.queryParam.barcode" placeholder="条形码"/>
 	</li>
 	<li class="col-md-3">
-		<button type="button" class="btn btn-primary" ng-click="query()">查询</button>
-		<button type="button" data-target="#recyclemodal" data-toggle="modal"  class="btn btn-primary" ng-click="recycle.initRecycleModal()">回收</button>
+		<button type="button" class="btn btn-primary" ng-click="RECYCLE.query()">查询</button>
+		<button type="button" data-target="#recyclemodal" data-toggle="modal"  class="btn btn-primary" ng-click="">回收</button>
 		<exportbtn data-target="#recyclebox"></exportbtn>
 	</li>
 </ul>
@@ -102,19 +102,19 @@
 				<span tooltip-html-unsafe="{{recycleDetail.chargeHtml}}">{{recycleDetail.chargeInfo.inpatientNo}}</span>
 			</td>
 			<td>
-				{{recycleDetail.consumer}}
+				{{recycleDetail.draw.consumer}}
 			</td>
 			<td>
-				{{recycleDetail.receiver | userFilter}}
+				{{recycleDetail.draw.receiver | userFilter}}
 			</td>
 			<td>
-				{{recycleDetail.drawer | userFilter}}
+				{{recycleDetail.draw.drawer | userFilter}}
 			</td>
             <td>
-				{{recycleDetail.drawTime | formatDateFilter}}
+				{{recycleDetail.draw.drawTime | formatDateFilter}}
             </td>
 			<td>
-			    {{recycleDetail.remark}}
+			    {{recycleDetail.draw.remark}}
 			</td>
 			<td>
 			</td>

@@ -20,6 +20,12 @@ define(['./module'],function(services){
 					url: '/opsupport/draw',
 					enable: false
 				},
+				'recycle': {
+					accessname: '回收',
+					perm: {resource:'opsupport', action: 'access-entry'},
+					url: '/opsupport/recycle',
+					enable: false
+				},
 				'oproom': {
 					accessname: '手术室定义',
 					perm: {resource:'oproom', action: 'access-entry'},
@@ -34,13 +40,13 @@ define(['./module'],function(services){
             	   accessname: '用户',
             	   perm: {resource:'user', action: 'access-entry'},
             	   url: '/auth/user',
-            	   enable: false,
+            	   enable: false
                },
               "role": {
             	   accessname: '角色',
             	   perm: {resource:'role', action: 'access-entry'},
             	   url: '/auth/role',
-            	   enable: false,
+            	   enable: false
                },
                "permission": {
             	   accessname: '权限',
@@ -52,7 +58,7 @@ define(['./module'],function(services){
             	   accessname: '授权',
             	   perm: {resource:'role', action: 'access-entry'},
             	   url: '/auth/grant',
-            	   enable: false,
+            	   enable: false
                }
            }
 		};

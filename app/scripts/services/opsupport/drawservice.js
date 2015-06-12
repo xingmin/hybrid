@@ -1,6 +1,6 @@
 define(['../module', 'moment', 'lodash'],function(services, moment, _){
 	'use strict';
-	services.factory("drawService", ['$http', '$rootScope' ,'recycleService', 'hisService',function($http, $rootScope,recycleService, hisService){
+	services.factory("drawService", ['$http', '$rootScope' ,'baseOpSupportService', 'hisService',function($http, $rootScope,baseOpSupportService, hisService){
         var service  = {};
         var _draws = null;
         var _queryParam={
@@ -41,7 +41,7 @@ define(['../module', 'moment', 'lodash'],function(services, moment, _){
                     }
                 );
                 if(!detail || !detail.recycleId) return;
-                recycleService.getRecycleById(detail.recycleId).then(
+                baseOpSupportService.getRecycleById(detail.recycleId).then(
                     function(recv){
                         detail.recycle = recv.data.value;
                     }
@@ -187,6 +187,9 @@ define(['../module', 'moment', 'lodash'],function(services, moment, _){
                 }
             );
         };
+        var _getDrawById = function(id){
+            return baseOpSupportService.getDrawById(id);
+        };
         service.queryDraws = _queryDraws;
         service.deleteDraw = _deleteDraw;
         service.createNewDraw = _createNewDraw;
@@ -198,6 +201,7 @@ define(['../module', 'moment', 'lodash'],function(services, moment, _){
         service.getQueryParam = function(){
            return _queryParam;
         };
+        service.getDrawById = _getDrawById;
         return service;
 	}])
 });

@@ -4,5 +4,6 @@ define(['controllers/auth/rolecontroller',
     'controllers/auth/grantcontroller',
     'controllers/auth/userlogincontroller',
     './opsupport/drawcontroller',
+    './opsupport/recyclecontroller',
     './opsupport/oproomcontroller',
 ],function(){});

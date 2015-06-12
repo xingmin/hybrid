@@ -4,6 +4,7 @@ var Draw = require("../../models/opsupport/draw.js");
 var DrawDetail = require("../../models/opsupport/drawdetail.js");
 var Q = require('q');
 var ResData = require("../resdata.js");
+var Result = require("../result.js");
 var momentz = require('moment-timezone');
 var moment = require('moment');
 var auth = require('../../authlib/index');
@@ -181,5 +182,19 @@ router.get('/getdetail/:drawId',
 				}
 		);
 });
-
+router.get('/:id',
+	auth.passport.authenticate('bearer', { session: false }),
+	//auth.RBACMidware.can(auth.rbac, 'draw', 'opsupport'),
+	function(req, res) {
+		var drawId = req.param('id');
+		var draw = new Draw({});
+		draw.init(drawId).then(
+			function(data){
+				(new Result(0,"" , draw)).json(res);
+			},
+			function(err){
+				(new Result(1,err.message, null)).json(res);
+			}
+		);
+	});
 module.exports = router;

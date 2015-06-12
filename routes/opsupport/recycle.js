@@ -135,10 +135,11 @@ router.get('/',
 		Q.all([promise1, promise2])
 			.then(
 			function(arrData){
+				if(arrData) console.log('xx');
 				(new Result(0,'',{'pageInfo':arrData[0], 'pageData': arrData[1]})).json(res);
 			},
 			function(data){
-				resdata = (new Result(data.status, data.message)).json(res);
+				(new Result(data.status, data.message)).json(res);
 			}
 		);
 	});
