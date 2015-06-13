@@ -2,7 +2,7 @@
 	
 	<h3>回收记录</h3>
 </div>
-<msgbox messages="RECYCLE.msgs"></msgbox>
+<message></message>
 <ul class="list-inline">
 	<li class="col-md-2">
 		<div class="input-group">
@@ -34,7 +34,7 @@
 	</li>
 	<li class="col-md-3">
 		<button type="button" class="btn btn-primary" ng-click="RECYCLE.query()">查询</button>
-		<button type="button" class="btn btn-primary" recycle>回收</button>
+		<button type="button" class="btn btn-primary" recycle after-success="updateMessage()">回收</button>
 		<exportbtn data-target="#recyclebox"></exportbtn>
 	</li>
 </ul>

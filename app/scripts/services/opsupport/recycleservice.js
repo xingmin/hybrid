@@ -40,22 +40,20 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
                 'recycleDetails': recycleDetails
             }).success(
                 function(data){
-                    $rootScope.$broadcast('recycles.create', data);
                     if(data.status !== 0){
                         return null;
                     }
                     var recycle = data.value;
+                    $rootScope.$broadcast('recycles.create', data);
+                    if(draws != undefined){
+                        _refreshDrawDetails(recycleDetails, draws);
+                        return;
+                    }
                     if(!_.isArray(_recycles)){
                         _recycles = [];
                     }
                     _recycles.push(recycle);
-                    if (!recycle) return null;
-                    _getRecycleDetails(recycle.id).success(
-                        function(data){
-                            var recycleDetails = data.value;
-                            _refreshDrawDetails(recycleDetails, draws);
-                        }
-                    );
+                    _refreshSingleRecycleDetails(recycle);
                 }
             ).error(
                 function(){
@@ -121,35 +119,37 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
             )
             return defered.promise;
         };
-        var _refreshRecycleDetails = function(recycles){
-            angular.forEach(recycles, function (recycle) {
-                _getRecycleDetails(recycle.id).success(function (data) {
-                    if (data.status !== 0) {
-                        return;
-                    }
-                    recycle.recycleDetails = data.value;
-                    _refreshRecycleDetailsRelatedDraw(recycle.recycleDetails);
-                });
+        var _refreshSingleRecycleDetails = function(recycle){
+            _getRecycleDetails(recycle.id).success(function (data) {
+                if (data.status !== 0) {
+                    return;
+                }
+                recycle.recycleDetails = data.value;
+                _refreshRecycleDetailsRelatedDraw(recycle.recycleDetails);
             });
         };
+        var _refreshRecycleDetails = function(recycles){
+            angular.forEach(recycles, _refreshSingleRecycleDetails);
+        };
+        var _refreshSingleRecycleDetailRelatedDraw = function(detail){
+            hisService.getBarCodeChargeInfo(detail.barcode).then(
+                function(chargeInfo){
+                    if(!chargeInfo) return;
+                    if(detail) {
+                        detail.chargeInfo = chargeInfo;
+                        detail.chargeHtml = hisService.convertBarCodeInfoToHtml(chargeInfo);
+                    }
+                }
+            );
+            if(!detail || !detail.drawId) return;
+            baseOpSupportService.getDrawById(detail.drawId).success(
+                function(data){
+                    detail.draw = data.value;
+                }
+            );
+        };
         var _refreshRecycleDetailsRelatedDraw = function(recycleDetails){
-            angular.forEach(recycleDetails, function(detail){
-                hisService.getBarCodeChargeInfo(detail.barcode).then(
-                    function(chargeInfo){
-                        if(!chargeInfo) return;
-                        if(detail) {
-                            detail.chargeInfo = chargeInfo;
-                            detail.chargeHtml = hisService.convertBarCodeInfoToHtml(chargeInfo);
-                        }
-                    }
-                );
-                if(!detail || !detail.drawId) return;
-                baseOpSupportService.getDrawById(detail.drawId).success(
-                    function(data){
-                        detail.draw = data.value;
-                    }
-                );
-            });
+            angular.forEach(recycleDetails, _refreshSingleRecycleDetailRelatedDraw);
         };
         var _deleteRecycle = function(id){
             var defered = $q.defer();

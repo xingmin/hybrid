@@ -1,15 +1,18 @@
 define(['./module', 'jquery','lodash'],function(directives, $,_){
     'use strict';	
-    directives.directive("recycle", ['userService', 'recycleService', 'AuthValue', 'hisService', '$modal',function(userService, recycleService, AuthValue, hisService, $modal){
+    directives.directive("recycle", ['$rootScope','userService', 'recycleService', 'AuthValue', 'hisService', '$modal',function($rootScope,userService, recycleService, AuthValue, hisService, $modal){
 		return{
 			restrict: 'AE',
 			scope: {
+				afterSuccess:"&"
 			},
-
 			controller: function($scope, $element, $attrs){
 				var ModalInstanceCtrl = function ($scope, $modalInstance) {
 					$scope.$on('recycles.create', function(data){
-						$modalInstance.close('创建成功');
+						if(data){
+							$modalInstance.close(true);
+							$scope.afterSuccess();
+						}
 					});
 					$scope.cancel = function () {
 						$modalInstance.dismiss("cancel");
@@ -69,15 +72,17 @@ define(['./module', 'jquery','lodash'],function(directives, $,_){
 							($scope.returner.selected? ($scope.returner.selected.empCode || '') : ""),
 							($scope.selected? ($scope.selected.empCode || '') : ""),
 							$scope.remark,
-							$scope.recycleDetails,
-							$scope.draws
+							$scope.recycleDetails
 						);
 					};
 				};
+				var tmpscope =$rootScope.$new();
+				tmpscope.afterSuccess = $scope.afterSuccess;
 				$scope.opts ={
 					backdrop: 'static',
 					templateUrl: 'views/component/recycle.tpl.html',
-					controller: ModalInstanceCtrl
+					controller: ModalInstanceCtrl,
+					scope: tmpscope
 					//windowClass: "app-modal-window",
 				};
 				$scope.openModal = function () {

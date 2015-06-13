@@ -130,6 +130,7 @@ define(['./module'],function(directives){
 		    }
 		  }
 	})
+
 })
 
 

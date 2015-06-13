@@ -2,9 +2,9 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
     'use strict';
     controllers.controller('recycleController',
         ['$scope','$http','$timeout', '$filter',
-            'drawService','recycleService','indexedDbService','userService','AuthValue','oproomService','hisService',
+            'drawService','recycleService','indexedDbService','userService','AuthValue','oproomService','hisService','messageService',
         function($scope, $http, $timeout,$filter,
-                 drawService, recycleService, indexedDbService, userService, AuthValue, oproomService, hisService){
+                 drawService, recycleService, indexedDbService, userService, AuthValue, oproomService, hisService,messageService){
             $scope.RECYCLE = {};
             $scope.RECYCLE.recycles = [];//drawService.queryDraws();
             $scope.RECYCLE.msgs=[];
@@ -76,6 +76,9 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             $scope.$on('recycle-delete', function(event, stat){
                 $scope.RECYCLE.msgs.push(stat.message);
             });
+            $scope.updateMessage = function(){
+                messageService.sendMessage("回收成功");
+            };
         }]
     );
 });
