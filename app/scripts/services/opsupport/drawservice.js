@@ -4,13 +4,13 @@ define(['../module', 'moment', 'lodash'],function(services, moment, _){
         var service  = {};
         var _draws = null;
         var _queryParam={
-            dateBegin  : moment().format('YYYY-MM-DD'),
-            dateEnd    : moment().format('YYYY-MM-DD'),
+            dateBegin  : moment().format('YYYY-MM-DD')+" 00:00:01",
+            dateEnd    : moment().format('YYYY-MM-DD')+" 23:59:59",
             barcode    : '',
             consumer   : '',
             receiver   : '',
             pageNo     : 1,
-            pageSize   : 1,
+            pageSize   : 5,
             pageCount  : 0,
             totalItems : 0
         };

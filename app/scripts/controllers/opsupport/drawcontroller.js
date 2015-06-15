@@ -221,69 +221,6 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 $scope.DRAW.dateEndPickerOpen = !$scope.dateEndPickerOpen;
             };
 
-            //下面是回收的操作
-            $scope.recycle = {};
-            $scope.recycle.isRecycleSaved = false;
-            $scope.recycle.msgs = [];
-            $scope.recycle.barcodeCollecter = '';
-            $scope.recycle.initRecycleModal = function(){
-                $scope.recycle.recycler.selected = AuthValue.currentUser;
-                $scope.recycle.barcodeCollecter='';
-                $scope.recycle.recycleDetails=[];
-            };
-            $scope.recycle.recycler = {};
-            $scope.recycle.returner = {};
-            $scope.recycle.initRecycleModal();
-            $scope.recycle.collectBarcode = function(event, barcode){
-                if(event.which === 13){
-                    if( !angular.isArray($scope.recycle.recycleDetails)){
-                        $scope.recycle.recycleDetails=[];
-                    }
-                    if(_.find($scope.recycle.recycleDetails, {barcode: barcode})){
-                        event.preventDefault();
-                        return;
-                    }
-                    $scope.recycle.recycleDetails.push({'barcode':barcode, 'useFlag':0});
-                    hisService.getBarCodeChargeInfo(barcode).then(
-                        function(chargeInfo){
-                            if(!chargeInfo) return;
-                            var detail = _.find($scope.recycle.recycleDetails, {barcode: barcode});
-                            if(detail) {
-                                detail.chargeInfo = chargeInfo;
-                                detail.useFlag = 1;
-                                detail.chargeHtml = hisService.convertBarCodeInfoToHtml(chargeInfo);
-                            }
-                        }
-                    );
-                    $scope.recycle.barcodeCollecter = '';
-                    event.preventDefault();
-                }
-            };
-            $scope.recycle.deleteBarcode = function(arrRecycleDetail, detail){
-                arrRecycleDetail
-                    && arrRecycleDetail.length>0
-                    && arrRecycleDetail.splice(arrRecycleDetail.indexOf(detail),1);
-            };
-            $scope.recycle.saveRecycle = function(){
-                $scope.recycle.isRecycleSaved = false;
-                recycleService.createNewRecycle(
-                    ($scope.recycle.returner.selected? ($scope.recycle.returner.selected.empCode || '') : ""),//$scope.recycle.returner,
-                    ($scope.recycle.recycler.selected? ($scope.recycle.recycler.selected.empCode || '') : ""),//|| AuthValue.currentUser.empCode,//$scope.recycle.recycler,
-                    $scope.recycle.remark,
-                    $scope.recycle.recycleDetails,
-                    drawService.getDraws()
-                );
-            };
-            $scope.$on('recycles.create', function(event, data){
-                var msg = "创建回收记录成功!";
-                if (data.status === 0){
-                    $scope.recycle.isRecycleSaved = true;
-                }else{
-                    msg = data.errmsg;
-                }
-                $scope.recycle.msgs.push(msg);
-            });
-
         }]
     );
 });

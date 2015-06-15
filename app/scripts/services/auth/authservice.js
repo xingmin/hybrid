@@ -14,7 +14,7 @@ define(['../module', 'moment'],function(services, moment){
 			_authToken.token_type    = data.token_type || '';
 			AuthValue.authToken = _authToken;
 			//如果从服务端刷新token失败，则重新置为未登录状态。
-			AuthValue.isLogin = data ? true : false;
+			AuthValue.isLogin = (data && data.access_token) ? true : false;
             _getUserByToken();
 		};
 		var _checkPermission = function(action, resource){
@@ -38,9 +38,11 @@ define(['../module', 'moment'],function(services, moment){
 					if(!data) return;
                     _updateAuthToken(data);
                     //开始计时刷新accessToken
-                    var interval =(Number(_authToken.expires_in)-Number(_authToken.expires_in)*0.1)*1000;
-                    $timeout(function(){_refreshToken(interval);},interval);
-                    $rootScope.$broadcast( 'users.login', true);
+					if( AuthValue.isLogin){
+						var interval =(Number(_authToken.expires_in)-Number(_authToken.expires_in)*0.1)*1000;
+						$timeout(function(){_refreshToken(interval);},interval);
+					}
+                    $rootScope.$broadcast( 'users.login', AuthValue.isLogin);
                 }
             ).error(function(err){
                 $rootScope.$broadcast( 'users.login', false);

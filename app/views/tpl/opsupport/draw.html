@@ -56,8 +56,6 @@
 
 		<button type="button" data-target="#editmodal" data-toggle="modal"  class="btn btn-primary" ng-click="changeEditMode('create')">领用</button>
 
-		<button type="button" data-target="#recyclemodal" data-toggle="modal"  class="btn btn-primary" ng-click="recycle.initRecycleModal()">回收</button>
-
 		<exportbtn data-target="#drawbox"></exportbtn>
 	</li>
 
@@ -334,74 +332,3 @@
 	    </tr>
 	</table>
 </deletedlg>
-
-<form  name="formRecycle" class="form-horizontal" ng-submit="recycle.saveRecycle(formRecycle.$valid)" role="form" novalidate>
-<editdlg module-name="回收条形码" dlgid="recyclemodal" is-hide="{{recycle.isRecycleSaved}}" module-class="modal-dialog-lg">
-	<div class="row">
-        <div class="col-md-12"> <msgbox messages="recycle.msgs"></msgbox></div>
-		<div class="col-md-4">
-			<div class="form-group">
-				<label class="col-md-4 control-label">送还人</label>
-				<div class="col-md-8 controls">
-
-					<ui-select ng-model="recycle.returner.selected"
-							   theme="bootstrap"
-							   ng-disabled="disabled"
-							   reset-search-input="false"
-							   title="选择送还人">
-						<ui-select-match placeholder="选择送还人">{{$select.selected.legalName}}</ui-select-match>
-						<ui-select-choices repeat="user in allUsers|userPinyinFilter:$select.search track by $index"
-										   refresh-delay="0">
-							<div ng-bind="user.legalName"></div>
-						</ui-select-choices>
-					</ui-select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-md-4 control-label">记录人</label>
-				<div class="col-md-8 controls">
-					<ui-select ng-model="recycle.recycler.selected"
-							   theme="bootstrap"
-							   ng-disabled="disabled"
-							   reset-search-input="false"
-							   title="请录入记录人">
-						<ui-select-match placeholder="请录入记录人">{{$select.selected.legalName}}</ui-select-match>
-						<ui-select-choices repeat="user in allUsers|userPinyinFilter:$select.search track by $index"
-										   refresh-delay="0">
-							<div ng-bind="user.legalName"></div>
-						</ui-select-choices>
-					</ui-select>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-8">
-			<input type="text" class="form-control" 
-				ng-model="recycle.barcodeCollecter"
-				ng-keypress="recycle.collectBarcode($event, recycle.barcodeCollecter)" placeholder="请扫描条码"/>
-			<table class="table table-bordered table-hover">
-				<tr>
-					<th>条形码</th>
-			    	<th>使用情况(使用√)</th>
-					<th>收费</th>
-			    	<th></th>
-			    </tr>
-				<tr ng-repeat="detail in recycle.recycleDetails track by $index">
-			        <td>
-			        	{{detail.barcode}}
-					</td>
-					<td>
-						<input type="checkbox"  ng-model="detail.useFlag" ng-true-value="1" ng-false-value="0"/>
-					</td>
-					<td>
-						<span tooltip-html-unsafe="{{detail.chargeHtml}}">{{detail.chargeInfo.inpatientNo}}</span>
-					</td>
-					<td>
-						<a href="javascript:void(0);" ng-click="recycle.deleteBarcode(recycle.recycleDetails, detail)">删除</a >
-					</td>
-				</tr>
-			</table>
-		</div>
-
-	</div>
-</editdlg>
-</form>

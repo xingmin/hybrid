@@ -71,13 +71,13 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
             return $http.post('/opsupport/recycle/', arrRecycleId);
         };
         var _queryParam={
-            dateBegin  : moment().format('YYYY-MM-DD'),
-            dateEnd    : moment().format('YYYY-MM-DD'),
+            dateBegin  : moment().format('YYYY-MM-DD')+" 00:00:01",
+            dateEnd    : moment().format('YYYY-MM-DD')+" 23:59:59",
             barcode    : '',
             returner   : '',
             recycler   : '',
             pageNo     : 1,
-            pageSize   : 1,
+            pageSize   : 5,
             pageCount  : 0,
             totalItems : 0
         };
