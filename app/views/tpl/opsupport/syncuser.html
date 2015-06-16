@@ -3,20 +3,24 @@
 </div>
 <message></message>
 <ul class="list-inline">
-	<li class="col-md-3">
+	<li>
 		<button type="button" class="btn btn-primary" ng-click="refresh()">从HIS读取用户</button>
 	</li>
-	<li class="col-md-3">
-		<button type="button" class="btn btn-primary" ng-click="refresh()">导入系统</button>
+	<li>
+		<button type="button" class="btn btn-primary" ng-click="sync()">导入系统</button>
 	</li>
 </ul>
-<table class="table table-bordered table-hover">
+<table class="table table-hover">
 	<tr>
+		<th><input type="checkbox"  ng-click="selectAllUser()"/>选择</th>
 		<th>工号</th>
 		<th>姓名</th>
-		<th>导入</th>
+		<th>√(已导入)</th>
     </tr>
     <tr ng-repeat="user in users track by $index">
+		<td>
+			<input type="checkbox" ng-checked="user.selected" ng-model="user.selected"/>
+		</td>
         <td>
     		{{user.code}}
         </td>
@@ -24,7 +28,7 @@
     		{{user.name}}
         </td>
         <td>
-            {{user.synced}}
+            <span  ng-class="{true:'glyphicon glyphicon-ok', false:''}[user.syncStatus]"></span>
         </td>
 	</tr>
 </table>

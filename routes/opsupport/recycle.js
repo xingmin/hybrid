@@ -110,7 +110,7 @@ router.post('/',
 
 router.get('/',
 	auth.passport.authenticate('bearer', { session: false }),
-	//auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
+	auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
 	function(req, res) {
 		var dateBegin = req.query.b;
 		var dateEnd = req.query.e;
@@ -145,7 +145,7 @@ router.get('/',
 	});
 router.delete('/:id',
 	auth.passport.authenticate('bearer', { session: false }),
-	//auth.RBACMidware.can(auth.rbac, 'draw', 'opsupport'),
+	auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
 	function(req, res) {
 		var id = req.params.id;
 		var recycle = new Recycle({id:id});

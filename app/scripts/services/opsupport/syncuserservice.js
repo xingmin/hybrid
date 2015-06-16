@@ -20,12 +20,26 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
         var _checkUserSyncStatus = function(user){
             userService.checkUserEmpCodeExistence(user.code).then(
                 function(stat){
-                    user.synced = stat;
+                    user.syncStatus = stat;
+                }
+            );
+        };
+        var _syncUser = function(user){
+            userService.checkUserEmpCodeExistence(user.code).then(
+                function(existence){
+                    user.syncStatus = existence;
+                    if(existence) return;
+                    userService.createNewUserQ(user.name, user.code, '', '', user.code, user.py).success(function(data){
+                        if(data.code === 0){
+                            user.syncStatus = true;
+                        }
+                    });
                 }
             );
         };
         _service.checkUserSyncStatus = _checkUserSyncStatus;
         _service.getUsers = _getUsers;
+        _service.syncUser = _syncUser;
         return _service;
 	}]);
 });

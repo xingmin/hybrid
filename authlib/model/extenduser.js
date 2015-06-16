@@ -11,7 +11,7 @@ module.exports = function extendUser (schema, options) {
 	});
 
 	schema.statics.checkEmpCodeExist = function(empcode, cb){
-		this.find({"empcode": empcode}, function(err, user){
+		this.findOne({"empcode": empcode}, function(err, user){
 			if(err){
 				return cb(err, null);
 			}

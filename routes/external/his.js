@@ -8,8 +8,8 @@ var BarCode = require('../../models/external/barcode');
 var HisUser = require('../../models/external/hisuser');
 
 router.get('/barcode/getchargeinfo',
-    //auth.passport.authenticate('bearer', { session: false }),
-    //auth.RBACMidware.can(auth.rbac, 'query-barcode-info', 'his'),
+    auth.passport.authenticate('bearer', { session: false }),
+    auth.RBACMidware.can(auth.rbac, 'query-barcode-info', 'external-his'),
     function(req, res) {
         var barCode = req.query.barcode;
         BarCode.getChargeInfoByBarCode(barCode).then(
@@ -23,7 +23,7 @@ router.get('/barcode/getchargeinfo',
     });
 router.get('/user/',
     auth.passport.authenticate('bearer', { session: false }),
-    //auth.RBACMidware.can(auth.rbac, 'query-barcode-info', 'his'),
+    auth.RBACMidware.can(auth.rbac, 'list', 'external-his'),
     function(req, res) {
         HisUser.getHisUserList().then(
             function(users){

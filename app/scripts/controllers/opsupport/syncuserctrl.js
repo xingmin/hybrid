@@ -8,13 +8,23 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 syncUserService.getUsers().then(
                     function(data){
                         $scope.users = data;
-                        _.forEach($scope.users, syncUserService.checkUserSyncStatus);
                         messageService.sendMessage("刷新成功；");
+                        _.forEach($scope.users, syncUserService.checkUserSyncStatus);
                         return $scope.users;
                     }
                 )
             };
-
+            $scope.sync = function(){
+                _.forEach($scope.users, function(user){
+                    if(!user.selected || user.syncStatus) return;
+                    syncUserService.syncUser(user);
+                });
+            };
+            $scope.selectAllUser = function(){
+                _.forEach($scope.users,function(user){
+                    user.selected = !user.selected;
+                });
+            };
         }]
     );
 });

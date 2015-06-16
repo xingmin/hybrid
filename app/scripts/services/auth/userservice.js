@@ -51,20 +51,19 @@ define(['../module'],function(services){
                 });
 			return defered.promise;
         };
-		var _createNewUser = function(legalname, username, password, role, empCode, legalNamePY){
+		var _createNewUserQ = function(legalname, username, password, role, empCode, legalNamePY){
 			var userInfo = {
 				userName  : username,
 				legalName : legalname,
 				password  : md5.createHash(password || ''),
 				role      : role,
-                empCode    : empCode,
-                legalNamePY : legalNamePY
+				empCode    : empCode,
+				legalNamePY : legalNamePY
 			};
-			$http.post('/authapi/users/',
-				{
-					"userinfo" : userInfo
-				}
-			).success(
+			return $http.post('/authapi/users/',{ "userinfo" : userInfo });
+		};
+		var _createNewUser = function(legalname, username, password, role, empCode, legalNamePY){
+			_createNewUserQ().success(
 				function(data){
 					if(data.code === 0){
 						_users.push(userInfo);
@@ -146,6 +145,7 @@ define(['../module'],function(services){
             getAllUsersQ: _getAllUsersQ,
             getUsersPromise: _getUsersPromise,
 			getUsers : _getUsers,
+			createNewUserQ: _createNewUserQ,
 			createNewUser : _createNewUser,
 			saveUserChange : _saveUserChange,
 			delUser : _delUser,

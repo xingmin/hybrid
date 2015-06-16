@@ -22,13 +22,13 @@ define(['./module'],function(services){
 				},
 				'recycle': {
 					accessname: '回收',
-					perm: {resource:'opsupport', action: 'access-entry'},
+					perm: {resource:'opsupport', action: 'recycle'},
 					url: '/opsupport/recycle',
 					enable: false
 				},
 				'syncuser': {
 					accessname: '同步账户',
-					perm: {resource:'opsupport', action: 'access-entry'},
+					perm: {resource:'opsupport', action: 'syncuser'},
 					url: '/opsupport/syncuser',
 					enable: false
 				},

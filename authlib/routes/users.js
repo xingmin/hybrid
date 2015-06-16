@@ -161,8 +161,7 @@ router.get('/:empcode/exsistence',
 				(new Result(1, '校验工号失败', null)).json(res);
 				return;
 			}
-			var passed = user?true:false;
-			(new Result(0, '', passed)).json(res);
+			(new Result(0, '校验工号成功', (user !== null))).json(res);
 		});
 
 	}
