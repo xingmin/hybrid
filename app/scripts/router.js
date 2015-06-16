@@ -35,6 +35,10 @@ define(["./appx"],
 						templateUrl:'/views/tpl/opsupport/recycle.html',
 						controller: 'recycleController'
 					})
+					.when('/opsupport/syncuser',{
+						templateUrl:'/views/tpl/opsupport/syncuser.html',
+						controller: 'syncUserCtrl'
+					})
                     .when('/opsupport/oproom',{
                         templateUrl:'/views/tpl/opsupport/oproom.html',
                         controller: 'oproomController'

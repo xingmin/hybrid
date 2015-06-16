@@ -10,6 +10,7 @@ define(['../module'],function(services){
             var params = {};
             if(options && options.py){ params.py = options.py;}
             if(options && options.empCode) { params.empCode = options.empCode;}
+			if(options && options.source) { params.source = options.source;}
             return $http.get('/authapi/users/', {"params": params});
         };
 		var _getUsers = function(options){
@@ -123,6 +124,23 @@ define(['../module'],function(services){
         var _getAllUsers = function(){
          return _allUsers;
         };
+		 var _checkUserEmpCodeExistence = function(empcode){
+			 var defered = $q.defer();
+			 $http.get("/authapi/users/"+empcode+"/exsistence").success(
+				 function(data){
+					 if(data.code ===0){
+						 defered.resolve(data.value);
+					 }else{
+						 defered.reject(data.value);
+					 }
+				 }
+			 ).error(
+				 function(err){
+					 defered.reject(err);
+				 }
+			 );
+			 return defered.promise;
+		 };
 		return{
             getAllUsers : _getAllUsers,
             getAllUsersQ: _getAllUsersQ,
@@ -130,7 +148,8 @@ define(['../module'],function(services){
 			getUsers : _getUsers,
 			createNewUser : _createNewUser,
 			saveUserChange : _saveUserChange,
-			delUser : _delUser
+			delUser : _delUser,
+			checkUserEmpCodeExistence: _checkUserEmpCodeExistence
 		};
 	}]);
 });

@@ -1,0 +1,30 @@
+<div class="title control-group">
+	<h3>与HIS同步用户</h3>
+</div>
+<message></message>
+<ul class="list-inline">
+	<li class="col-md-3">
+		<button type="button" class="btn btn-primary" ng-click="refresh()">从HIS读取用户</button>
+	</li>
+	<li class="col-md-3">
+		<button type="button" class="btn btn-primary" ng-click="refresh()">导入系统</button>
+	</li>
+</ul>
+<table class="table table-bordered table-hover">
+	<tr>
+		<th>工号</th>
+		<th>姓名</th>
+		<th>导入</th>
+    </tr>
+    <tr ng-repeat="user in users track by $index">
+        <td>
+    		{{user.code}}
+        </td>
+    	<td>
+    		{{user.name}}
+        </td>
+        <td>
+            {{user.synced}}
+        </td>
+	</tr>
+</table>

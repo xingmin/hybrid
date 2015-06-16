@@ -1,7 +1,7 @@
 var sql = require('mssql');
-var customdefer = require('./customdefer');
+var customdefer = require('../customdefer');
 var Q = require('q');
-var config = require('./config');
+var config = require('../config');
 
 function BarCode(opt){
     opt = opt || {};

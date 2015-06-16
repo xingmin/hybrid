@@ -10,5 +10,6 @@ define(['./auth/userservice',
     './opsupport/recycleService',
     './accessentryservice',
     './opsupport/oproomservice',
-    './hisservice'
+    './opsupport/syncuserservice',
+    './external/hisservice'
 ],function(){});

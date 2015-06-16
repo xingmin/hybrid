@@ -6,4 +6,5 @@ define(['controllers/auth/rolecontroller',
     './opsupport/drawcontroller',
     './opsupport/recyclecontroller',
     './opsupport/oproomcontroller',
+    './opsupport/syncuserctrl',
 ],function(){});

@@ -4,7 +4,7 @@ module.exports = function(app){
 	var recycle = require('./opsupport/recycle');
 	var auth = require('../authlib/initauth');
     var oproom = require('./opsupport/oproom');
-	var his = require('./his');
+	var his = require('./external/his');
 
 	auth(app);
 	app.use('/', home);

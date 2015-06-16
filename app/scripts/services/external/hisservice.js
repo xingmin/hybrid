@@ -1,4 +1,4 @@
-define(['./module', 'lodash', 'moment'],function(services, _, moment){
+define(['../module', 'lodash', 'moment'],function(services, _, moment){
 	'use strict';
 	services.factory("hisService",['$http','$q',function($http, $q){
 		var service = {};
@@ -32,8 +32,24 @@ define(['./module', 'lodash', 'moment'],function(services, _, moment){
 				"<li>日期:"+ moment(chargeInfo.inputDate).format('YYYY-MM-DD HH:mm')+"</li>"+
 				"</ul>"
 		};
+		var _getHisUserOfOpSupport = function(){
+			var defered = $q.defer();
+			$http.get('/his/user/').success(function(data){
+				var result = null;
+				if(data.code === 0){
+					result = data.value;
+				}
+				defered.resolve(result);
+			})
+			.error(function(err){
+				defered.reject(null);
+			});
+			return defered.promise;
+		};
+
 		service.getBarCodeChargeInfo = _getBarCodeChargeInfo;
 		service.convertBarCodeInfoToHtml = _convertBarCodeInfoToHtml;
+		service.getHisUserOfOpSupport = _getHisUserOfOpSupport;
 		return service;
 	}]);
 });

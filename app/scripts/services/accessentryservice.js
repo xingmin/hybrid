@@ -26,11 +26,17 @@ define(['./module'],function(services){
 					url: '/opsupport/recycle',
 					enable: false
 				},
+				'syncuser': {
+					accessname: '同步账户',
+					perm: {resource:'opsupport', action: 'access-entry'},
+					url: '/opsupport/syncuser',
+					enable: false
+				},
 				'oproom': {
 					accessname: '手术室定义',
 					perm: {resource:'oproom', action: 'access-entry'},
 					url: '/opsupport/oproom',
-					enable: true
+					enable: false
 				}
            },
            "auth": {

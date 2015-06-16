@@ -19,6 +19,7 @@ router.get('/',
 	function(req, res) {
 		var py = req.query.py;
 		var empCode = req.query.empCode;
+		var source = req.query.source;
 		if(py && py.length>0){
 			py = py.toLowerCase();
 		}
@@ -26,6 +27,7 @@ router.get('/',
 		};
 		if (py) { critiral.legalNamePY = {$regex: '^'+py}; }
         if (empCode) { critiral.empcode = empCode; }
+		if (source) { critiral.source = source; }
 		User.find(critiral).exec()
 			.then(
 				function(users){
@@ -149,5 +151,20 @@ router.get('/getuserbytoken',
         var result = new Result(0, '',  UserInfo.convertFromUsers(req.user));
         result.json(res);
     }
+);
+router.get('/:empcode/exsistence',
+	passport.authenticate('bearer', { session: false }),
+	function(req, res) {
+		var empcode = req.params.empcode;
+		User.checkEmpCodeExist(empcode, function(err,user){
+			if(err){
+				(new Result(1, '校验工号失败', null)).json(res);
+				return;
+			}
+			var passed = user?true:false;
+			(new Result(0, '', passed)).json(res);
+		});
+
+	}
 );
 module.exports = router;
