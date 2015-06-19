@@ -23,7 +23,7 @@
     "his": {
         "user": "sa",
         "password": "system",
-        "server": "172.30.244.59",
+        "server": "127.0.0.1",
         "database": "chisdb_yszx",
         "connectionTimeout": 60000
     },

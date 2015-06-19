@@ -1,0 +1,84 @@
+<div class="title control-group">
+	<h3>条形码核查</h3>
+</div>
+<message></message>
+<ul class="list-inline">
+	<li class="col-md-2">
+		<div class="input-group">
+			<input type="text"
+				   class="form-control"
+				   ng-model="SEARCH.queryParam.qstart"
+				   datetime-picker="yyyy-MM-dd HH:mm"
+				   is-open="SEARCH.dateBeginPickerOpen">
+			<div class="input-group-addon" ng-click="SEARCH.toggleDateBeginPicker($event)">
+				<i class="glyphicon glyphicon-calendar"></i>
+			</div>
+		</div>
+	</li>
+	<li class="col-md-2">
+		<div class="input-group">
+			<input type="text"
+				   class="form-control"
+				   ng-model="SEARCH.queryParam.qend"
+				   datetime-picker="yyyy-MM-dd HH:mm"
+				   is-open="SEARCH.dateEndPickerOpen">
+			<div class="input-group-addon" ng-click="SEARCH.toggleDateEndPicker($event)">
+				<i class="glyphicon glyphicon-calendar"></i>
+			</div>
+		</div>
+	</li>
+	<li class="col-md-2">
+		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="SEARCH.queryParam.barCode" placeholder="条形码"/>
+	</li>
+	<li class="col-md-1">
+		<input type="text" class="form-control" id="inpatientno"  name="inpatientno" ng-model="SEARCH.queryParam.inpatientNo" placeholder="住院号"/>
+	</li>
+	<li class="col-md-1">
+		<input type="text" class="form-control" id="times"  name="times" ng-model="SEARCH.queryParam.times" placeholder="住院次"/>
+	</li>
+	<li class="col-md-3">
+		<button type="button" class="btn btn-primary" ng-click="SEARCH.query()">查询</button>
+	</li>
+</ul>
+<table class="table table-hover">
+	<tr>
+		<th>条形码</th>
+		<th>住院号</th>
+		<th>住院次</th>
+        <th>姓名</th>
+        <th>项目</th>
+        <th>收费</th>
+        <th>数量</th>
+        <th>录入日期</th>
+        <th>录入人</th>
+    </tr>
+    <tr ng-repeat="chargeInfo in SEARCH.chargeInfos track by $index">
+        <td>
+    		{{chargeInfo.barCode}}
+        </td>
+        <td>
+            {{chargeInfo.inpatientNo}}
+        </td>
+        <td>
+            {{chargeInfo.times}}
+        </td>
+        <td>
+            {{chargeInfo.name}}
+        </td>
+        <td>
+            {{chargeInfo.chargeName}}
+        </td>
+        <td>
+            {{chargeInfo.chargePrice}}
+        </td>
+        <td>
+            {{chargeInfo.chargeAmount}}
+        </td>
+        <td>
+            {{chargeInfo.inputDate}}
+        </td>
+        <td>
+            {{chargeInfo.inputOpera}}
+        </td>
+	</tr>
+</table>

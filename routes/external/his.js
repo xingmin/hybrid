@@ -6,6 +6,7 @@ var moment = require('moment');
 var auth = require('../../authlib/index');
 var BarCode = require('../../models/external/barcode');
 var HisUser = require('../../models/external/hisuser');
+var _ = require('lodash');
 
 router.get('/barcode/getchargeinfo',
     auth.passport.authenticate('bearer', { session: false }),
@@ -13,6 +14,25 @@ router.get('/barcode/getchargeinfo',
     function(req, res) {
         var barCode = req.query.barcode;
         BarCode.getChargeInfoByBarCode(barCode).then(
+            function(data){
+                (new Result(0,'',data)).json(res);
+            },
+            function(data){
+                (new Result(1, data.message, null)).json(res);
+            }
+        );
+    });
+router.get('/barcode/',
+    auth.passport.authenticate('bearer', { session: false }),
+    auth.RBACMidware.can(auth.rbac, 'query-barcode-info', 'external-his'),
+    function(req, res) {
+        var qstart = new Date(req.query.qstart);
+        var qend = new Date(req.query.qend);
+        var barCode = req.query.barcode;
+        var inpatientNo = req.query.inpatientno;
+        var times = parseInt(req.query.times);
+        times = _.isNaN(times)?0:times;
+        BarCode.getChargeInfoList(qstart, qend, barCode, inpatientNo, times).then(
             function(data){
                 (new Result(0,'',data)).json(res);
             },

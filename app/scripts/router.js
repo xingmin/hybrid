@@ -35,6 +35,10 @@ define(["./appx"],
 						templateUrl:'/views/tpl/opsupport/recycle.html',
 						controller: 'recycleController'
 					})
+					.when('/opsupport/barcodeaudit',{
+						templateUrl:'/views/tpl/opsupport/barcodeaudit.html',
+						controller: 'barCodeAuditCtrl'
+					})
 					.when('/opsupport/syncuser',{
 						templateUrl:'/views/tpl/opsupport/syncuser.html',
 						controller: 'syncUserCtrl'

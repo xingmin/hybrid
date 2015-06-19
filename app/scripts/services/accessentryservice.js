@@ -26,6 +26,12 @@ define(['./module'],function(services){
 					url: '/opsupport/recycle',
 					enable: false
 				},
+				'barcodeaudit': {
+					accessname: '条码审核',
+					perm: {resource:'opsupport', action: 'barcode-audit'},
+					url: '/opsupport/barcodeaudit',
+					enable: false
+				},
 				'syncuser': {
 					accessname: '同步账户',
 					perm: {resource:'opsupport', action: 'syncuser'},
