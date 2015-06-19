@@ -228,7 +228,7 @@ Draw.prototype.getDrawDetails = function(){
 					'drawId' : value.DrawId,
 				    'barcode' : value.Barcode,
 				    'useFlag' : value.UseFlag,
-				    'recycleId' : value.RecycleId		    
+				    'recycleId' : value.RecycleId
 				 }
 				)));
 		});

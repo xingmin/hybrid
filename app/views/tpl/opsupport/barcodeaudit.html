@@ -42,6 +42,7 @@
 </ul>
 <table class="table table-hover">
 	<tr>
+		<th>序号</th>
 		<th>条形码</th>
 		<th>住院号</th>
 		<th>住院次</th>
@@ -51,8 +52,12 @@
         <th>数量</th>
         <th>录入日期</th>
         <th>录入人</th>
+		<th>状态</th>
     </tr>
     <tr ng-repeat="chargeInfo in SEARCH.chargeInfos track by $index">
+		<td>
+			{{$index+1}}
+		</td>
         <td>
     		{{chargeInfo.barCode}}
         </td>
@@ -75,10 +80,13 @@
             {{chargeInfo.chargeAmount}}
         </td>
         <td>
-            {{chargeInfo.inputDate}}
+            {{chargeInfo.inputDate | formatDateFilter}}
         </td>
         <td>
             {{chargeInfo.inputOpera}}
         </td>
+		<td>
+			{{chargeInfo.statusText}}
+		</td>
 	</tr>
 </table>

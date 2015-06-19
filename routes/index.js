@@ -5,6 +5,7 @@ module.exports = function(app){
 	var auth = require('../authlib/initauth');
     var oproom = require('./opsupport/oproom');
 	var his = require('./external/his');
+	var barcode = require('./opsupport/barcode');
 
 	auth(app);
 	app.use('/', home);
@@ -12,4 +13,5 @@ module.exports = function(app){
 	app.use('/opsupport/recycle', recycle);
     app.use('/opsupport/oprooms', oproom);
 	app.use('/his', his);
+	app.use('/barcode', barcode);
 }

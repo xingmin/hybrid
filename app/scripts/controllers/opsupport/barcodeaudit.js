@@ -1,8 +1,8 @@
 define(['../module', "lodash", "moment"],function(controllers, _, moment){
     'use strict';
     controllers.controller('barCodeAuditCtrl',
-        ['$scope','$http','$timeout', 'hisService', 'messageService',
-        function($scope, $http, $timeout, hisService, messageService){
+        ['$scope','$http','$timeout', 'hisService', 'messageService', 'barCodeService',
+        function($scope, $http, $timeout, hisService, messageService, barCodeService){
             $scope.SEARCH = {};
             $scope.SEARCH.queryParam ={
                 qstart  : moment().format('YYYY-MM-DD')+" 00:00:01",
@@ -31,6 +31,14 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 ).then(
                     function(data){
                         $scope.SEARCH.chargeInfos = data;
+                        _.forEach($scope.SEARCH.chargeInfos, function(chargeInfo){
+                            barCodeService.getBarCodeStatus(chargeInfo.barCode).then(
+                                function(stat){
+                                    chargeInfo.status = stat;
+                                    chargeInfo.statusText = barCodeService.convertStatusToHumanReadable(stat);
+                                }
+                            );
+                        });
                     }
                 );
             };
