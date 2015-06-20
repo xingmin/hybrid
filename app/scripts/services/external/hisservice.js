@@ -47,18 +47,20 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
 			return defered.promise;
 		};
 
-		var _getBarCodeChargeInfoListPromise = function(qstart, qend, barCode, inpatientNo, times){
+		var _getBarCodeChargeInfoListPromise = function(qstart, qend, barCode, inpatientNo, times, pageNo, pageSize){
 			var params = {};
 			params.qstart = qstart;
-            params.qend = qend;
-            params.barcode = barCode;
-            params.inpatientno = inpatientNo;
-            params.times = times;
+			params.qend = qend;
+			params.barcode = barCode;
+			params.inpatientno = inpatientNo;
+			params.times = times;
+			params.pageno = pageNo;
+			params.pagesize = pageSize;
 			return $http.get('/his/barcode/', {params: params});
 		};
-		var _getBarCodeChargeInfoList = function(qstart, qend, barCode, inpatientNo, times){
+		var _getBarCodeChargeInfoList = function(qstart, qend, barCode, inpatientNo, times, pageNo, pageSize){
 			var defered = $q.defer();
-			_getBarCodeChargeInfoListPromise(qstart, qend, barCode, inpatientNo, times)
+			_getBarCodeChargeInfoListPromise(qstart, qend, barCode, inpatientNo, times, pageNo, pageSize)
 				.success(function(data){
 					var result = null;
 					if(data.code === 0){
@@ -71,11 +73,35 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
 				});
 			return defered.promise;
 		};
-
+		var _getBarCodeListCountPromise = function(qstart, qend, barCode, inpatientNo, times){
+			var params = {};
+			params.qstart = qstart;
+			params.qend = qend;
+			params.barcode = barCode;
+			params.inpatientno = inpatientNo;
+			params.times = times;
+			return $http.get('/his/barcode/count', {params: params});
+		};
+		var _getBarCodeListCount = function(qstart, qend, barCode, inpatientNo, times){
+			var defered = $q.defer();
+            _getBarCodeListCountPromise(qstart, qend, barCode, inpatientNo, times)
+				.success(function(data){
+					var result = null;
+					if(data.code === 0){
+						result = data.value;
+					}
+					defered.resolve(result);
+				})
+				.error(function(err){
+					defered.reject(null);
+				});
+			return defered.promise;
+		};
 		service.getBarCodeChargeInfo = _getBarCodeChargeInfo;
 		service.convertBarCodeInfoToHtml = _convertBarCodeInfoToHtml;
 		service.getHisUserOfOpSupport = _getHisUserOfOpSupport;
 		service.getBarCodeChargeInfoList = _getBarCodeChargeInfoList;
+		service.getBarCodeChargeInfoListCount = _getBarCodeListCount;
 		return service;
 	}]);
 });

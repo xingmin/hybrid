@@ -9,7 +9,10 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 qend    : moment().format('YYYY-MM-DD')+" 23:59:59",
                 barCode    : '',
                 inpatientNo   : '',
-                times   : ''
+                times   : '',
+                totalItems: 0,
+                pageSize: 10,
+                pageNo: 1
             };
             $scope.SEARCH.dateBeginPickerOpen = false;
             $scope.SEARCH.toggleDateBeginPicker = function($event) {
@@ -27,7 +30,9 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                     $scope.SEARCH.queryParam.qend,
                     $scope.SEARCH.queryParam.barCode,
                     $scope.SEARCH.queryParam.inpatientNo,
-                    $scope.SEARCH.queryParam.times
+                    $scope.SEARCH.queryParam.times,
+                    $scope.SEARCH.queryParam.pageNo,
+                    $scope.SEARCH.queryParam.pageSize
                 ).then(
                     function(data){
                         $scope.SEARCH.chargeInfos = data;
@@ -39,6 +44,17 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                                 }
                             );
                         });
+                    }
+                );
+
+                hisService.getBarCodeChargeInfoListCount($scope.SEARCH.queryParam.qstart,
+                    $scope.SEARCH.queryParam.qend,
+                    $scope.SEARCH.queryParam.barCode,
+                    $scope.SEARCH.queryParam.inpatientNo,
+                    $scope.SEARCH.queryParam.times
+                ).then(
+                    function(data){
+                        $scope.SEARCH.queryParam.totalItems = data;
                     }
                 );
             };

@@ -36,7 +36,7 @@ BarCode.getChargeInfoByBarCode = function(barCode){
     var promise = customdefer.conn_defered(conn).then(function(conn){
         var request = new sql.Request(conn);
         request.input('BarCode', sql.VarChar(20), barCode);
-        return customdefer.request_defered(request, 'ysself_getBarCodeChargeInfo');
+        return customdefer.request_defered(request, 'hybrid_getBarCodeChargeInfo');
     }).then(function(data){
         var result = null;
         var record = data.recordset[0];
@@ -50,7 +50,7 @@ BarCode.getChargeInfoByBarCode = function(barCode){
     return defered.promise;
 };
 
-BarCode.getChargeInfoList = function(qstart, qend, barCode, inpatientNo, times){
+BarCode.getChargeInfoCount = function(qstart, qend, barCode, inpatientNo, times){
     var defered = Q.defer();
     var conn = new sql.Connection(config.get('his'));
     var promise = customdefer.conn_defered(conn).then(function(conn){
@@ -60,7 +60,29 @@ BarCode.getChargeInfoList = function(qstart, qend, barCode, inpatientNo, times){
         request.input('barcode', sql.VarChar(20), barCode);
         request.input('inpatient_no', sql.VarChar(6), inpatientNo);
         request.input('times', sql.Int, times);
-        return customdefer.request_defered(request, 'ysself_getBarCodeChargeInfoList');
+        return customdefer.request_defered(request, 'hybrid_computeBarCodeCount');
+    }).then(function(data){
+        var result = data.ret;
+        defered.resolve(result);
+    },function(err){
+        defered.reject(err);
+    });
+    return defered.promise;
+};
+
+BarCode.getChargeInfoList = function(qstart, qend, barCode, inpatientNo, times, pageNo, pageSize){
+    var defered = Q.defer();
+    var conn = new sql.Connection(config.get('his'));
+    var promise = customdefer.conn_defered(conn).then(function(conn){
+        var request = new sql.Request(conn);
+        request.input('qb', sql.DateTime, qstart);
+        request.input('qe', sql.DateTime, qend);
+        request.input('barcode', sql.VarChar(20), barCode);
+        request.input('inpatient_no', sql.VarChar(6), inpatientNo);
+        request.input('times', sql.Int, times);
+        request.input('PageNo', sql.Int, pageNo);
+        request.input('PageSize', sql.Int, pageSize);
+        return customdefer.request_defered(request, 'hybrid_getBarCodeChargeInfoList');
     }).then(function(data){
         var result = null;
         var records = data.recordset[0];

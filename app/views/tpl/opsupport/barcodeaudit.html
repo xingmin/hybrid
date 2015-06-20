@@ -42,7 +42,6 @@
 </ul>
 <table class="table table-hover">
 	<tr>
-		<th>序号</th>
 		<th>条形码</th>
 		<th>住院号</th>
 		<th>住院次</th>
@@ -55,9 +54,6 @@
 		<th>状态</th>
     </tr>
     <tr ng-repeat="chargeInfo in SEARCH.chargeInfos track by $index">
-		<td>
-			{{$index+1}}
-		</td>
         <td>
     		{{chargeInfo.barCode}}
         </td>
@@ -90,3 +86,34 @@
 		</td>
 	</tr>
 </table>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="pull-left">
+			<pagination
+					total-items="SEARCH.queryParam.totalItems"
+					items-per-page="SEARCH.queryParam.pageSize"
+					ng-model="SEARCH.queryParam.pageNo"
+					class="pagination"
+					boundary-links="true"
+					max-size ="4"
+					first-text="首页"
+					previous-text="前页"
+					next-text="后页"
+					last-text="最后"
+					ng-change="SEARCH.query()">
+			</pagination>
+		</div>
+		<div class="btn-group pagination" style="float:left">
+			<button type="button" class="btn btn-default dropdown-toggle" data-target="#test" data-toggle="collapse">
+				设置<span class="caret"></span>
+			</button>
+			<div class="dropdown-menu collapse" id="test">
+				<div class="input-group">
+					<span class="input-group-addon">页大小</span>
+					<input type="text" id="pagesize" class="form-control"  name="pagesize" ng-model="SEARCH.queryParam.pageSize" placeholder="页大小"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

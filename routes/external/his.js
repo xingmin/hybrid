@@ -32,7 +32,9 @@ router.get('/barcode/',
         var inpatientNo = req.query.inpatientno;
         var times = parseInt(req.query.times);
         times = _.isNaN(times)?0:times;
-        BarCode.getChargeInfoList(qstart, qend, barCode, inpatientNo, times).then(
+        var pageNo = parseInt(req.query.pageno);
+        var pageSize = parseInt(req.query.pagesize);
+        BarCode.getChargeInfoList(qstart, qend, barCode, inpatientNo, times, pageNo, pageSize).then(
             function(data){
                 (new Result(0,'',data)).json(res);
             },
@@ -41,6 +43,26 @@ router.get('/barcode/',
             }
         );
     });
+router.get('/barcode/count',
+    auth.passport.authenticate('bearer', { session: false }),
+    auth.RBACMidware.can(auth.rbac, 'query-barcode-info', 'external-his'),
+    function(req, res) {
+        var qstart = new Date(req.query.qstart);
+        var qend = new Date(req.query.qend);
+        var barCode = req.query.barcode;
+        var inpatientNo = req.query.inpatientno;
+        var times = parseInt(req.query.times);
+        times = _.isNaN(times)?0:times;
+        BarCode.getChargeInfoCount(qstart, qend, barCode, inpatientNo, times).then(
+            function(data){
+                (new Result(0,'',data)).json(res);
+            },
+            function(data){
+                (new Result(1, data.message, null)).json(res);
+            }
+        );
+    }
+);
 router.get('/user/',
     auth.passport.authenticate('bearer', { session: false }),
     auth.RBACMidware.can(auth.rbac, 'list', 'external-his'),
