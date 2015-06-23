@@ -19,7 +19,8 @@ define(['./module', 'lodash'],function(filters, _){
             var result =[];
             var regex = new RegExp("^"+inputval, "i");
             if(_.isEmpty(inputval)){
-                return result;
+                //return result;
+                return users;
             }
             return _.filter(users, function(user) {
                 return regex.test(user.legalNamePY);

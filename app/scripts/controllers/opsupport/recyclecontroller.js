@@ -10,6 +10,19 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             $scope.RECYCLE.msgs=[];
             $scope.RECYCLE.currentedit={newval:{},oldval:{}};
             $scope.RECYCLE.queryParam = recycleService.queryParam;
+            $scope.RECYCLE.returner = {};
+            $scope.RECYCLE.recycler = {};
+            $scope.allUsers = null;
+            userService.getAllUsersQ().then(
+                function(users){
+                    $scope.allUsers = users;
+                    $scope.allUsers.splice(0, 0, {legalName:'无', legalNamePY:'', empCode: ''});
+                }
+            );
+            $scope.initQuery = function(){
+                $scope.RECYCLE.queryParam.returner = $scope.RECYCLE.returner.selected ? ($scope.RECYCLE.returner.selected.empCode || '') : '';
+                $scope.RECYCLE.queryParam.recycler = $scope.RECYCLE.recycler.selected ? ($scope.RECYCLE.recycler.selected.empCode || '') : '';
+            };
             $scope.RECYCLE.queryParamCheck = function() {
                 var pass = true;
                 var msg = "";
@@ -31,6 +44,7 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 return pass;
             };
             $scope.RECYCLE.query = function(){
+                $scope.initQuery();
                 //$scope.RECYCLE.queryParam.returner = $scope.RECYCLE.receiver.selected? ($scope.RECYCLE.receiver.selected.empCode || ''): '';
                 if($scope.RECYCLE.queryParamCheck()){
                     recycleService.queryRecycles().then(

@@ -32,6 +32,32 @@
 	<li class="col-md-2">
 		<input type="text" class="form-control" id="qbarcode"  name="qbarcode" ng-model="RECYCLE.queryParam.barcode" placeholder="条形码"/>
 	</li>
+	<li class="col-md-1">
+		<ui-select ng-model="RECYCLE.returner.selected"
+				   theme="bootstrap"
+				   ng-disabled="disabled"
+				   reset-search-input="false"
+				   title="送还人">
+			<ui-select-match placeholder="送还人">{{$select.selected.legalName}}</ui-select-match>
+			<ui-select-choices repeat="user in allUsers|userPinyinFilter:$select.search track by $index"
+							   refresh-delay="0">
+				<div ng-bind="user.legalName"></div>
+			</ui-select-choices>
+		</ui-select>
+	</li>
+	<li class="col-md-1">
+		<ui-select ng-model="RECYCLE.recycler.selected"
+				   theme="bootstrap"
+				   ng-disabled="disabled"
+				   reset-search-input="false"
+				   title="回收人">
+			<ui-select-match placeholder="回收人">{{$select.selected.legalName}}</ui-select-match>
+			<ui-select-choices repeat="user in allUsers|userPinyinFilter:$select.search track by $index"
+							   refresh-delay="0">
+				<div ng-bind="user.legalName"></div>
+			</ui-select-choices>
+		</ui-select>
+	</li>
 	<li class="col-md-3">
 		<button type="button" class="btn btn-primary" ng-click="RECYCLE.query()">查询</button>
 		<button type="button" class="btn btn-primary" recycle after-success="updateMessage()">回收</button>
