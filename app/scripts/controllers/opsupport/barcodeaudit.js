@@ -1,8 +1,8 @@
 define(['../module', "lodash", "moment"],function(controllers, _, moment){
     'use strict';
     controllers.controller('barCodeAuditCtrl',
-        ['$scope','$http','$timeout', 'hisService', 'messageService', 'barCodeService',
-        function($scope, $http, $timeout, hisService, messageService, barCodeService){
+        ['$scope','$http','$timeout', 'hisService', 'messageService', 'barCodeService', 'indexedDbService',
+        function($scope, $http, $timeout, hisService, messageService, barCodeService, indexedDbService){
             $scope.SEARCH = {};
             $scope.SEARCH.queryParam ={
                 qstart  : moment().format('YYYY-MM-DD')+" 00:00:01",
@@ -14,6 +14,28 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 pageSize: 10,
                 pageNo: 1
             };
+            //$scope.$watch('SEARCH.queryParam.pageSize', function(newVal, oldVal){
+            //    if(newVal === oldVal){
+            //        return;
+            //    }
+            //    indexedDbService.setAppConfig('barCodeAuditPageSize',newVal).then(
+            //        function(){
+            //            console.log('save barCodeAuditPageSize succeeded！');
+            //        },
+            //        function(){console.log('save barCodeAuditPageSize failed!')}
+            //    );
+            //});
+            //indexedDbService.getAppConfig('barCodeAuditPageSize').then(
+            //    function(data){
+            //        if(data && data.length>0){
+            //            $scope.SEARCH.queryParam.pageSize = data;
+            //        }
+            //    }
+            //).finally(
+            //    function(){
+            //        $scope.SEARCH.query();
+            //    }
+            //);
             $scope.SEARCH.dateBeginPickerOpen = false;
             $scope.SEARCH.toggleDateBeginPicker = function($event) {
                 $event.stopPropagation();

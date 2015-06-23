@@ -5,5 +5,6 @@ define(
     'directives/menudirective',
     'directives/exportbtn',
     'directives/oproomdropdown',
-    'directives/recycledirective'
+    'directives/recycledirective',
+    'directives/pagesetup'
     ],function(){});
