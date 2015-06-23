@@ -1,4 +1,4 @@
-define(['./module'],function(directives){
+define(['./module', 'jquery'],function(directives, $){
     'use strict';	
     directives.directive("pagesetup",['indexedDbService', function(indexedDbService){
         return{
@@ -10,7 +10,7 @@ define(['./module'],function(directives){
             },
             replace: true,
             controller:function($scope, $element, $attrs){
-                $scope.$watch($scope.pageSize, function(newVal, oldVal){
+                $scope.$watch("pageSize", function(newVal, oldVal){
                     if(newVal === oldVal){
                         return;
                     }
@@ -38,10 +38,13 @@ define(['./module'],function(directives){
                         +"<li class=\"input-group\">"
                             +"<span class=\"input-group-addon\">页大小</span>"
                             +"<input type=\"text\" class=\"form-control\"  name=\"pagesize\" ng-model=\"pageSize\" placeholder=\"页大小\"/>"
-                        +"</liv>"
+                        +"</li>"
                     +"</ul>"
                 +"</div>",
             link:function(scope, element, attrs){
+                $(element.children()[0]).bind('click',function(){
+                    $(element.children()[1]).collapse('toggle');
+                });
             }
         }
 	}])

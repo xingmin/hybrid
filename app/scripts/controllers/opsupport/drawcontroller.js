@@ -71,29 +71,6 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                     }
                 );
             };
-            //把pagesize保存在indexeddb
-            $scope.$watch('queryParam.pageSize', function(newVal, oldVal){
-                if(newVal === oldVal){
-                    return;
-                }
-                indexedDbService.setAppConfig('drawPageSize',newVal).then(
-                    function(){
-                        console.log('save pageSize succeeded！');
-                    },
-                    function(){console.log('save pageSize failed!')}
-                );
-            });
-            indexedDbService.getAppConfig('drawPageSize').then(
-                function(data){
-                    if(data && data.length>0){
-                        $scope.queryParam.pageSize = data;
-                    }
-                }
-            ).finally(
-                function(){
-                    $scope.query();
-                }
-            );
             $scope.saveChange = function() {
                 $scope.isSaveCompleted = false;
                 if ($scope.mode == 'edit') {

@@ -40,29 +40,6 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                     );
                 }
             };
-            //把pagesize保存在indexeddb
-            $scope.$watch('RECYCLE.queryParam.pageSize', function(newVal, oldVal){
-                if(newVal === oldVal){
-                    return;
-                }
-                indexedDbService.setAppConfig('recyclePageSize',newVal).then(
-                    function(){
-                        console.log('save pageSize succeeded！');
-                    },
-                    function(){console.log('save pageSize failed!')}
-                );
-            });
-            indexedDbService.getAppConfig('recyclePageSize').then(
-                function(data){
-                    if(data && data.length>0){
-                        $scope.RECYCLE.queryParam.pageSize = data;
-                    }
-                }
-            ).finally(
-                function(){
-                    $scope.query();
-                }
-            );
             $scope.RECYCLE.dateBeginPickerOpen = false;
             $scope.RECYCLE.toggleDateBeginPicker = function($event) {
                 $event.stopPropagation();
