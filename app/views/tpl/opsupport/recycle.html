@@ -36,7 +36,7 @@
 		<ui-select ng-model="RECYCLE.returner.selected"
 				   theme="bootstrap"
 				   ng-disabled="disabled"
-				   reset-search-input="false"
+				   reset-search-input="true"
 				   title="送还人">
 			<ui-select-match placeholder="送还人">{{$select.selected.legalName}}</ui-select-match>
 			<ui-select-choices repeat="user in allUsers|userPinyinFilter:$select.search track by $index"
@@ -49,7 +49,7 @@
 		<ui-select ng-model="RECYCLE.recycler.selected"
 				   theme="bootstrap"
 				   ng-disabled="disabled"
-				   reset-search-input="false"
+				   reset-search-input="true"
 				   title="回收人">
 			<ui-select-match placeholder="回收人">{{$select.selected.legalName}}</ui-select-match>
 			<ui-select-choices repeat="user in allUsers|userPinyinFilter:$select.search track by $index"

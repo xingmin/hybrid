@@ -16,7 +16,10 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             userService.getAllUsersQ().then(
                 function(users){
                     $scope.allUsers = users;
-                    $scope.allUsers.splice(0, 0, {legalName:'无', legalNamePY:'', empCode: ''});
+                    if($scope.allUsers[0].legalName === '无'){
+                        return;
+                    }
+                    $scope.allUsers.splice(0, 0, {legalName:'无', legalNamePY:''});
                 }
             );
             $scope.initQuery = function(){
