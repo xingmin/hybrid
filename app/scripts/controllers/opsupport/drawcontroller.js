@@ -96,19 +96,23 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 var msg = '创建成功';
                 if (data.status ===0 ){
                     $scope.isSaveCompleted = true;
+                    $scope.msgs.push(msg);
                 }else{
                     msg = data.errmsg;
+                    $scope.DRAW.msgs.push(msg);
                 }
-                $scope.DRAW.msgs.push(data.errmsg);
+
             });
             $scope.$on('draws.update', function(event, data){
                 var msg = "保存成功";
                 if (data.status ===0 ){
                     $scope.isSaveCompleted = true;
+                    $scope.msgs.push(msg);
                 }else{
                     msg = "保存失败"+data.errmsg;
+                    $scope.DRAW.msgs.push(msg);
                 }
-                $scope.DRAW.msgs.push(msg);
+
             });
             //create --新建
             //edit --编辑
