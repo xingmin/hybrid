@@ -15,6 +15,8 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             userService.getAllUsersQ().then(
                 function(users){
                     $scope.allUsers = users;
+                    if($scope.allUsers[0].legalName === '无'){ return; }
+                    $scope.allUsers.splice(0, 0, {legalName:'无', legalNamePY:''});
                 }
             );
             $scope.scanner = {barcodeCollecter : ''};
@@ -51,26 +53,6 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             $scope.SEARCH = {};
             $scope.SEARCH.users=null;
             $scope.SEARCH.receiver = {};
-            $scope.SEARCH.refreshUser = function(py){
-                //var regex = new RegExp('^'+py);
-                //_.forEach($scope.SEARCH.users, function(user){
-                //    user.matched = regex.test( user.legalNamePY);
-                //});
-                userService.getUsersPromise({py: py}).success(
-                    function(data){
-                        if(data.code === 0){
-                            $scope.SEARCH.users = data.value;
-                            $scope.SEARCH.users.splice(0, 0, {legalName:'无', legalNamePY:''});
-                        }else{
-                            $scope.SEARCH.users = [];
-                        }
-                    }
-                ).error(
-                    function(err){
-                        $scope.SEARCH.users = [];
-                    }
-                );
-            };
             $scope.saveChange = function() {
                 $scope.isSaveCompleted = false;
                 if ($scope.mode == 'edit') {

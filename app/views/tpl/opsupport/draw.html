@@ -37,12 +37,12 @@
 		<ui-select ng-model="SEARCH.receiver.selected"
 				   theme="bootstrap"
 				   ng-disabled="disabled"
-				   reset-search-input="false"
+				   reset-search-input="true"
 				   title="选择领用人">
 			<ui-select-match placeholder="选择领用人">{{$select.selected.legalName}}</ui-select-match>
-			<ui-select-choices repeat="user in SEARCH.users track by $index"
+			<ui-select-choices repeat="user in allUsers|userPinyinFilter:$select.search track by $index"
 							   refresh="SEARCH.refreshUser($select.search)"
-							   refresh-delay="300">
+							   refresh-delay="0">
 				<div ng-bind="user.legalName"></div>
 			</ui-select-choices>
 		</ui-select>
