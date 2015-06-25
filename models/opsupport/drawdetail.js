@@ -34,4 +34,27 @@ DrawDetail.getBarCodeStatus = function(barcode){
     });
     return defered.promise;
 };
+
+DrawDetail.deleteRecycleDetail = function(id){
+    var defered = Q.defer();
+    var conn = new sql.Connection(config.get('hybrid-sql'));
+
+    var promise = customdefer.conn_defered(conn).then(function(conn){
+        var request = new sql.Request(conn);
+        request.input('Id', sql.Int, id);
+        return customdefer.request_defered(request, 'proc_deleteRecycleDetailById');
+    }).then(function(data){
+        if(data.ret === 0){
+            defered.resolve(true);
+        }else{
+            defered.reject(false);
+        }
+    },function(err){
+        if (err) {
+            console.log("executing proc_deleteRecycleDetailById Error: " + err.message);
+        }
+        defered.reject(err);
+    });
+    return defered.promise;
+};
 module.exports = DrawDetail;

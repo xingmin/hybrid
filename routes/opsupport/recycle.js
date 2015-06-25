@@ -106,7 +106,8 @@ router.post('/',
 					resdata.sendJson(res);
 				}
 		);
-});
+	}
+);
 
 router.get('/',
 	auth.passport.authenticate('bearer', { session: false }),
@@ -142,7 +143,8 @@ router.get('/',
 				(new Result(data.status, data.message)).json(res);
 			}
 		);
-	});
+	}
+);
 router.delete('/:id',
 	auth.passport.authenticate('bearer', { session: false }),
 	auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
@@ -157,5 +159,24 @@ router.delete('/:id',
 				(new Result(status.status, status.message)).json(res);
 			}
 		);
-	});
+	}
+);
+router.delete('/detail/:id',
+	auth.passport.authenticate('bearer', { session: false }),
+	auth.RBACMidware.can(auth.rbac, 'recycle', 'opsupport'),
+	function(req, res) {
+		var id = req.params.id;
+		RecycleDetail.deleteRecycleDetail(id).then(
+			function(status){
+				(new Result(0, '')).json(res);
+			},
+			function(err){
+				if(err instanceof  Error){
+					return (new Result(2, err.message)).json(res);
+				}
+				return (new Result(1, "删除失败")).json(res);
+			}
+		);
+	}
+);
 module.exports = router;

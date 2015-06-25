@@ -162,6 +162,60 @@ define(['./module', 'jquery','lodash'],function(directives, $,_){
 			}
 		}
 	}]);
+
+
+	directives.directive("delrecycledetail", ['$rootScope','recycleService', '$modal',function($rootScope, recycleService, $modal){
+		return{
+			restrict: 'AE',
+			scope:{
+				deleteData:"="
+			},
+			controller: function($scope, $element, $attrs){
+				var ModalInstanceCtrl = function ($scope, $modalInstance, $modal) {
+					$scope.cancel = function () {
+						$modalInstance.dismiss("cancel");
+					};
+					$scope.ok = function(){
+						// you can pass anything you want value object or reference object
+						$modalInstance.close($scope.deleteData);
+					};
+				};
+				var tmpscope =$rootScope.$new();
+				tmpscope.deleteData = $scope.deleteData;
+				$scope.opts ={
+					backdrop: 'static',
+					templateUrl: "views/component/delrecycledetail.tpl.html",
+					controller: ModalInstanceCtrl,
+					//windowClass: "app-modal-window",
+					scope: tmpscope
+				};
+				$scope.openModal = function () {
+					var modalInstance = $modal.open($scope.opts);
+					modalInstance.result.then(function (data) {
+						var id = $scope.deleteData.id;
+						recycleService.deleteRecycleDetailById(id).then(
+							function(stat){
+								$scope.$emit('recycle-detail-delete', {code: 0, message: "删除成功"});
+							},
+							function(){
+								$scope.$emit('recycle-detail-delete', {code: 1, message: "删除失败"});
+							}
+						);
+
+					}, function () {
+						// function executed on modal dismissal
+					});
+				};
+
+			},
+			replace: false,
+			link: function(scope, element, attrs){
+				element.bind("click",function(){
+					scope.openModal();
+				});
+			}
+		}
+	}]);
 });
 
 

@@ -170,6 +170,31 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
             );
             return defered.promise;
         };
+        var _deleteRecycleDetailInRecycles = function(recycles, id){
+            _.every(recycles, function(recycle){
+                var index = _.findIndex(recycle.recycleDetails, {id: id});
+                index>=0 && _.isArray(recycle.recycleDetails) && recycle.recycleDetails.splice(index, 1);
+                return (index<0);
+            });
+        };
+        var _deleteRecycleDetailById = function(id){
+            var defered = $q.defer();
+            $http.delete('/opsupport/recycle/detail/'+id).success(
+                function(data){
+                    if(data.code !== 0) {
+                        defered.reject(false);
+                        return;
+                    }
+                    _deleteRecycleDetailInRecycles(_recycles, id);
+                    defered.resolve(true);
+                }
+            ).error(
+                function(){
+                    defered.reject(false);
+                }
+            );
+            return defered.promise;
+        };
         _service.createNewRecycle = _createNewRecycle;
         _service.getRecycleById = _getRecycleById;
         _service.getRecycleDetails = _getRecycleDetails;
@@ -177,6 +202,7 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
         _service.queryRecycles = _queryRecycles;
         _service.queryParam = _queryParam;
         _service.deleteRecycle = _deleteRecycle;
+        _service.deleteRecycleDetailById = _deleteRecycleDetailById;
         return _service;
 	}]);
 });
