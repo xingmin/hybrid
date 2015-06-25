@@ -70,7 +70,7 @@ define(['./module', 'jquery','lodash'],function(directives, $,_){
 					$scope.saveRecycle = function(){
 						recycleService.createNewRecycle(
 							($scope.returner.selected? ($scope.returner.selected.empCode || '') : ""),
-							($scope.selected? ($scope.selected.empCode || '') : ""),
+							($scope.recycler.selected? ($scope.recycler.selected.empCode || '') : ""),
 							$scope.remark,
 							$scope.recycleDetails
 						);
