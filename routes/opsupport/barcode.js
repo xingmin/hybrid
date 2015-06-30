@@ -8,7 +8,7 @@ var _=require('lodash');
 
 router.get('/:barcode/status',
     auth.passport.authenticate('bearer', { session: false }),
-    //auth.RBACMidware.can(auth.rbac, 'draw', 'opsupport'),
+    auth.RBACMidware.can(auth.rbac, 'query-barcode-status', 'opsupport'),
     function(req, res) {
         var barcode = req.param('barcode');
         DrawDetail.getBarCodeStatus(barcode).then(

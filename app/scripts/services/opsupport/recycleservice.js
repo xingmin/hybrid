@@ -40,11 +40,12 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
                 'recycleDetails': recycleDetails
             }).success(
                 function(data){
-                    if(data.status !== 0){
+                    $rootScope.$broadcast('recycles.create', data);
+                    if(data.code !== 0){
                         return null;
                     }
                     var recycle = data.value;
-                    $rootScope.$broadcast('recycles.create', data);
+
                     if(draws != undefined){
                         _refreshDrawDetails(recycleDetails, draws);
                         return;
@@ -56,8 +57,8 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
                     _refreshSingleRecycleDetails(recycle);
                 }
             ).error(
-                function(){
-                    $rootScope.$broadcast('recycles.create', false);
+                function(err){
+                    $rootScope.$broadcast('recycles.create', {code:2, message: err.message});
                 }
             );
         };

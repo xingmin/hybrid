@@ -1,6 +1,6 @@
 define(['./module', 'jquery','lodash'],function(directives, $,_){
     'use strict';	
-    directives.directive("recycle", ['$rootScope','userService', 'recycleService', 'AuthValue', 'hisService', '$modal',function($rootScope,userService, recycleService, AuthValue, hisService, $modal){
+    directives.directive("recycle", ['$rootScope','userService', 'recycleService', 'AuthValue', 'hisService', '$modal','messageService',function($rootScope,userService, recycleService, AuthValue, hisService, $modal, messageService){
 		return{
 			restrict: 'AE',
 			scope: {
@@ -8,10 +8,12 @@ define(['./module', 'jquery','lodash'],function(directives, $,_){
 			},
 			controller: function($scope, $element, $attrs){
 				var ModalInstanceCtrl = function ($scope, $modalInstance) {
-					$scope.$on('recycles.create', function(data){
-						if(data){
+					$scope.$on('recycles.create', function(event, data){
+						if(data.code === 0){
 							$modalInstance.close(true);
 							$scope.afterSuccess();
+						}else{
+							messageService.sendMessage(data.message);
 						}
 					});
 					$scope.cancel = function () {

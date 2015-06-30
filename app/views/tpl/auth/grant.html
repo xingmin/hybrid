@@ -34,7 +34,7 @@
 				<th>资源</th>
 				<th>动作</th>
 		    </tr>
-		    <tr ng-repeat="permission in permissions">
+		    <tr ng-repeat="permission in permissions | orderBy:['resource', 'action']">
 		    	<td>		    
 		    		<input type="checkbox" ng-change = "grant(permission)"  ng-model="permission.selected" ng-true-value="true" ng-false-value="false"/>
 		    	</td>

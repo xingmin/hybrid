@@ -37,13 +37,11 @@ router.post('/create',
 	recycle.saveNewRecycle()
 		.then(
 				function(status){
-					var resdata;
-					resdata = new ResData(0, '', recycle);
-					resdata.sendJson(res);
+					(new Result(0, "", recycle)).json(res);
+
 				},
 				function(err){
-					var resdata = new ResData(1, err.message);
-					resdata.sendJson(res);
+					(new Result(1, err.message)).json(res);
 				}
 		);
 });
