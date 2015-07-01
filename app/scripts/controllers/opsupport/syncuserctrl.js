@@ -4,11 +4,13 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
         ['$scope','$http','$timeout', '$filter', 'syncUserService', 'messageService',
         function($scope, $http, $timeout,$filter, syncUserService, messageService){
             $scope.users = null;
+            $scope.deptSelected = {};
             $scope.refresh = function(){
-                syncUserService.getUsers().then(
+                var dept = $scope.deptSelected.code || '';
+                syncUserService.getUsers(dept).then(
                     function(data){
                         $scope.users = data;
-                        messageService.sendMessage("刷新成功；");
+                        messageService.sendMessage("刷新成功");
                         _.forEach($scope.users, syncUserService.checkUserSyncStatus);
                         return $scope.users;
                     }

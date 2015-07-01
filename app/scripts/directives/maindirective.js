@@ -6,5 +6,6 @@ define(
     'directives/exportbtn',
     'directives/oproomdropdown',
     'directives/recycledirective',
-    'directives/pagesetup'
+    'directives/pagesetup',
+    'directives/deptselect'
     ],function(){});

@@ -1,4 +1,4 @@
-define(['angular',  'services/mainservice', 'directives/message'], function(angular) {
+define(['angular', 'angular-ui-select', 'services/mainservice', 'directives/message' ], function(angular) {
     'use strict';
-    return angular.module('webapp.directives', ['webapp.services', 'webapp.filters', 'ui.bootstrap', 'my.message']);
- });
+    return angular.module('webapp.directives', ['ui.bootstrap', 'ui.select', 'my.message', 'webapp.services', 'webapp.filters']);
+});

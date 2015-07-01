@@ -32,9 +32,11 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
 				"<li>日期:"+ moment(chargeInfo.inputDate).format('YYYY-MM-DD HH:mm')+"</li>"+
 				"</ul>"
 		};
-		var _getHisUserOfOpSupport = function(){
+		var _getHisUserOfOpSupport = function(opt){
 			var defered = $q.defer();
-			$http.get('/his/user/').success(function(data){
+			var params = opt || {};
+			if(opt.unit) params.unit = opt.unit;
+			$http.get('/his/user/', {params: params}).success(function(data){
 				var result = null;
 				if(data.code === 0){
 					result = data.value;
@@ -46,7 +48,36 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
 			});
 			return defered.promise;
 		};
-
+		var _getDeptsOfHis = function(){
+			var defered = $q.defer();
+			$http.get('/his/dept/').success(function(data){
+				var result = null;
+				if(data.code === 0){
+					result = data.value;
+				}
+				defered.resolve(result);
+			}).error(function(err){
+				defered.reject(null);
+			});
+			return defered.promise;
+		};
+        var _arrDepts = null;
+        var _getStaticDeptsOfHis = function(){
+            var defered = $q.defer();
+            if(_arrDepts !== null){
+                defered.resolve(_arrDepts);
+                return defered.promise;
+            }
+            _getDeptsOfHis().then(
+                function(depts){
+                    defered.resolve(depts);
+                },
+                function(){
+                    defered.resolve([]);
+                }
+            )
+            return defered.promise;
+        };
 		var _getBarCodeChargeInfoListPromise = function(qstart, qend, barCode, inpatientNo, times, pageNo, pageSize){
 			var params = {};
 			params.qstart = qstart;
@@ -102,6 +133,8 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
 		service.getHisUserOfOpSupport = _getHisUserOfOpSupport;
 		service.getBarCodeChargeInfoList = _getBarCodeChargeInfoList;
 		service.getBarCodeChargeInfoListCount = _getBarCodeListCount;
+		service.getDeptsOfHis = _getDeptsOfHis;
+        service.getStaticDeptsOfHis = _getStaticDeptsOfHis;
 		return service;
 	}]);
 });

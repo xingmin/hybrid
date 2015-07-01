@@ -1,43 +1,42 @@
 var sql = require('mssql');
-var customdefer = require('../customdefer');
 var Q = require('q');
 var config = require('../config');
 var _ = require('lodash');
 
-function HisUser(opt){
+function HisDept(opt){
     opt = opt || {};
     this.code = opt.code;
     this.name = opt.name;
     this.py = opt.py;
 }
-HisUser.ConvertFromDB = function(record){
-    return new HisUser({
+HisDept.ConvertFromDB = function(record){
+    return new HisDept({
         code: record["code"],
         name: record["name"],
         py: record["py_code"]
     });
 };
 
-HisUser.getHisUserList = function(unit){
+HisDept.getHisDeptList = function(unit){
     var defered = Q.defer();
     var connection = new sql.Connection(config.get('his'), function(err) {
         if(err){
-            console.log("executing getHisUser Error: " + err.message);
+            console.log("executing getHisDept Error: " + err.message);
             defered.reject(err);
             return;
         }
         var request = new sql.Request(connection);
-        var sqlstatement = "select code, name, py_code from a_employee_mi where 1=1 and isnull(deleted_flag,0)=0"+(unit === ""? "": "and dept_sn='"+unit+"'");
+        var sqlstatement = "select code, name, py_code from zd_unit_code";
         request.query(sqlstatement, function(err, recordset) {
             if(err){
                 connection.close();
-                console.log("executing getHisUser Error: " + err.message);
+                console.log("executing getHisDeptList Error: " + err.message);
                 defered.reject(err);
                 return;
             }
             var result = null;
             result = _.map(recordset, function(record){
-                return HisUser.ConvertFromDB(record);
+                return HisDept.ConvertFromDB(record);
             });
             connection.close();
             defered.resolve(result);
@@ -45,4 +44,4 @@ HisUser.getHisUserList = function(unit){
     });
     return defered.promise;
 };
-module.exports = HisUser;
+module.exports = HisDept;
