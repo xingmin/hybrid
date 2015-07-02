@@ -5,9 +5,11 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
         function($scope, $http, $timeout,$filter, syncUserService, messageService){
             $scope.users = null;
             $scope.deptSelected = {};
+            $scope.pinyin = "";
             $scope.refresh = function(){
                 var dept = $scope.deptSelected.code || '';
-                syncUserService.getUsers(dept).then(
+                var py = $scope.pinyin || '';
+                syncUserService.getUsers(dept, py).then(
                     function(data){
                         $scope.users = data;
                         messageService.sendMessage("刷新成功");

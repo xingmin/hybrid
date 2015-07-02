@@ -69,7 +69,8 @@ router.get('/user/',
     auth.RBACMidware.can(auth.rbac, 'list', 'external-his'),
     function(req, res) {
         var unit = req.query.unit || '';
-        HisUser.getHisUserList(unit).then(
+        var py = req.query.py || '';
+        HisUser.getHisUserList(unit, py).then(
             function(users){
                 (new Result(0, "", users)).json(res);
             },

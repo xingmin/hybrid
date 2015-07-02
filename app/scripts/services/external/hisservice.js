@@ -36,6 +36,7 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
 			var defered = $q.defer();
 			var params = opt || {};
 			if(opt.unit) params.unit = opt.unit;
+			if(opt.py) params.py = opt.py;
 			$http.get('/his/user/', {params: params}).success(function(data){
 				var result = null;
 				if(data.code === 0){

@@ -18,7 +18,7 @@ HisUser.ConvertFromDB = function(record){
     });
 };
 
-HisUser.getHisUserList = function(unit){
+HisUser.getHisUserList = function(unit, py){
     var defered = Q.defer();
     var connection = new sql.Connection(config.get('his'), function(err) {
         if(err){
@@ -27,7 +27,8 @@ HisUser.getHisUserList = function(unit){
             return;
         }
         var request = new sql.Request(connection);
-        var sqlstatement = "select code, name, py_code from a_employee_mi where 1=1 and isnull(deleted_flag,0)=0"+(unit === ""? "": "and dept_sn='"+unit+"'");
+        var sqlstatement = "select code, name, py_code from a_employee_mi where 1=1 and isnull(deleted_flag,0)=0"+(unit === ""? "": " and dept_sn='"+unit+"'");
+        sqlstatement = sqlstatement + (py===""?"":" and py_code like upper('"+py+"')+'%'");
         request.query(sqlstatement, function(err, recordset) {
             if(err){
                 connection.close();

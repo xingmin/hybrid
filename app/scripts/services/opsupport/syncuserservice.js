@@ -3,10 +3,11 @@ define(['../module', 'lodash', 'moment'],function(services, _, moment){
 	services.factory("syncUserService",['$http','$q', '$rootScope','hisService','userService',function($http, $q, $rootScope, hisService, userService){
         var _service = {};
         var _users = null;
-        var _getUsers = function(dept){
+        var _getUsers = function(dept, py){
             var defered =$q.defer();
             var params = {
-                unit: dept
+                unit: dept,
+                py: py
             };
             hisService.getHisUserOfOpSupport(params).then(
                 function(users){

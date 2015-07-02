@@ -4,7 +4,7 @@ define(['./module', 'jquery'],function(directives, $){
         return{
             restrict : 'E',
             scope: {
-                selected : '='
+                selectedItem : '='
             },
             controller: function($scope, $element, $attrs){
                 $scope.depts = null;
@@ -15,7 +15,7 @@ define(['./module', 'jquery'],function(directives, $){
                 );
             },
             template:
-                "<ui-select ng-model=\"selected\""
+                "<ui-select ng-model=\"$parent.selectedItem\""
                     +" theme=\"bootstrap\""
                     +" ng-disabled=\"disabled\""
                     +" reset-search-input=\"true\""
