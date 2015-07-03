@@ -43,10 +43,14 @@ define(["./appx"],
 						templateUrl:'/views/tpl/opsupport/syncuser.html',
 						controller: 'syncUserCtrl'
 					})
-                    .when('/opsupport/oproom',{
-                        templateUrl:'/views/tpl/opsupport/oproom.html',
-                        controller: 'oproomController'
-                    })
+					.when('/opsupport/oproom',{
+							templateUrl:'/views/tpl/opsupport/oproom.html',
+							controller: 'oproomController'
+					})
+					.when('/performance/uploadperformance',{
+						templateUrl:'/scripts/performance-review/performance.html',
+						controller: 'performanceCtrl'
+					})
 					.otherwise({
 						redirectTo:'/'
 					});

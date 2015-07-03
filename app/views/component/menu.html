@@ -23,6 +23,14 @@
 			<li><a ng-hide="!accessEntry.auth.grant.enable"  href="#{{accessEntry.auth.grant.url}}">{{accessEntry.auth.grant.accessname}}</a></li>
 		</ul>
 	</li>
+	<li class="dropdown" ng-hide = "!accessEntry.performance.enable">
+		<a class="dropdown-toggle" data-toggle="dropdown">
+			{{accessEntry.performance.accessname}}<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu" role="menu">
+			<li><a ng-hide="!accessEntry.performance.uploadPerformance.enable" href="#{{accessEntry.performance.uploadPerformance.url}}">{{accessEntry.performance.uploadPerformance.accessname}}</a></li>
+		</ul>
+	</li>
 	<li class="pull-right"><login login-target='#/auth/login'></login></li>
 	<li class="pull-right"><a>{{currentUser.legalName}}</a></li>
 </ul>

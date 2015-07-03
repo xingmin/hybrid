@@ -6,6 +6,7 @@ module.exports = function(app){
     var oproom = require('./opsupport/oproom');
 	var his = require('./external/his');
 	var barcode = require('./opsupport/barcode');
+	var performance = require('./performance/performance');
 
 	auth(app);
 	app.use('/', home);
@@ -14,4 +15,5 @@ module.exports = function(app){
     app.use('/opsupport/oprooms', oproom);
 	app.use('/his', his);
 	app.use('/barcode', barcode);
+	app.use('/performance', performance);
 }

@@ -82,7 +82,7 @@ router.get('/user/',
 );
 router.get('/dept/',
     auth.passport.authenticate('bearer', { session: false }),
-    //auth.RBACMidware.can(auth.rbac, 'list-dept', 'external-his'),
+    auth.RBACMidware.can(auth.rbac, 'list-dept', 'external-his'),
     function(req, res) {
         HisDept.getHisDeptList().then(
             function(depts){

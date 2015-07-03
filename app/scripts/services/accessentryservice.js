@@ -64,7 +64,7 @@ define(['./module'],function(services){
             	   accessname: '权限',
             	   perm: {resource:'permission', action: 'access-entry'},
             	   url: '/auth/permission',
-            	   enable: false,
+            	   enable: false
                },
                "grant": {
             	   accessname: '授权',
@@ -72,7 +72,17 @@ define(['./module'],function(services){
             	   url: '/auth/grant',
             	   enable: false
                }
-           }
+           },
+			"performance":{
+				accessname: '绩效考核',
+				enable: true,
+				"uploadPerformance": {
+					accessname: '上传绩效数据',
+					perm: {resource:'performance', action: 'upload'},
+					url: '/performance/uploadperformance',
+					enable: true
+				}
+			}
 		};
 		var _changeParentStatus = function(parent){
 			parent.enable = false;

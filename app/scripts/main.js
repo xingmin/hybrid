@@ -13,6 +13,7 @@ require.config({
 		'bootstrap-datetimepicker': '../bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker',
 		'bootstrap-validator':'../bower_components/bootstrap-validator/dist/validator',
         'filesaver':'../bower_components/FileSaver/FileSaver',
+		'ng-file-upload':'../bower_components/ng-file-upload/ng-file-upload',
 		//'modal-carousel':'../bower_components/bootstrap-modal-carousel/dist/js/bootstrap-modal-carousel',
 		'lodash':'../bower_components/lodash/lodash',
 		//'socketio':'/socket.io/socket.io',
