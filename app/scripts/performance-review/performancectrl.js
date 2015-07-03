@@ -3,12 +3,13 @@ define(['./module'],function(performance){
     performance.controller('performanceCtrl', [
         '$scope','$timeout','Upload',
         function($scope, $timeout, Upload){
-            $scope.files = "";
+            $scope.files = null;
             $scope.upload = function(){
+                var files = $scope.files;
                 if (!files || !files.length) {return;}
                 var file = files[0];
                 Upload.upload({
-                    url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+                    url: '/performance/201507/upload',
                     file: file
                 }).progress(function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
