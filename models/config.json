@@ -32,5 +32,11 @@
       "password": "hybrid",
       "server": "127.0.0.1",
       "database": "hybrid"
+    },
+    "oa":{
+        "user": "sa",
+        "password": "hf@2013",
+        "server": "127.0.0.1",
+        "database": "iOffice"
     }
 }

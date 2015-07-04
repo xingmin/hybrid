@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-hidden="true" ng-click="cancel()">X</button>
+    <h3>新建部门</h3>
+</div>
+<div class="modal-body">
+<table class="table">
+    <tr>
+        <td>名称</td>
+        <td>
+            <input type="text" ng-model="deptName" required placeholder="部门名称"/>
+        </td>
+    </tr>
+    <tr>
+        <td>拼音</td>
+        <td>
+            <input type="text" ng-model="pinyin" required placeholder="部门拼音"/>
+        </td>
+    </tr>
+    <tr>
+        <td>OA对应部门</td>
+        <td>
+            <oa-dept-select selectedItem=""></oa-dept-select>
+        </td>
+    </tr>
+</table>
+</div>
+<div class="modal-footer">
+    <input type="button" class="btn btn-primary" value="删除" ng-click="ok()" />
+    <input type="button" class="btn btn-primary" value="取消" ng-click="cancel()" />
+</div>
