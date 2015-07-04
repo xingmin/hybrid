@@ -7,19 +7,19 @@
     <tr>
         <td>名称</td>
         <td>
-            <input type="text" ng-model="deptName" required placeholder="部门名称"/>
+            <input type="text" ng-model="dept.deptName" required placeholder="部门名称"/>
         </td>
     </tr>
     <tr>
         <td>拼音</td>
         <td>
-            <input type="text" ng-model="pinyin" required placeholder="部门拼音"/>
+            <input type="text" ng-model="dept.pinYin" required placeholder="部门拼音"/>
         </td>
     </tr>
     <tr>
         <td>OA对应部门</td>
         <td>
-            <oa-dept-select selectedItem=""></oa-dept-select>
+            <oa-dept-select selectedItem="dept.oaDept"></oa-dept-select>
         </td>
     </tr>
 </table>

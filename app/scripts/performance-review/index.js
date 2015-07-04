@@ -1,4 +1,9 @@
 define(
-    ['./performancectrl'],
-    function() {}
+    [
+        './performancedeptdirective',
+        './performancectrl',
+        './performancedeptservice',
+        './performancedeptctrl',
+        function() {}
+    ]
 );

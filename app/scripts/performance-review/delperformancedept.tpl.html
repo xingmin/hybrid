@@ -1,32 +1,20 @@
 <div class="modal-header">
     <button type="button" class="close" aria-hidden="true" ng-click="cancel()">X</button>
-    <h3>确认删除回收记录</h3>
+    <h3>确认删除部门</h3>
 </div>
 <div class="modal-body">
 <table class="table table-bordered table-hover">
     <tr>
-        <td>送还人</td>
+        <td>部门</td>
         <td>
-            {{deleteData.returner | userFilter}}
+            {{deleteData.deptName}}
         </td>
 
     </tr>
     <tr>
-        <td>送还时间</td>
+        <td>对应OA部门</td>
         <td>
-            {{deleteData.returnTime | formatDateFilter}}
-        </td>
-    </tr>
-    <tr>
-        <td>回收人</td>
-        <td>
-            {{deleteData.recycler | userFilter}}
-        </td>
-    </tr>
-    <tr>
-        <td>回收时间</td>
-        <td>
-            {{deleteData.recycleTime | formatDateFilter}}
+            {{deleteData.OADeptId}}
         </td>
     </tr>
 </table>

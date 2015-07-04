@@ -26,7 +26,7 @@ OADept.getOADeptList = function(){
             return;
         }
         var request = new sql.Request(connection);
-        var sqlstatement = "select DeptId, Name, dbo.getPinYin(Name) as PinYin from mrDep";
+        var sqlstatement = "select DeptId, Name, PinYin from mrDep";//dbo.getPinYin(Name) as
         request.query(sqlstatement, function(err, recordset) {
             if(err){
                 connection.close();

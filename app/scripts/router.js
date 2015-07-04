@@ -51,6 +51,10 @@ define(["./appx"],
 						templateUrl:'/scripts/performance-review/performance.html',
 						controller: 'performanceCtrl'
 					})
+					.when('/performance/performancedept',{
+						templateUrl:'/scripts/performance-review/performancedept.html',
+						controller: 'performanceDeptCtrl'
+					})
 					.otherwise({
 						redirectTo:'/'
 					});

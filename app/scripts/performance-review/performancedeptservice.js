@@ -1,6 +1,6 @@
 define(['./module', 'lodash', 'moment'],function(performance, _, moment){
 	'use strict';
-    performance.factory("performanceService",['$http','$q' ,function($http, $q){
+    performance.factory("performanceDeptService",['$http','$q' ,function($http, $q){
         var _service = {};
         var _deptList = null;
         var _getPerformanceDepts = function(py){

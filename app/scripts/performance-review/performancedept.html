@@ -10,29 +10,29 @@
 		<button type="button" class="btn btn-primary">查询</button>
 	</li>
 	<li>
-		<button type="button" class="btn btn-primary" ng-click="upload()">上传</button>
+		<button type="button" class="btn btn-primary" cu-performance-dept op-type="create">新建</button>
 	</li>
 </ul>
-<pre>{{log}}</pre>
 <table class="table table-hover">
 	<tr>
-		<th><input type="checkbox"  ng-click="selectAllUser()"/>选择</th>
-		<th>工号</th>
-		<th>姓名</th>
-		<th>√(已导入)</th>
+		<th>ID</th>
+		<th>科室</th>
+		<th>对应OA科室</th>
+		<th></th>
     </tr>
-    <tr ng-repeat="user in users track by $index">
+    <tr ng-repeat="dept in depts track by $index">
 		<td>
-			<input type="checkbox" ng-checked="user.selected" ng-model="user.selected"/>
+			{{dept.deptId}}
 		</td>
         <td>
-    		{{user.code}}
+    		{{dept.deptName}}
         </td>
-    	<td>
-    		{{user.name}}
-        </td>
+		<td>
+			{{dept.OADeptId | oaDeptIdToNameFilter}}
+		</td>
         <td>
-            <span  ng-class="{true:'glyphicon glyphicon-ok', false:''}[user.syncStatus]"></span>
+			<a del-performance-dept delete-data="dept">删除</a>
+			<a cu-performance-dept dept="dept" op-type="update">编辑</a>
         </td>
 	</tr>
 </table>

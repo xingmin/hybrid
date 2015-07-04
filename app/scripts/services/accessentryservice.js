@@ -81,6 +81,12 @@ define(['./module'],function(services){
 					perm: {resource:'performance', action: 'upload'},
 					url: '/performance/uploadperformance',
 					enable: true
+				},
+				"performanceDept": {
+					accessname: '部门',
+					perm: {resource:'performance', action: 'dept'},
+					url: '/performance/performancedept',
+					enable: true
 				}
 			}
 		};

@@ -39,6 +39,16 @@ define(['angular', 'bootstrap', 'angular-bootstrap', "angular-ui-select"], funct
             });
         };
     }]);
+    oa.filter("oaDeptIdToNameFilter",[function(){
+        return function(depts, id){
+            return _.result(_.find(depts, {id:id}), "name");
+        };
+    }]);
+    oa.filter("oaDeptIdToDeptFilter",[function(){
+        return function(depts, id){
+            return _.find(depts, {id:id});
+        };
+    }]);
     oa.directive("oaDeptSelect",['oaService', function(oaService){
         return{
             restrict : 'E',
