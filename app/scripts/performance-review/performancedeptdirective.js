@@ -1,6 +1,6 @@
 define(['./module', 'lodash', './performancedeptservice'],function(performance, _){
     'use strict';
-	performance.directive("cuPerformanceDept", ['performanceDeptService', '$modal', '$filter',function(performanceDeptService, $modal, $filter){
+	performance.directive("cuPerformanceDept", ['performanceDeptService', '$modal', '$filter','$rootScope',function(performanceDeptService, $modal, $filter, $rootScope){
 		return{
 			restrict: 'AE',
 			scope:{
@@ -10,13 +10,13 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 			controller: function($scope, $element, $attrs){
 				var ModalInstanceCtrl = function ($scope, $modalInstance, $modal) {
 					$scope.dept= $scope.dept || {};
-					$scope.dept.oaDept= $scope.dept.oaDept || {};
+					$scope.oaDept= $scope.oaDept || {};
 					$scope.cancel = function () {
 						$modalInstance.dismiss("cancel");
 					};
 					$scope.ok = function(){
 						// you can pass anything you want value object or reference object
-						$modalInstance.close($scope.dept);
+						$modalInstance.close({dept:$scope.dept, oaDept:$scope.oaDept} );
 					};
 				};
 				$scope.opts ={
@@ -27,14 +27,14 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 				if($attrs["opType"] === "update"){
 					$scope.opts.scope =$rootScope.$new();
 					$scope.opts.scope.dept = $scope.dept;
-					$scope.opts.scope.dept.oaDept = $filter.oaDeptIdToDeptFilter($scope.dept.OADeptId);
+					$scope.opts.scope.oaDept = $filter("oaDeptIdToDeptFilter")($scope.dept.OADeptId);
 //					$scope.opts.scope.opType = $attrs["opType"];
 				}
 				$scope.openModal = function () {
 					var modalInstance = $modal.open($scope.opts);
-					modalInstance.result.then(function (dept) {
+					modalInstance.result.then(function (data) {
 						if($attrs["opType"] === "update"){
-							performanceDeptService.update(dept.deptId, dept.deptName, dept.pinYin, dept.oaDept.id).then(
+							performanceDeptService.update(data.dept.deptId, data.dept.deptName, data.dept.pinYin, data.oaDept.id).then(
 								function(){
 									$scope.$emit('performanceDept-update', {code: 0, message: "修改"+dept.deptId+"成功"});
 								},
@@ -67,7 +67,7 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 			}
 		}
 	}]);
-	performance.directive("delPerformanceDept", ['performanceDeptService', '$modal',function(performanceDeptService, $modal){
+	performance.directive("delPerformanceDept", ['$rootScope', 'performanceDeptService', '$modal',function($rootScope, performanceDeptService, $modal){
 		return{
 			restrict: 'AE',
 			scope:{

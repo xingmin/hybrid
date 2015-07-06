@@ -1,14 +1,13 @@
 var express = require('express');
 var router = express.Router();
+var OADept = require("../../models/external/oadept");
 var Q = require('q');
 var Result = require("../result.js");
-var moment = require('moment');
 var auth = require('../../authlib/index');
-var OADept = require('../../models/external/oadept');
-var _ = require('lodash');
+var _=require('lodash');
 
-router.get('/dept/',
-    auth.passport.authenticate('bearer', { session: false }),
+router.get('/dept',
+    //auth.passport.authenticate('bearer', { session: false }),
     //auth.RBACMidware.can(auth.rbac, 'list-dept', 'external-oa'),
     function(req, res) {
         OADept.getOADeptList().then(

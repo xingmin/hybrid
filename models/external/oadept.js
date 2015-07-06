@@ -10,7 +10,7 @@ function OADept(opt){
     this.py = opt.py;
 }
 OADept.ConvertFromDB = function(record){
-    return new HisDept({
+    return new OADept({
         id: record["DeptId"],
         name: record["Name"],
         py: record["PinYin"]

@@ -31,8 +31,9 @@ router.get('/',
     auth.passport.authenticate('bearer', { session: false }),
     //auth.RBACMidware.can(auth.rbac, 'list', 'performance'),
     function(req, res) {
-        var dateBegin = req.query.py;
-        PerformanceDept.prototype.getPerformanceDepts(py).then(
+        var py = req.query.py;
+        py = py || '';
+        PerformanceDept.getPerformanceDepts(py).then(
             function(arrData){
                 if(arrData) console.log('xx');
                 (new Result(0,'',arrData)).json(res);

@@ -5,9 +5,10 @@ module.exports = function(app){
 	var auth = require('../authlib/initauth');
     var oproom = require('./opsupport/oproom');
 	var his = require('./external/his');
+	var oa = require('./external/oa');
 	var barcode = require('./opsupport/barcode');
 	var performance = require('./performance/performance');
-	var oa = require('./external/oa');
+
 
 	auth(app);
 	app.use('/', home);
@@ -15,7 +16,8 @@ module.exports = function(app){
 	app.use('/opsupport/recycle', recycle);
     app.use('/opsupport/oprooms', oproom);
 	app.use('/his', his);
+	app.use('/oa', oa);
 	app.use('/barcode', barcode);
 	app.use('/performance', performance);
-	app.use('/oa', oa);
+
 }

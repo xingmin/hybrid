@@ -34,9 +34,9 @@
       "database": "hybrid"
     },
     "oa":{
-        "user": "sa",
-        "password": "system",
-        "server": "127.0.0.1",
-        "database": "iOffice"
+      "user": "sa",
+      "password": "system",
+      "server": "127.0.0.1",
+      "database": "iOffice"
     }
 }

@@ -1,7 +1,7 @@
 var sql = require('mssql');
 var customdefer = require('../customdefer');
 var Q = require('q');
-var Config = require('../config');
+var config = require('../config');
 
 function PerformanceDept(obj){
     this.deptId = obj.deptId;
@@ -19,13 +19,14 @@ PerformanceDept.ConvertFromDB = function(record){
 };
 PerformanceDept.getPerformanceDepts = function(pinYin){
 	var defered = Q.defer();
-	var connection = new sql.Connection(config.get('his'), function(err) {
+	var connection = new sql.Connection(config.get('hybrid-sql'), function(err) {
 		if(err){
 			console.log("executing getPerformanceDepts Error: " + err.message);
 			defered.reject(err);
 			return;
 		}
 		var request = new sql.Request(connection);
+		pinYin = pinYin || '';
 		var sqlstatement = "select DeptId, DeptName, PinYin, OADeptId from PerformanceDept where PinYin like '"+pinYin+"%'";
 		request.query(sqlstatement, function(err, recordset) {
 			if(err){
@@ -47,8 +48,7 @@ PerformanceDept.getPerformanceDepts = function(pinYin){
 
 PerformanceDept.prototype.saveNew = function(){
 	var defered = Q.defer();
-	var config = Config.get('hybrid-sql');
-	var conn = new sql.Connection(config);
+	var conn = new sql.Connection(config.get('hybrid-sql'));
 	var that = this;
 	
 	var promise = customdefer.conn_defered(conn).then(function(conn){
@@ -75,8 +75,7 @@ PerformanceDept.prototype.saveNew = function(){
 };
 PerformanceDept.prototype.saveUpdate = function(){
 	var defered = Q.defer();
-	var config = Config.get('hybrid-sql');
-	var conn = new sql.Connection(config);
+	var conn = new sql.Connection(config.get('hybrid-sql'));
 	var that = this;
 	
 	var promise = customdefer.conn_defered(conn).then(function(conn){
@@ -103,8 +102,7 @@ PerformanceDept.prototype.saveUpdate = function(){
 
 PerformanceDept.prototype.deletePerformanceDept = function(){
 	var defered = Q.defer();
-	var config = Config.get('hybrid-sql');
-	var conn = new sql.Connection(config);
+	var conn = new sql.Connection(config.get('hybrid-sql'));
 	var that = this;
 	
 	var promise = customdefer.conn_defered(conn).then(function(conn){
