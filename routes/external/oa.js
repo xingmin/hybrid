@@ -6,7 +6,7 @@ var Result = require("../result.js");
 var auth = require('../../authlib/index');
 var _=require('lodash');
 
-router.get('/dept',
+router.get('/dept/',
     //auth.passport.authenticate('bearer', { session: false }),
     //auth.RBACMidware.can(auth.rbac, 'list-dept', 'external-oa'),
     function(req, res) {

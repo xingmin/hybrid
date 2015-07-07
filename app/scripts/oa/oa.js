@@ -10,10 +10,14 @@ define(['angular', 'bootstrap', 'angular-bootstrap', "angular-ui-select"], funct
                 defered.resolve(_arrDepts);
                 return defered.promise;
             }
-            $http.get('/oa/dept').success(
-                function(depts){
-                    _arrDepts = depts;
-                    defered.resolve(depts);
+            $http.get('/oa/dept/').success(
+                function(data){
+                    if(data.code === 0){
+                        _arrDepts = data.value;
+                    }else{
+                        _arrDepts = [];
+                    }
+                    defered.resolve(_arrDepts);
                 }
             ).error(
                 function(){
@@ -39,21 +43,34 @@ define(['angular', 'bootstrap', 'angular-bootstrap', "angular-ui-select"], funct
             });
         };
     }]);
-    oa.filter("oaDeptIdToNameFilter",[function(){
-        return function(depts, id){
-            return _.result(_.find(depts, {id:id}), "name");
+    oa.filter("oaDeptIdToNameFilter",['oaService', function(oaService){
+        var arrDepts = null;
+        oaService.getStaticDeptsOfOA().then(
+            function(depts){
+                arrDepts = depts;
+            }
+        );
+        return function(id){
+            return _.result(_.find(arrDepts, {id:id}), "name");
         };
     }]);
-    oa.filter("oaDeptIdToDeptFilter",[function(){
-        return function(depts, id){
-            return _.find(depts, {id:id});
+    oa.filter("oaDeptIdToDeptFilter",['oaService', function(oaService){
+        var arrDepts = null;
+        oaService.getStaticDeptsOfOA().then(
+            function(depts){
+                arrDepts = depts;
+            }
+        );
+        return function( id){
+            return _.find(arrDepts, {id:id});
         };
     }]);
     oa.directive("oaDeptSelect",['oaService', function(oaService){
         return{
             restrict : 'E',
+            require : 'ngModel',
             scope: {
-                selectedItem : '='
+                ngModel : '='
             },
             controller: function($scope, $element, $attrs){
                 $scope.depts = null;
@@ -64,10 +81,11 @@ define(['angular', 'bootstrap', 'angular-bootstrap', "angular-ui-select"], funct
                 );
             },
             template:
-            "<ui-select ng-model=\"$parent.selectedItem\""
+            "<ui-select"
+            +" ng-model=\"$parent.ngModel\""
             +" theme=\"bootstrap\""
             +" ng-disabled=\"disabled\""
-            +" reset-search-input=\"true\""
+            +" reset-search-input=\"false\""
             +" title=\"选择科室\">"
             +"<ui-select-match placeholder=\"选择科室\">{{$select.selected.name}}</ui-select-match>"
             +"<ui-select-choices repeat=\"dept in depts | oaDeptPinyinFilter:$select.search track by $index\""

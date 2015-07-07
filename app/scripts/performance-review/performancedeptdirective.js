@@ -11,11 +11,18 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 				var ModalInstanceCtrl = function ($scope, $modalInstance, $modal) {
 					$scope.dept= $scope.dept || {};
 					$scope.oaDept= $scope.oaDept || {};
+					$scope.opTypeText = ($scope.opType === 'update'? "编辑": "新建");
 					$scope.cancel = function () {
 						$modalInstance.dismiss("cancel");
 					};
 					$scope.ok = function(){
-						// you can pass anything you want value object or reference object
+						$scope.dept.deptId = $scope.dept.deptId || '';
+						$scope.dept.deptName = $scope.dept.deptName || '';
+						$scope.dept.pinYin = $scope.dept.pinYin || '';
+						if($scope.dept.deptName === '') {
+							return;
+						}
+							// you can pass anything you want value object or reference object
 						$modalInstance.close({dept:$scope.dept, oaDept:$scope.oaDept} );
 					};
 				};
@@ -25,10 +32,11 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 					controller: ModalInstanceCtrl
 				};
 				if($attrs["opType"] === "update"){
-					$scope.opts.scope =$rootScope.$new();
-					$scope.opts.scope.dept = $scope.dept;
-					$scope.opts.scope.oaDept = $filter("oaDeptIdToDeptFilter")($scope.dept.OADeptId);
-//					$scope.opts.scope.opType = $attrs["opType"];
+					var tscope =$rootScope.$new();
+					tscope.dept = $scope.dept;
+					tscope.oaDept = $filter("oaDeptIdToDeptFilter")($scope.dept.OADeptId);
+					tscope.opType = $attrs["opType"];
+					$scope.opts.scope = tscope;
 				}
 				$scope.openModal = function () {
 					var modalInstance = $modal.open($scope.opts);
@@ -44,7 +52,7 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 							);
 							return;
 						}
-						performanceDeptService.createNew(dept.deptName, dept.pinYin, dept.oaDept).then(
+						performanceDeptService.createNew(data.dept.deptName, data.dept.pinYin, data.oaDept.id).then(
 							function(stat){
 								$scope.$emit('performanceDept-create', {code: 0, message: "新建"+dept.deptName+"成功"});
 							},

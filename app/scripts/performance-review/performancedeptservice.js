@@ -9,9 +9,13 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
                 py: py
             };
             $http.get('/performance/',{params: params}).success(
-                function(depts){
-                    _deptList = depts;
-                    defered.resolve(depts);
+                function(data){
+                    if(data.code === 0){
+                        _deptList = data.value;
+                    }else{
+                        _deptList = [];
+                    }
+                    defered.resolve(_deptList);
                 }
             ).error(
                 function(err){
@@ -32,6 +36,9 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
                     if(data.code !== 0){
                         defered.reject(new Error(data.message));
                         return;
+                    }
+                    if(!_deptList){
+                        _deptList = [];
                     }
                     _deptList.push(data.value);
                     defered.resolve(data.value);
@@ -76,7 +83,7 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
                         defered.reject(new Error(data.message));
                         return;
                     }
-                    var index = _.findIndex(_deptList, {deptId: id});
+                    var index = _.findIndex(_deptList, {deptId: deptId});
                     if(_.isArray(_deptList)){
                         _deptList[index].deptName = deptName;
                         _deptList[index].pinYin = pinYin;

@@ -98,8 +98,8 @@ router.delete('/:deptid',
     auth.passport.authenticate('bearer', { session: false }),
     //auth.RBACMidware.can(auth.rbac, 'delete', 'performance'),
     function(req, res) {
-        var id = req.params.id;
-        var performanceDept = new PerformanceDept({id:id});
+        var deptid = req.params.deptid;
+        var performanceDept = new PerformanceDept({deptId:deptid});
         performanceDept.deletePerformanceDept().then(
             function(status){
                 (new Result(0, '')).json(res);

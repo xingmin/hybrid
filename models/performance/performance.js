@@ -2,11 +2,12 @@ var sql = require('mssql');
 var customdefer = require('../customdefer');
 var Q = require('q');
 var config = require('../config');
+var _ = require('lodash');
 
 function PerformanceDept(obj){
     this.deptId = obj.deptId;
     this.deptName = obj.deptName;
-	this.pinYin = obj.PinYin;
+	this.pinYin = obj.pinYin;
     this.OADeptId = obj.OADeptId;
 }
 PerformanceDept.ConvertFromDB = function(record){
@@ -27,7 +28,7 @@ PerformanceDept.getPerformanceDepts = function(pinYin){
 		}
 		var request = new sql.Request(connection);
 		pinYin = pinYin || '';
-		var sqlstatement = "select DeptId, DeptName, PinYin, OADeptId from PerformanceDept where PinYin like '"+pinYin+"%'";
+		var sqlstatement = "select DeptId, DeptName, PinYin, OADeptId from PerformanceDept where isnull(PinYin,'') like '"+pinYin+"%'";
 		request.query(sqlstatement, function(err, recordset) {
 			if(err){
 				connection.close();

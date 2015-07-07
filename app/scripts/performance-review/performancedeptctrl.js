@@ -11,6 +11,11 @@ define(['./module', './performancedeptservice'],function(performance){
                     }
                 );
             };
+            $scope.$on('performanceDept-update', function(event, data){
+                if(data.code === 0) {
+
+                }
+            });
         }
     ]);
 });
