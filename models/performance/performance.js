@@ -8,14 +8,14 @@ function PerformanceDept(obj){
     this.deptId = obj.deptId;
     this.deptName = obj.deptName;
 	this.pinYin = obj.pinYin;
-    this.OADeptId = obj.OADeptId;
+    this.OAEmpId = obj.OAEmpId;
 }
 PerformanceDept.ConvertFromDB = function(record){
 	return new PerformanceDept({
 		deptId: record["DeptId"],
 		deptName: record["DeptName"],
 		pinYin: record["PinYin"],
-		OADeptId: record["OADeptId"]
+		OAEmpId: record["OAEmpId"]
 	});
 };
 PerformanceDept.getPerformanceDepts = function(pinYin){
@@ -28,7 +28,7 @@ PerformanceDept.getPerformanceDepts = function(pinYin){
 		}
 		var request = new sql.Request(connection);
 		pinYin = pinYin || '';
-		var sqlstatement = "select DeptId, DeptName, PinYin, OADeptId from PerformanceDept where isnull(PinYin,'') like '"+pinYin+"%'";
+		var sqlstatement = "select DeptId, DeptName, PinYin, OAEmpId from PerformanceDept where isnull(PinYin,'') like '"+pinYin+"%'";
 		request.query(sqlstatement, function(err, recordset) {
 			if(err){
 				connection.close();
@@ -56,7 +56,7 @@ PerformanceDept.prototype.saveNew = function(){
 		var request = new sql.Request(conn);
 		request.input('DeptName', sql.NVarChar(60), that.deptName);
 		request.input('PinYin', sql.VarChar(60), that.pinYin);
-		request.input('OADeptId', sql.Int, that.OADeptId);
+		request.input('OAEmpId', sql.Int, that.OAEmpId);
 		return customdefer.request_defered(request, 'proc_addPerformanceDept');
 	}).then(function(data){
 		if(data.ret === 0){
@@ -84,7 +84,7 @@ PerformanceDept.prototype.saveUpdate = function(){
 		request.input('DeptId', sql.Int, that.deptId);
 		request.input('DeptName', sql.NVarChar(60), that.deptName);
 		request.input('PinYin', sql.VarChar(60), that.pinYin);
-		request.input('OADeptId', sql.Int, that.OADeptId);
+		request.input('OAEmpId', sql.Int, that.OAEmpId);
 		return customdefer.request_defered(request, 'proc_updatePerformanceDept');
 	}).then(function(data){
 		if(data.ret === 0){

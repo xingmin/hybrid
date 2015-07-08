@@ -3,70 +3,70 @@ define(['angular', 'bootstrap', 'angular-bootstrap', "angular-ui-select"], funct
     var oa = angular.module('oa', [ 'ui.select']);
     oa.factory("oaService",['$http','$q',function($http, $q){
         var service = {};
-        var _arrDepts = null;
-        var _getStaticDeptsOfOA = function(){
+        var _arrEmps = null;
+        var _getStaticEmpsOfOA = function(){
             var defered = $q.defer();
-            if(_arrDepts !== null){
-                defered.resolve(_arrDepts);
+            if(_arrEmps !== null){
+                defered.resolve(_arrEmps);
                 return defered.promise;
             }
-            $http.get('/oa/dept/').success(
+            $http.get('/oa/emp/').success(
                 function(data){
                     if(data.code === 0){
-                        _arrDepts = data.value;
+                        _arrEmps = data.value;
                     }else{
-                        _arrDepts = [];
+                        _arrEmps = [];
                     }
-                    defered.resolve(_arrDepts);
+                    defered.resolve(_arrEmps);
                 }
             ).error(
                 function(){
-                    _arrDepts = [];
+                    _arrEmps = [];
                     defered.resolve([]);
                 }
             );
             return defered.promise;
         };
-        _getStaticDeptsOfOA();
-        service.getStaticDeptsOfOA = _getStaticDeptsOfOA;
+        _getStaticEmpsOfOA();
+        service.getStaticEmpsOfOA = _getStaticEmpsOfOA;
         return service;
     }]);
-    oa.filter("oaDeptPinyinFilter",[function(){
-        return function(depts, inputval){
+    oa.filter("oaEmpPinyinFilter",[function(){
+        return function(emps, inputval){
             var result =[];
             var regex = new RegExp("^"+inputval, "i");
             if(_.isEmpty(inputval)){
                 //return result;
-                return depts;
+                return emps;
             }
-            return _.filter(depts, function(dept) {
-                return regex.test(dept.py);
+            return _.filter(emps, function(emp) {
+                return regex.test(emp.py);
             });
         };
     }]);
-    oa.filter("oaDeptIdToNameFilter",['oaService', function(oaService){
+    oa.filter("oaEmpIdToNameFilter",['oaService', function(oaService){
         //var arrDepts = null;
         //oaService.getStaticDeptsOfOA().then(
         //    function(depts){
         //        arrDepts = depts;
         //    }
         //);
-        return function(id, arrDepts){
-            return _.result(_.find(arrDepts, {id:id}), "name");
+        return function(id, arrEmps){
+            return _.result(_.find(arrEmps, {id:id}), "name");
         };
     }]);
-    oa.filter("oaDeptIdToDeptFilter",['oaService', function(oaService){
+    oa.filter("oaEmpIdToDeptFilter",['oaService', function(oaService){
         //var arrDepts = null;
         //oaService.getStaticDeptsOfOA().then(
         //    function(depts){
         //        arrDepts = depts;
         //    }
         //);
-        return function(id, arrDepts ){
-            return _.find(arrDepts, {id:id});
+        return function(id, arrEmps ){
+            return _.find(arrEmps, {id:id});
         };
     }]);
-    oa.directive("oaDeptSelect",['oaService', function(oaService){
+    oa.directive("oaEmpSelect",['oaService', function(oaService){
         return{
             restrict : 'E',
             require : 'ngModel',
@@ -74,10 +74,10 @@ define(['angular', 'bootstrap', 'angular-bootstrap', "angular-ui-select"], funct
                 ngModel : '='
             },
             controller: function($scope, $element, $attrs){
-                $scope.depts = null;
-                oaService.getStaticDeptsOfOA().then(
-                    function(depts){
-                        $scope.depts = depts;
+                $scope.emps = null;
+                oaService.getStaticEmpsOfOA().then(
+                    function(emps){
+                        $scope.emps = emps;
                     }
                 );
             },
@@ -87,11 +87,11 @@ define(['angular', 'bootstrap', 'angular-bootstrap', "angular-ui-select"], funct
             +" theme=\"bootstrap\""
             +" ng-disabled=\"disabled\""
             +" reset-search-input=\"false\""
-            +" title=\"选择科室\">"
-            +"<ui-select-match placeholder=\"选择科室\">{{$select.selected.name}}</ui-select-match>"
-            +"<ui-select-choices repeat=\"dept in depts | oaDeptPinyinFilter:$select.search track by $index\""
+            +" title=\"选择姓名\">"
+            +"<ui-select-match placeholder=\"选择姓名\">{{$select.selected.name}}</ui-select-match>"
+            +"<ui-select-choices repeat=\"emp in emps | oaEmpPinyinFilter:$select.search track by $index\""
             +" refresh-delay=\"0\">"
-            +"<div ng-bind=\"dept.name\"></div>"
+            +"<div ng-bind=\"emp.name\"></div>"
             +"</ui-select-choices>"
             +"</ui-select>",
             link:function(scope, element, attrs){

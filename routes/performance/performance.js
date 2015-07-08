@@ -24,7 +24,8 @@ router.post('/:month/upload',
                 (new Result(1, err.message, null)).json(res);
                 return;
             }
-
+            var obj = xlsx.parse(files.file[0].path);
+            console.log(JSON.stringify(obj));
         });
     });
 router.get('/',
@@ -50,12 +51,12 @@ router.post('/',
     function(req, res) {
         var deptName = req.body.deptName;
         var pinYin = req.body.pinYin;
-        var OADeptId = req.body.OADeptId;
+        var OAEmpId = req.body.OAEmpId;
 
         var  performanceDept= new PerformanceDept({
             'deptName' : deptName,
             'pinYin' : pinYin,
-            'OADeptId' : OADeptId
+            'OAEmpId' : OAEmpId
         });
         performanceDept.saveNew()
             .then(
@@ -75,13 +76,13 @@ router.put('/',
         var deptId = req.body.deptId;
         var deptName = req.body.deptName;
         var pinYin = req.body.pinYin;
-        var OADeptId = req.body.OADeptId;
+        var OAEmpId = req.body.OAEmpId;
 
         var  performanceDept= new PerformanceDept({
             'deptId' : deptId,
             'deptName' : deptName,
             'pinYin' : pinYin,
-            'OADeptId' : OADeptId
+            'OAEmpId' : OAEmpId
         });
         performanceDept.saveUpdate()
             .then(

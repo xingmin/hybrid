@@ -11,11 +11,11 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 				var ModalInstanceCtrl = function ($scope, $modalInstance, $modal) {
 					$scope.dept= $scope.dept || {};
 					$scope.opTypeText = ($scope.opType === 'update'? "编辑": "新建");
-					$scope.oaDept= $scope.oaDept || {};
+					$scope.oaEmp= $scope.oaEmp || {};
 					if($scope.opType === 'update'){
-						oaService.getStaticDeptsOfOA().then(
-							function(depts){
-								$scope.oaDept = $filter("oaDeptIdToDeptFilter")($scope.dept.OADeptId, depts);
+						oaService.getStaticEmpsOfOA().then(
+							function(emps){
+								$scope.oaEmp = $filter("oaEmpIdToDeptFilter")($scope.dept.OAEmpId, emps);
 							}
 						);
 					}
@@ -32,7 +32,7 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 							// you can pass anything you want value object or reference object
 						//$modalInstance.close({dept:$scope.dept, oaDept:$scope.oaDept} );
 						if($attrs["opType"] === "update"){
-							performanceDeptService.update($scope.dept.deptId, $scope.dept.deptName, $scope.dept.pinYin, $scope.oaDept.id).then(
+							performanceDeptService.update($scope.dept.deptId, $scope.dept.deptName, $scope.dept.pinYin, $scope.oaEmp.id).then(
 								function(){
 									$rootScope.$broadcast('performanceDept-update', {code: 0, message: "修改"+$scope.dept.deptId+"成功"});
 									$modalInstance.close();
@@ -43,7 +43,7 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 							);
 							return;
 						}
-						performanceDeptService.createNew($scope.dept.deptName, $scope.dept.pinYin, $scope.oaDept.id).then(
+						performanceDeptService.createNew($scope.dept.deptName, $scope.dept.pinYin, $scope.oaEmp.id).then(
 							function(stat){
 								$rootScope.$broadcast('performanceDept-create', {code: 0, message: "新建"+$scope.dept.deptName+"成功"});
 								$modalInstance.close();
@@ -90,10 +90,10 @@ define(['./module', 'lodash', './performancedeptservice'],function(performance, 
 			},
 			controller: function($scope, $element, $attrs){
 				var ModalInstanceCtrl = function ($scope, $modalInstance, $modal) {
-					$scope.staticDepts = null;
-					oaService.getStaticDeptsOfOA().then(
-						function(depts){
-							$scope.staticDepts = depts;
+					$scope.staticEmps = null;
+					oaService.getStaticEmpsOfOA().then(
+						function(Emps){
+							$scope.staticEmps = emps;
 						}
 					);
 					$scope.cancel = function () {

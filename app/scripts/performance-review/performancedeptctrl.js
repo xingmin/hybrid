@@ -4,10 +4,10 @@ define(['./module', './performancedeptservice'],function(performance){
         '$scope','$timeout','oaService', 'performanceDeptService','messageService',
         function($scope, $timeout,oaService, performanceDeptService, messageService){
             $scope.depts = null;
-            $scope.staticDepts = [];
-            oaService.getStaticDeptsOfOA().then(
-                function(depts){
-                    $scope.staticDepts  = depts;
+            $scope.staticEmps = [];
+            oaService.getStaticEmpsOfOA().then(
+                function(emps){
+                    $scope.staticEmps  = emps;
                 }
             );
             $scope.search = function(){

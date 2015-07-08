@@ -83,7 +83,7 @@ define(['./module'],function(services){
 					enable: true
 				},
 				"performanceDept": {
-					accessname: '部门',
+					accessname: '部门对应',
 					perm: {resource:'performance', action: 'dept'},
 					url: '/performance/performancedept',
 					enable: true

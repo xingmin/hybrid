@@ -25,12 +25,12 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
             );
             return defered.promise;
         };
-        var _createNew = function(deptName, pinYin, oaDeptId){
+        var _createNew = function(deptName, pinYin, oaEmpId){
             var defered =$q.defer();
             $http.post('/performance/',{
                 'deptName':deptName,
                 'pinYin': pinYin,
-                'OADeptId': oaDeptId
+                'OAEmpId': oaEmpId
             }).success(
                 function(data){
                     if(data.code !== 0){
@@ -70,13 +70,13 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
             );
             return defered.promise;
         };
-        var _update = function(deptId, deptName, pinYin, oaDeptId){
+        var _update = function(deptId, deptName, pinYin, oaEmpId){
             var defered =$q.defer();
             $http.put('/performance/',{
                 'deptId': deptId,
                 'deptName':deptName,
                 'pinYin': pinYin,
-                'OADeptId': oaDeptId
+                'OAEmpId': oaEmpId
             }).success(
                 function(data){
                     if(data.code !== 0){
@@ -87,7 +87,7 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
                     if(_.isArray(_deptList)){
                         _deptList[index].deptName = deptName;
                         _deptList[index].pinYin = pinYin;
-                        _deptList[index].OADeptId = oaDeptId;
+                        _deptList[index].OAEmpId = oaEmpId;
                     }
                     defered.resolve(data.value);
                 }
