@@ -72,7 +72,7 @@ router.put('/',
     auth.passport.authenticate('bearer', { session: false }),
     //auth.RBACMidware.can(auth.rbac, 'update', 'performance'),
     function(req, res) {
-        var deptId = req.body.deptName;
+        var deptId = req.body.deptId;
         var deptName = req.body.deptName;
         var pinYin = req.body.pinYin;
         var OADeptId = req.body.OADeptId;

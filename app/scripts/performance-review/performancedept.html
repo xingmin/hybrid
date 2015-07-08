@@ -28,7 +28,7 @@
     		{{dept.deptName}}
         </td>
 		<td>
-			{{dept.OADeptId | oaDeptIdToNameFilter}}
+			{{dept.OADeptId | oaDeptIdToNameFilter: staticDepts}}
 		</td>
         <td>
 			<a del-performance-dept delete-data="dept">删除</a>

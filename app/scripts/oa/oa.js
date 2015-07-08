@@ -27,6 +27,7 @@ define(['angular', 'bootstrap', 'angular-bootstrap', "angular-ui-select"], funct
             );
             return defered.promise;
         };
+        _getStaticDeptsOfOA();
         service.getStaticDeptsOfOA = _getStaticDeptsOfOA;
         return service;
     }]);
@@ -44,24 +45,24 @@ define(['angular', 'bootstrap', 'angular-bootstrap', "angular-ui-select"], funct
         };
     }]);
     oa.filter("oaDeptIdToNameFilter",['oaService', function(oaService){
-        var arrDepts = null;
-        oaService.getStaticDeptsOfOA().then(
-            function(depts){
-                arrDepts = depts;
-            }
-        );
-        return function(id){
+        //var arrDepts = null;
+        //oaService.getStaticDeptsOfOA().then(
+        //    function(depts){
+        //        arrDepts = depts;
+        //    }
+        //);
+        return function(id, arrDepts){
             return _.result(_.find(arrDepts, {id:id}), "name");
         };
     }]);
     oa.filter("oaDeptIdToDeptFilter",['oaService', function(oaService){
-        var arrDepts = null;
-        oaService.getStaticDeptsOfOA().then(
-            function(depts){
-                arrDepts = depts;
-            }
-        );
-        return function( id){
+        //var arrDepts = null;
+        //oaService.getStaticDeptsOfOA().then(
+        //    function(depts){
+        //        arrDepts = depts;
+        //    }
+        //);
+        return function(id, arrDepts ){
             return _.find(arrDepts, {id:id});
         };
     }]);

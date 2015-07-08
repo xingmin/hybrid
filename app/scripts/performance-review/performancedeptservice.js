@@ -72,7 +72,7 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
         };
         var _update = function(deptId, deptName, pinYin, oaDeptId){
             var defered =$q.defer();
-            $http.post('/performance/',{
+            $http.put('/performance/',{
                 'deptId': deptId,
                 'deptName':deptName,
                 'pinYin': pinYin,

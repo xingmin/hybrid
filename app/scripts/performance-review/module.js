@@ -1,4 +1,4 @@
-define(['angular', "ng-file-upload",'directives/maindirective', '../oa/index'], function(angular) {
+define(['angular', "ng-file-upload",'directives/maindirective', 'services/mainservice',, '../oa/index'], function(angular) {
     'use strict';
-    return angular.module('performance', ['ngFileUpload','webapp.directives', 'oa']);
+    return angular.module('performance', ['ngFileUpload','webapp.directives','webapp.services', 'oa']);
 });

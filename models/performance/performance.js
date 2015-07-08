@@ -60,7 +60,7 @@ PerformanceDept.prototype.saveNew = function(){
 		return customdefer.request_defered(request, 'proc_addPerformanceDept');
 	}).then(function(data){
 		if(data.ret === 0){
-			that.id = data.recordset[0][0].DeptId;
+			that.deptId = data.recordset[0][0].DeptId;
 			defered.resolve(that);
 		}else{
 			defered.reject(new Error(data.recordset[0][0].errmsg));
