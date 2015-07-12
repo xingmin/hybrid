@@ -1,4 +1,4 @@
-define(['angular', "ng-file-upload",'directives/maindirective', 'services/mainservice',, '../oa/index'], function(angular) {
+define(['angular',"angular-bootstrap", "ng-file-upload",'directives/maindirective', 'services/mainservice', '../oa/index', '../common/datedropdowndirective'], function(angular) {
     'use strict';
-    return angular.module('performance', ['ngFileUpload','webapp.directives','webapp.services', 'oa']);
+    return angular.module('performance', ['ui.bootstrap','ngFileUpload','webapp.directives','webapp.services', 'oa', 'common.date']);
 });

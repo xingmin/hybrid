@@ -4,6 +4,11 @@ define(['./module'],function(performance){
         '$scope','$timeout','Upload',
         function($scope, $timeout, Upload){
             $scope.files = null;
+            $scope.dateBeginPickerOpen = false;
+            $scope.toggleDateBeginPicker = function($event) {
+                $event.stopPropagation();
+                $scope.dateBeginPickerOpen = !$scope.dateBeginPickerOpen;
+            };
             $scope.upload = function(){
                 var files = $scope.files;
                 if (!files || !files.length) {return;}
