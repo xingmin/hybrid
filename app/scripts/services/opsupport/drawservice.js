@@ -145,6 +145,7 @@ define(['../module', 'moment', 'lodash'],function(services, moment, _){
                     var data = receive.data;
                     $rootScope.$broadcast('draws.create', data);
                     if(data.status === 0){
+                        if(!_draws) _draws=[];
                         _draws.splice(0, 0, data.value);
                         return data.value;
                     }else{

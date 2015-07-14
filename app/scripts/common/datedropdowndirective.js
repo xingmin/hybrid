@@ -17,7 +17,7 @@ define(['angular'],function(angular){
 				}
 			},
 			replace: false,
-			template:"<select class='form-control' ng-model=\"$parent.ngModel\" ng-options=\"y for y in years\"></select>",
+			template:"<select  ng-model=\"$parent.ngModel\" ng-options=\"y for y in years\"></select>",
 			link: function(scope, element, attrs){
 			}
 		}
@@ -36,7 +36,7 @@ define(['angular'],function(angular){
 				}
 			},
 			replace: false,
-			template:"<select class='form-control' ng-model=\"$parent.ngModel\" ng-options=\"m for m in months\"></select>",
+			template:"<select  ng-model=\"$parent.ngModel\" ng-options=\"m for m in months\"></select>",
 			link: function(scope, element, attrs){
 			}
 		}

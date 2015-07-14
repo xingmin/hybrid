@@ -57,7 +57,7 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 $scope.isSaveCompleted = false;
                 if ($scope.mode == 'edit') {
                     drawService.saveChangeDraw($scope.currentedit.newval.id,
-                        ($scope.DRAW.consumer.selected ? ($scope.DRAW.consumer.consumer.name || '') : ""),
+                        ($scope.DRAW.consumer.selected ? ($scope.DRAW.consumer.selected.name || '') : ""),
                         ($scope.DRAW.receiver.selected ? ($scope.DRAW.receiver.selected.empCode || '') : ""),
                         $scope.currentedit.newval.remark,
                         ($scope.DRAW.drawer.selected ? ($scope.DRAW.drawer.selected.empCode || '') : ""),
