@@ -62,132 +62,83 @@
 </ul>
 
 <div  id="drawbox">
-<table class="table table-bordered table-hover table-condensed">
-	<tr>
-		<th>ID</th>
-		<th>手术间</th>
-		<th>领用人</th>
-    	<th>记录人</th>
-		<th>记录时间</th>
-		<th>预计领用</th>
-		<th>备注</th>
-		<TH>
-			<ul class="list-inline col-md-12">
-				<li class="col-md-3">条形码</li>
-				<li class="col-md-1">使用</li>
-				<li class="col-md-2">收费</li>
-				<li class="col-md-2">回收者</li>
-				<li class="col-md-2">送还人</li>
-				<li class="col-md-2">回收时间</li>
-			</ul>
-		 </TH>
-		<!--<th>条形码</th>-->
-		<!--<th>使用</th>-->
-		<!--<th>收费</th>-->
-		<!--<th>回收者</th>-->
-		<!--<th>送还人</th>-->
-		<!--<th>回收时间</th>-->
-    	<th></th>
-    </tr>
-    <tbody  ng-repeat="draw in draws">
-    <tr>
-        <td>
-    		{{draw.id}}
-        </td>
-    	<td>
-    		{{draw.consumer}}
-        </td>
-        <td>
-    		{{draw.receiver | userFilter}}
-        </td>
-        <td>
-    		{{draw.drawer | userFilter}}
-        </td>
-        <td>
-    		{{draw.drawTime | formatDateFilter}}
-        </td>
-		<td>
-			{{draw.expectedReceiveTime | formatDateFilter}}
-		</td>
-        <td>
-    		{{draw.remark}}
-        </td>
-        <td>
-			<ul class="list-unstyled">
-				<li ng-repeat="drawDetail in draw.drawDetails" >
-					<ul class="list-inline">
-						<li class="col-md-3">
-							{{drawDetail.barcode}}
-						</li>
-						<li class="col-md-1">
-							{{drawDetail.useFlag | useTranFilter}}
-						</li>
-						<li class="col-md-2">
-							<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>
-						</li>
-						<li class="col-md-2">
-							{{drawDetail.recycle.recycler | userFilter}}
-						</li>
-						<li  class="col-md-2">
-							{{drawDetail.recycle.returner | userFilter}}
-						</li>
-						<li  class="col-md-2">
-							{{drawDetail.recycle.recycleTime | formatDateFilter}}
-						</li>
-					</ul>
-				</li>
-			</ul>
-		</td>
-        <td>
-            <edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
-            <delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
-		</td>
-	</tr>
-	<!--<tr ng-repeat="drawDetail in draw.drawDetails">-->
-	        <!--<td>-->
+<div class="row">
+	<div class="row col-md-12 border-dash">
+		<ul class="col-md-7 list-inline ">
+			<li class="col-md-1">ID</li>
+			<li class="col-md-1">手术间</li>
+			<li class="col-md-2">领用人</li>
+			<li class="col-md-2">记录人</li>
+			<li class="col-md-2">记录时间</li>
+			<li class="col-md-2">预计领用</li>
+			<li class="col-md-1">备注</li>
+			<li class="col-md-1">操作</li>
+		</ul>
 
-	        <!--</td>-->
-	    	<!--<td>-->
+		<ul class="list-inline col-md-5">
+			<li class="col-md-3">条形码</li>
+			<!--<li class="col-md-2">使用</li>-->
+			<li class="col-md-2">收费</li>
+			<li class="col-md-2">回收者</li>
+			<li class="col-md-2">送还人</li>
+			<li class="col-md-3">回收时间</li>
+		</ul>
+	</div>
+    <div class="row border-dash"  ng-repeat="draw in draws">
+    	<ul class="col-md-7 list-inline ">
+			<li  class="col-md-1">
+				{{draw.id}}
+			</li>
+			<li  class="col-md-1">
+				{{draw.consumer}}
+			</li>
+			<li  class="col-md-2">
+				{{draw.receiver | userFilter}}
+			</li>
+			<li   class="col-md-2">
+				{{draw.drawer | userFilter}}
+			</li>
+			<li   class="col-md-2">
+				{{draw.drawTime | formatDateFilter}}
+			</li>
+			<li   class="col-md-2">
+				{{draw.expectedReceiveTime | formatDateFilter}}
+			</li>
+			<li   class="col-md-1">
+				{{draw.remark}}
+			</li>
+			<li  class="col-md-1">
+				<edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
+				<delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
+			</li>
+		</ul>
+		<ul class="col-md-5  list-inline">
+			<li class="col-md-12"  ng-repeat="drawDetail in draw.drawDetails" >
+				<ul class="list-inline ">
+					<li class="col-md-3" ng-class="{0:'unused', 1: 'used'}[drawDetail.useFlag]" title="{{drawDetail.useFlag | useTranFilter}}">
+						{{drawDetail.barcode}}
+					</li>
+					<!--<li class="col-md-2">-->
+						<!--{{drawDetail.useFlag | useTranFilter}}-->
+					<!--</li>-->
+					<li class="col-md-2">
+						<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>
+					</li>
+					<li class="col-md-2">
+						{{drawDetail.recycle.recycler | userFilter}}
+					</li>
+					<li  class="col-md-2">
+						{{drawDetail.recycle.returner | userFilter}}
+					</li>
+					<li  class="col-md-3">
+						{{drawDetail.recycle.recycleTime | formatDateFilter}}
+					</li>
 
-	        <!--</td>-->
-	        <!--<td>-->
-
-	        <!--</td>-->
-	        <!--<td>-->
-
-	        <!--</td>-->
-	        <!--<td>-->
-
-	        <!--</td>-->
-	        <!--<td>-->
-
-	        <!--</td>-->
-		<!--<td>-->
-
-		<!--</td>-->
-	        <!--<td>-->
-                <!--{{drawDetail.barcode}}-->
-			<!--</td>-->
-			<!--<td>-->
-			    <!--{{drawDetail.useFlag | useTranFilter}}-->
-			<!--</td>-->
-			<!--<td>-->
-				<!--<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>-->
-			<!--</td>-->
-			<!--<td>-->
-			    <!--{{drawDetail.recycle.recycler | userFilter}}-->
-			<!--</td>-->
-            <!--<td>-->
-                <!--{{drawDetail.recycle.returner | userFilter}}-->
-            <!--</td>-->
-			<!--<td>-->
-			    <!--{{drawDetail.recycle.recycleTime | formatDateFilter}}-->
-			<!--</td>-->
-			<!--<td>-->
-			<!--</td>-->
-	<!--</tr>-->
-	</tbody>
-</table>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
 </div>
   <div class="container-fluid">
  <div class="row">

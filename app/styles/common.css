@@ -7,3 +7,8 @@
 .unused{
 	color: #27b740;
 }
+.border-dash{
+	border-bottom-style: dashed;
+	border-bottom-color: #9ebacc;
+	border-bottom-width: 1px;
+}

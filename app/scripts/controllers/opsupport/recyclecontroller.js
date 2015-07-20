@@ -68,7 +68,10 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                 $scope.RECYCLE.dateEndPickerOpen = !$scope.RECYCLE.dateEndPickerOpen;
             };
             $scope.$on('recycle-delete', function(event, stat){
-                $scope.RECYCLE.msgs.push(stat.message);
+                messageService.sendMessage(stat.message);
+            });
+            $scope.$on('recycle-detail-delete', function(event, stat){
+                messageService.sendMessage(stat.message);
             });
             $scope.updateMessage = function(){
                 messageService.sendMessage("回收成功");
