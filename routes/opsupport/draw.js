@@ -20,6 +20,8 @@ router.post('/create',
 	var drawer = req.body.drawer;
 	var drawTime = momentz.tz(new Date(),'Asia/Chongqing');
 	var localDrawTime = new Date(drawTime.format('YYYY-MM-DD HH:mm:ss'));
+	var expectedReceiveTime =  momentz.tz(req.body.expectedReceiveTime,'Asia/Chongqing');
+	expectedReceiveTime = new Date(expectedReceiveTime.format('YYYY-MM-DD HH:mm:ss'));
 	var drawDetails = req.body.drawDetails;
 	var arrDrawDetail = drawDetails;
 //	var arrDrawDetail = [];
@@ -43,6 +45,7 @@ router.post('/create',
 		'remark' : remark,
 		'drawer' : drawer,
 		'drawTime' : localDrawTime,
+		'expectedReceiveTime': expectedReceiveTime,
 		'drawDetails' : arrDrawDetail
 		});
 	draw.saveNewDrawRecord()
@@ -70,6 +73,8 @@ router.post('/update',
 	var drawer = req.body.drawer;
 	var drawTime = momentz.tz(new Date(),'Asia/Chongqing');
 	var localDrawTime = new Date(drawTime.format('YYYY-MM-DD HH:mm:ss'));
+	var expectedReceiveTime =  momentz.tz(req.body.expectedReceiveTime,'Asia/Chongqing');
+	expectedReceiveTime = new Date(expectedReceiveTime.format('YYYY-MM-DD HH:mm:ss'));
 	var drawDetails = req.body.drawDetails;
 	var arrDrawDetail = drawDetails;
 //	var arrDrawDetail = [];
@@ -86,6 +91,7 @@ router.post('/update',
 		'remark' : remark,
 		'drawer' : drawer,
 		'drawTime' : localDrawTime,
+		'expectedReceiveTime': expectedReceiveTime,
 		'drawDetails' : arrDrawDetail
 		});
 	draw.updateDrawRecord()

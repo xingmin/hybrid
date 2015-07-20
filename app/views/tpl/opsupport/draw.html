@@ -62,20 +62,31 @@
 </ul>
 
 <div  id="drawbox">
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover table-condensed">
 	<tr>
 		<th>ID</th>
 		<th>手术间</th>
 		<th>领用人</th>
     	<th>记录人</th>
 		<th>记录时间</th>
+		<th>预计领用</th>
 		<th>备注</th>
-		<th>条形码</th>
-		<th>使用</th>
-		<th>收费</th>
-		<th>回收者</th>
-		<th>送还人</th>
-		<th>回收时间</th>
+		<TH>
+			<ul class="list-inline col-md-12">
+				<li class="col-md-3">条形码</li>
+				<li class="col-md-1">使用</li>
+				<li class="col-md-2">收费</li>
+				<li class="col-md-2">回收者</li>
+				<li class="col-md-2">送还人</li>
+				<li class="col-md-2">回收时间</li>
+			</ul>
+		 </TH>
+		<!--<th>条形码</th>-->
+		<!--<th>使用</th>-->
+		<!--<th>收费</th>-->
+		<!--<th>回收者</th>-->
+		<!--<th>送还人</th>-->
+		<!--<th>回收时间</th>-->
     	<th></th>
     </tr>
     <tbody  ng-repeat="draw in draws">
@@ -95,66 +106,86 @@
         <td>
     		{{draw.drawTime | formatDateFilter}}
         </td>
+		<td>
+			{{draw.expectedReceiveTime | formatDateFilter}}
+		</td>
         <td>
     		{{draw.remark}}
         </td>
         <td>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-		<td>
-		</td>
-		<td>
+			<ul class="list-unstyled">
+				<li ng-repeat="drawDetail in draw.drawDetails" >
+					<ul class="list-inline">
+						<li class="col-md-3">
+							{{drawDetail.barcode}}
+						</li>
+						<li class="col-md-1">
+							{{drawDetail.useFlag | useTranFilter}}
+						</li>
+						<li class="col-md-2">
+							<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>
+						</li>
+						<li class="col-md-2">
+							{{drawDetail.recycle.recycler | userFilter}}
+						</li>
+						<li  class="col-md-2">
+							{{drawDetail.recycle.returner | userFilter}}
+						</li>
+						<li  class="col-md-2">
+							{{drawDetail.recycle.recycleTime | formatDateFilter}}
+						</li>
+					</ul>
+				</li>
+			</ul>
 		</td>
         <td>
             <edit ng-Model="draw"  edit-data="currentedit" ng-click="changeEditMode('edit')"><a data-target="#editmodal" data-toggle="modal"  href="javascript:void(0);">编辑</a></edit>
             <delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
 		</td>
 	</tr>
-	<tr ng-repeat="drawDetail in draw.drawDetails">
-	        <td>
-    		 
-	        </td>
-	    	<td>
-	    		 
-	        </td>
-	        <td>
-	    	 
-	        </td>
-	        <td>
-	    	 
-	        </td>
-	        <td>
-	    		 
-	        </td>
-	        <td>
-	    	 
-	        </td>
-	        <td>
-                {{drawDetail.barcode}}
-			</td>
-			<td>
-			    {{drawDetail.useFlag | useTranFilter}}
-			</td>
-			<td>
-				<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>
-			</td>
-			<td>
-			    {{drawDetail.recycle.recycler | userFilter}}
-			</td>
-            <td>
-                {{drawDetail.recycle.returner | userFilter}}
-            </td>
-			<td>
-			    {{drawDetail.recycle.recycleTime | formatDateFilter}}
-			</td>
-			<td>
-			</td>
-	</tr>
+	<!--<tr ng-repeat="drawDetail in draw.drawDetails">-->
+	        <!--<td>-->
+
+	        <!--</td>-->
+	    	<!--<td>-->
+
+	        <!--</td>-->
+	        <!--<td>-->
+
+	        <!--</td>-->
+	        <!--<td>-->
+
+	        <!--</td>-->
+	        <!--<td>-->
+
+	        <!--</td>-->
+	        <!--<td>-->
+
+	        <!--</td>-->
+		<!--<td>-->
+
+		<!--</td>-->
+	        <!--<td>-->
+                <!--{{drawDetail.barcode}}-->
+			<!--</td>-->
+			<!--<td>-->
+			    <!--{{drawDetail.useFlag | useTranFilter}}-->
+			<!--</td>-->
+			<!--<td>-->
+				<!--<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>-->
+			<!--</td>-->
+			<!--<td>-->
+			    <!--{{drawDetail.recycle.recycler | userFilter}}-->
+			<!--</td>-->
+            <!--<td>-->
+                <!--{{drawDetail.recycle.returner | userFilter}}-->
+            <!--</td>-->
+			<!--<td>-->
+			    <!--{{drawDetail.recycle.recycleTime | formatDateFilter}}-->
+			<!--</td>-->
+			<!--<td>-->
+			<!--</td>-->
+	<!--</tr>-->
 	</tbody>
 </table>
 </div>
@@ -237,6 +268,19 @@
 						<div ng-bind="user.legalName"></div>
 					</ui-select-choices>
 				</ui-select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-4 control-label">预计领用日期</label>
+			<div class="input-group col-md-8">
+				<input type="text"
+					   class="form-control"
+					   ng-model="currentedit.newval.expectedReceiveTime"
+					   datetime-picker="yyyy-MM-dd HH:mm"
+					   is-open="DRAW.expectedReceiveTimePickerOpen">
+				<div class="input-group-addon" ng-click="DRAW.togglExpectedReceiveTimePicker($event)">
+					<i class="glyphicon glyphicon-calendar"></i>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">

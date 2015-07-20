@@ -1,5 +1,5 @@
+
 <div class="title control-group">
-	
 	<h3>回收记录</h3>
 </div>
 <message></message>
@@ -65,89 +65,84 @@
 	</li>
 </ul>
 
-<div  id="recyclebox">
-<table class="table table-bordered table-hover">
-	<tr>
-		<th>ID</th>
-		<th>归还人</th>
-		<th>记录人</th>
-    	<th>记录时间</th>
-		<th>条形码</th>
-		<th>使用</th>
-		<th>收费</th>
-		<th>手术间</th>
-		<th>领用人</th>
-		<th>记录人</th>
-		<th>发放时间</th>
-		<th>备注</th>
-    	<th></th>
-    </tr>
-    <tbody  ng-repeat="recycle in RECYCLE.recycles">
-    <tr>
-        <td>
-    		{{recycle.id}}
-        </td>
-    	<td>
-    		{{recycle.returner | userFilter}}
-        </td>
-        <td>
-    		{{recycle.recycler | userFilter}}
-        </td>
-        <td>
-			{{recycle.recycleTime | formatDateFilter}}
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-		<td>
-		</td>
-		<td>
-		</td>
-        <td>
-            <delrecycle delete-data="recycle"><a href="javascript:void(0);">删除</a ></delrecycle>
-		</td>
-	</tr>
-	<tr ng-repeat="recycleDetail in recycle.recycleDetails">
-	        <td></td> <td></td> <td></td> <td></td>
-	        <td>
-				{{recycleDetail.barcode}}
-	        </td>
-	        <td>
-				{{recycleDetail.useFlag | useTranFilter}}
-	        </td>
-	        <td>
-				<span tooltip-html-unsafe="{{recycleDetail.chargeHtml}}">{{recycleDetail.chargeInfo.inpatientNo}}</span>
-			</td>
-			<td>
-				{{recycleDetail.draw.consumer}}
-			</td>
-			<td>
-				{{recycleDetail.draw.receiver | userFilter}}
-			</td>
-			<td>
-				{{recycleDetail.draw.drawer | userFilter}}
-			</td>
-            <td>
-				{{recycleDetail.draw.drawTime | formatDateFilter}}
-            </td>
-			<td>
-			    {{recycleDetail.draw.remark}}
-			</td>
-			<td>
-				<delrecycledetail delete-data="recycleDetail"><a href="javascript:void(0);">删除</a ></delrecycledetail>
-			</td>
-	</tr>
-	</tbody>
-</table>
+<div  id="recyclebox" class="container">
+		<div  class="row">
+			<ul class="col-md-4 list-inline">
+				<li class="col-md-1">ID</li>
+				<li class="col-md-2">归还人</li>
+				<li class="col-md-2">记录人</li>
+				<li class="col-md-5">记录时间</li>
+				<li class="col-md-2">操作</li>
+			</ul>
+			<ul class="list-inline col-md-8">
+				<li class="col-md-2">条形码</li>
+				<!--<li class="col-md-1">使用</li>-->
+				<li class="col-md-1">收费</li>
+				<li class="col-md-1">手术</li>
+				<li class="col-md-1">领用</li>
+				<li class="col-md-1">记录</li>
+				<li class="col-md-2">发放时间</li>
+				<li class="col-md-2">预计时间</li>
+				<li class="col-md-1">备注</li>
+				<li class="col-md-1">操作</li>
+			</ul>
+		</div>
+		<div  class="row"  ng-repeat="recycle in RECYCLE.recycles">
+			<ul class="col-md-4 list-inline">
+
+				<li class="col-md-1">
+					{{recycle.id}}
+				</li>
+				<li class="col-md-2">
+					{{recycle.returner | userFilter}}
+				</li>
+				<li class="col-md-2">
+					{{recycle.recycler | userFilter}}
+				</li>
+				<li class="col-md-5">
+					{{recycle.recycleTime | formatDateFilter}}
+				</li>
+				<li class="col-md-2">
+					<delrecycle delete-data="recycle"><a href="javascript:void(0);">删除</a ></delrecycle>
+				</li>
+			</ul>
+			<ul class="list-unstyled col-md-8">
+				<li class="col-md-12" ng-repeat="recycleDetail in recycle.recycleDetails">
+					<ul class="list-inline">
+						<li class="col-md-2"  ng-class="{0:'unused', 1: 'used'}[recycleDetail.useFlag]" title="{{recycleDetail.useFlag | useTranFilter}}">
+							{{recycleDetail.barcode}}
+						</li>
+						<!--<li class="col-md-1">-->
+							<!--{{recycleDetail.useFlag | useTranFilter}}-->
+						<!--</li>-->
+						<li class="col-md-1">
+							<span tooltip-html-unsafe="{{recycleDetail.chargeHtml}}">{{recycleDetail.chargeInfo.inpatientNo}}</span>
+						</li>
+						<li class="col-md-1">
+							{{recycleDetail.draw.consumer}}
+						</li>
+						<li  class="col-md-1">
+							{{recycleDetail.draw.receiver | userFilter}}
+						</li>
+						<li class="col-md-1">
+							{{recycleDetail.draw.drawer | userFilter}}
+						</li>
+						<li class="col-md-2" style="overflow:hidden">
+							{{recycleDetail.draw.drawTime | formatDateFilter}}
+						</li>
+						<li class="col-md-2">
+							{{recycleDetail.draw.expectedReceiveTime | formatDateFilter}}
+						</li>
+						<li class="col-md-1">
+							{{recycleDetail.draw.remark}}
+						</li>
+						<li class="col-md-1">
+							<delrecycledetail delete-data="recycleDetail"><a href="javascript:void(0);">删除</a ></delrecycledetail>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
 </div>
   <div class="container-fluid">
  <div class="row">

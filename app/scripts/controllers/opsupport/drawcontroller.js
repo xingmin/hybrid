@@ -61,6 +61,7 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                         ($scope.DRAW.receiver.selected ? ($scope.DRAW.receiver.selected.empCode || '') : ""),
                         $scope.currentedit.newval.remark,
                         ($scope.DRAW.drawer.selected ? ($scope.DRAW.drawer.selected.empCode || '') : ""),
+                        $scope.currentedit.newval.expectedReceiveTime,
                         $scope.currentedit.newval.drawDetails
                     );
                 }
@@ -70,6 +71,7 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                         ($scope.DRAW.receiver.selected ? ($scope.DRAW.receiver.selected.empCode || '') : ""),
                         $scope.currentedit.newval.remark,
                         ($scope.DRAW.drawer.selected ? ($scope.DRAW.drawer.selected.empCode || '') : ""),
+                        $scope.currentedit.newval.expectedReceiveTime,
                         $scope.currentedit.newval.drawDetails
                     );
                 }
@@ -176,12 +178,17 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
             $scope.DRAW.dateBeginPickerOpen = false;
             $scope.DRAW.toggleDateBeginPicker = function($event) {
                 $event.stopPropagation();
-                $scope.DRAW.dateBeginPickerOpen = !$scope.dateBeginPickerOpen;
+                $scope.DRAW.dateBeginPickerOpen = !$scope.DRAW.dateBeginPickerOpen;
             };
             $scope.DRAW.dateEndPickerOpen = false;
             $scope.DRAW.toggleDateEndPicker = function($event) {
                 $event.stopPropagation();
-                $scope.DRAW.dateEndPickerOpen = !$scope.dateEndPickerOpen;
+                $scope.DRAW.dateEndPickerOpen = !$scope.DRAW.dateEndPickerOpen;
+            };
+            $scope.DRAW.expectedReceiveTimePickerOpen = false;
+            $scope.DRAW.togglExpectedReceiveTimePicker = function($event) {
+                $event.stopPropagation();
+                $scope.DRAW.expectedReceiveTimePickerOpen = !$scope.DRAW.expectedReceiveTimePickerOpen;
             };
 
         }]

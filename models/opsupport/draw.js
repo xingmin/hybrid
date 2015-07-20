@@ -11,6 +11,7 @@ function Draw(obj){
     this.remark = obj.remark;
     this.drawer = obj.drawer;
     this.drawTime = obj.drawTime;
+	this.expectedReceiveTime = obj.expectedReceiveTime;
     this.drawDetails = obj.drawDetails;
 }
 
@@ -34,6 +35,7 @@ Draw.prototype.init = function(id){
 		    that.remark = record[0].Remark;
 		    that.drawer = record[0].Drawer;
 		    that.drawTime = record[0].DrawTime;
+			that.expectedReceiveTime = record[0].ExpectedReceiveTime;
 		}
 		defered.resolve(that);
 	},function(err){
@@ -96,7 +98,8 @@ Draw.prototype.getDrawRecordsByDate = function(dateBegin, dateEnd, barcode, cons
 				    'receiver' : value.Receiver,
 				    'remark' : value.Remark,
 				    'drawer' : value.Drawer,
-				    'drawTime' : value.DrawTime				    
+				    'drawTime' : value.DrawTime,
+					'expectedReceiveTime': value.ExpectedReceiveTime
 				 }
 				)));
 		});
@@ -124,6 +127,7 @@ Draw.prototype.saveNewDrawRecord = function(){
 		request.input('Remark', sql.NVarChar(200), that.remark);
 		request.input('Drawer', sql.VarChar(12), that.drawer);
 		request.input('DrawTime', sql.DateTime, that.drawTime || null);
+		request.input('ExpectedReceiveTime', sql.DateTime, that.expectedReceiveTime || null);
 		var xmlBarcode = '';
 		if(that.drawDetails && that.drawDetails.length>0){
 			that.drawDetails.forEach(function(drawDetail){
@@ -162,6 +166,7 @@ Draw.prototype.updateDrawRecord = function(){
 		request.input('Remark', sql.NVarChar(200), that.remark);
 		request.input('Drawer', sql.VarChar(12), that.drawer);
 		request.input('DrawTime', sql.DateTime, that.drawTime || null);
+		request.input('ExpectedReceiveTime', sql.DateTime, that.expectedReceiveTime || null);
 		var xmlBarcode = '';
 		if(that.drawDetails && that.drawDetails.length>0){
 			that.drawDetails.forEach(function(drawDetail){

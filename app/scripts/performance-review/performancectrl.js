@@ -9,6 +9,11 @@ define(['./module'],function(performance){
                 $event.stopPropagation();
                 $scope.dateBeginPickerOpen = !$scope.dateBeginPickerOpen;
             };
+            $scope.yearSelected= "";
+            $scope.monthSelected= "";
+            $scope.$watch( $scope.yearSelected, function(newv, oldv){
+                console.log(newv);
+            });
             $scope.upload = function(){
                 var files = $scope.files;
                 if (!files || !files.length) {return;}

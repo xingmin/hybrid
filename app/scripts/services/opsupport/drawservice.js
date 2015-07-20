@@ -85,7 +85,7 @@ define(['../module', 'moment', 'lodash'],function(services, moment, _){
             );
             return _draws;
         };
-        var _saveChangeDraw = function(id, consumer, receiver, remark, drawer, drawDetails){
+        var _saveChangeDraw = function(id, consumer, receiver, remark, drawer, expectedReceiveTime, drawDetails){
             $http.post('/opsupport/draw/update/',
                 {
                     'id':id,
@@ -93,6 +93,7 @@ define(['../module', 'moment', 'lodash'],function(services, moment, _){
                     'receiver':receiver,
                     'remark' : remark,
                     'drawer':drawer,
+                    'expectedReceiveTime': moment(expectedReceiveTime).format() ,
                     'drawDetails' : drawDetails
                 }
             ).then(
@@ -109,6 +110,7 @@ define(['../module', 'moment', 'lodash'],function(services, moment, _){
                             draw.receiver = receiver;
                             draw.remark = remark;
                             draw.drawer = drawer;
+                            draw.expectedReceiveTime = expectedReceiveTime;
                             draw.drawDetails = drawDetails;
                             targetDraw = draw;
                             return false;
@@ -132,13 +134,14 @@ define(['../module', 'moment', 'lodash'],function(services, moment, _){
                     }
             );
         };
-        var _createNewDraw = function(consumer, receiver, remark, drawer, drawDetails){
+        var _createNewDraw = function(consumer, receiver, remark, drawer, expectedReceiveTime, drawDetails){
             $http.post('/opsupport/draw/create/',
                 {
                     'consumer':consumer,
                     'receiver':receiver,
                     'remark' : remark,
                     'drawer':drawer,
+                    'expectedReceiveTime': moment(expectedReceiveTime).format() ,
                     'drawDetails' : drawDetails
                 }
             ).then(function(receive){

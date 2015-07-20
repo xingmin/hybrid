@@ -17,7 +17,7 @@ define(['angular'],function(angular){
 				}
 			},
 			replace: false,
-			template:"<select  ng-model=\"$parent.ngModel\" ng-options=\"y for y in years\"></select>",
+			template:"<select  ng-model=\"ngModel\" ng-options=\"y for y in years\"></select>",
 			link: function(scope, element, attrs){
 			}
 		}

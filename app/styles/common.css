@@ -1,3 +1,9 @@
 .selected{
 	background-color: #337ab7;
 }
+.used{
+	color: #b73410;
+}
+.unused{
+	color: #27b740;
+}
