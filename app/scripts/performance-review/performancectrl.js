@@ -3,6 +3,7 @@ define(['./module'],function(performance){
     performance.controller('performanceCtrl', [
         '$scope','$timeout','Upload',
         function($scope, $timeout, Upload){
+            var self = this;
             $scope.files = null;
             $scope.dateBeginPickerOpen = false;
             $scope.toggleDateBeginPicker = function($event) {
@@ -11,7 +12,13 @@ define(['./module'],function(performance){
             };
             $scope.yearSelected= "";
             $scope.monthSelected= "";
-            $scope.$watch( $scope.yearSelected, function(newv, oldv){
+            this.getBonusStatus = function(year, month){
+
+            }
+            $scope.$watch( "yearSelected", function(newv, oldv){
+                console.log(newv);
+            });
+            $scope.$watch( "monthSelected", function(newv, oldv){
                 console.log(newv);
             });
             $scope.upload = function(){

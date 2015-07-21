@@ -1,23 +1,25 @@
 define(['angular'],function(angular){
     'use strict';
 	var cdate = angular.module("common.date",[]);
+	cdate.controller("yearDropDownCtrl",function($scope, $element, $attrs){
+		var self = this;
+		$scope.years = [];
+		for(var i=$scope.yearRangeMin;i<=$scope.yearRangeMax;i++){
+			$scope.years.push(i);
+		}
+	});
 	cdate.directive("yearDropdown", [function(){
 		return{
 			restrict: 'E',
-			require: '?^ngModel',
+			require: '^ngModel',
 			scope:{
 				yearRangeMin:"@",//create or update
 				yearRangeMax:"@",
-				ngModel:"="
+				selected:"=ngModel"
 			},
-			controller: function($scope, $element, $attrs){
-				$scope.years = [];
-				for(var i=$scope.yearRangeMin;i<=$scope.yearRangeMax;i++){
-					$scope.years.push(i);
-				}
-			},
+			controller: "yearDropDownCtrl",
 			replace: false,
-			template:"<select  ng-model=\"ngModel\" ng-options=\"y for y in years\"></select>",
+			template:"<ul class='list-inline'><li><select class=\"form-control\"  ng-model=\"selected\" ng-options=\"y for y in years\"></select></li><li>年</li></ul>",
 			link: function(scope, element, attrs){
 			}
 		}
@@ -25,9 +27,9 @@ define(['angular'],function(angular){
 	cdate.directive("monthDropdown", [function(){
 		return{
 			restrict: 'E',
-			require: '?^ngModel',
+			require: '^ngModel',
 			scope:{
-				ngModel:"="
+				selected:"=ngModel"
 			},
 			controller: function($scope, $element, $attrs){
 				$scope.months = [];
@@ -36,7 +38,7 @@ define(['angular'],function(angular){
 				}
 			},
 			replace: false,
-			template:"<select  ng-model=\"$parent.ngModel\" ng-options=\"m for m in months\"></select>",
+			template:"<ul class='list-inline'><li><select class=\"form-control\" ng-model=\"selected\" ng-options=\"m for m in months\"></select></li><li><label >月</label></li></ul>",
 			link: function(scope, element, attrs){
 			}
 		}

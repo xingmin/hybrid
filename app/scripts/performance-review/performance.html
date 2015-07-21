@@ -2,10 +2,12 @@
 	<h3>奖金上传</h3>
 </div>
 <message></message>
-<ul class="list-inline">
-	<li class="col-md-2">
-		<year-dropdown class="col-md-6" year-range-min="1990" year-range-max="2008" ng-model="yearSelected"></year-dropdown>
-		<month-dropdown class="col-md-6" ng-model="monthSelected"></month-dropdown>
+<ul  class="list-inline col-md-12">
+	<li >
+		<year-dropdown  year-range-min="2015" year-range-max="2020" ng-model="yearSelected"></year-dropdown>
+	</li>
+	<li>
+		<month-dropdown ng-model="monthSelected"></month-dropdown>
 	</li>
 	<li>
 		<span>{{files[0].name}}</span>
