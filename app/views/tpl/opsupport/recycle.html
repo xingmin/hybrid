@@ -107,7 +107,7 @@
 					<delrecycle delete-data="recycle"><a href="javascript:void(0);">删除</a ></delrecycle>
 				</li>
 			</ul>
-			<ul class="list-unstyled col-md-8">
+			<ul class="col-md-8 list-inline">
 				<li class="col-md-12" ng-repeat="recycleDetail in recycle.recycleDetails">
 					<ul class="list-inline">
 						<li class="col-md-2"  ng-class="{0:'unused', 1: 'used'}[recycleDetail.useFlag]" title="{{recycleDetail.useFlag | useTranFilter}}">

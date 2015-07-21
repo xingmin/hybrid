@@ -64,9 +64,9 @@
 <div  id="drawbox">
 <div class="row">
 	<div class="row col-md-12 border-dash">
-		<ul class="col-md-7 list-inline ">
+		<ul class="col-md-6 list-inline ">
 			<li class="col-md-1">ID</li>
-			<li class="col-md-1">手术间</li>
+			<li class="col-md-1">手术</li>
 			<li class="col-md-2">领用人</li>
 			<li class="col-md-2">记录人</li>
 			<li class="col-md-2">记录时间</li>
@@ -75,7 +75,7 @@
 			<li class="col-md-1">操作</li>
 		</ul>
 
-		<ul class="list-inline col-md-5">
+		<ul class="list-inline col-md-6">
 			<li class="col-md-3">条形码</li>
 			<!--<li class="col-md-2">使用</li>-->
 			<li class="col-md-2">收费</li>
@@ -84,8 +84,8 @@
 			<li class="col-md-3">回收时间</li>
 		</ul>
 	</div>
-    <div class="row border-dash"  ng-repeat="draw in draws">
-    	<ul class="col-md-7 list-inline ">
+    <div class="row border-dash col-md-12"  ng-repeat="draw in draws">
+    	<ul class="col-md-6 list-inline ">
 			<li  class="col-md-1">
 				{{draw.id}}
 			</li>
@@ -112,8 +112,8 @@
 				<delete ng-Model="draw" ng-hide="!DRAW.isDrawDeletable(draw)"  del-data="currentedit" ng-click="changeEditMode('del')"><a data-target="#delmodal" data-toggle="modal" href="javascript:void(0);">删除</a ></delete>
 			</li>
 		</ul>
-		<ul class="col-md-5  list-inline">
-			<li class="col-md-12"  ng-repeat="drawDetail in draw.drawDetails" >
+		<ul class="col-md-6 list-inline">
+			<li   ng-repeat="drawDetail in draw.drawDetails"  class="col-md-12">
 				<ul class="list-inline ">
 					<li class="col-md-3" ng-class="{0:'unused', 1: 'used'}[drawDetail.useFlag]" title="{{drawDetail.useFlag | useTranFilter}}">
 						{{drawDetail.barcode}}
