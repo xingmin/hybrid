@@ -4,19 +4,13 @@
 <message></message>
 <ul  class="list-inline col-md-12">
 	<li >
-		<year-dropdown  year-range-min="2015" year-range-max="2020" ng-model="yearSelected"></year-dropdown>
+		<year-month-dropdown  year-range-min="2015" year-range-max="2020" ng-model="yearMonthSelected"></year-month-dropdown>
 	</li>
+	<!--<li>-->
+		<!--<month-dropdown ng-model="monthSelected"></month-dropdown>-->
+	<!--</li>-->
 	<li>
-		<month-dropdown ng-model="monthSelected"></month-dropdown>
-	</li>
-	<li>
-		<span>{{files[0].name}}</span>
-	</li>
-	<li>
-		<button type="button" class="btn btn-primary" ngf-select accept="application/vnd.ms-excel" ng-model="files">选择文件</button>
-	</li>
-	<li>
-		<button type="button" class="btn btn-primary" ng-click="upload()">上传</button>
+		<performance-upload year="" month=""></performance-upload>
 	</li>
 </ul>
 <pre>{{log}}</pre>

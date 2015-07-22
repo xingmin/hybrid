@@ -10,15 +10,10 @@ define(['./module'],function(performance){
                 $event.stopPropagation();
                 $scope.dateBeginPickerOpen = !$scope.dateBeginPickerOpen;
             };
-            $scope.yearSelected= "";
-            $scope.monthSelected= "";
+            $scope.yearMonthSelected= {};
             this.getBonusStatus = function(year, month){
-
             }
-            $scope.$watch( "yearSelected", function(newv, oldv){
-                console.log(newv);
-            });
-            $scope.$watch( "monthSelected", function(newv, oldv){
+            $scope.$watchCollection( "yearMonthSelected", function(newv, oldv){
                 console.log(newv);
             });
             $scope.upload = function(){

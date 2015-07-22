@@ -43,6 +43,25 @@ define(['angular'],function(angular){
 			}
 		}
 	}]);
+	cdate.controller("yearMonthDropDownControl",function($scope, $element, $attrs){
+		$scope.selected = {};
+	});
+	cdate.directive("yearMonthDropdown", [function(){
+		return{
+			restrict: 'E',
+			require: '^ngModel',
+			scope:{
+				yearRangeMin:"@",//create or update
+				yearRangeMax:"@",
+				selected:"=ngModel"
+			},
+			controller: "yearMonthDropDownControl",
+			replace: false,
+			template:"<ul class='list-inline'><li><year-dropdown  year-range-min=\"{{yearRangeMin}}\" year-range-max=\"{{yearRangeMax}}\" ng-model=\"selected.year\"></year-dropdown></li><li><month-dropdown ng-model=\"selected.month\"></month-dropdown></li></ul>",
+			link: function(scope, element, attrs){
+			}
+		}
+	}]);
 });
 
 
