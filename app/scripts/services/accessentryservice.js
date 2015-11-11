@@ -73,22 +73,22 @@ define(['./module'],function(services){
             	   enable: false
                }
            },
-			"performance":{
-				accessname: '绩效考核',
-				enable: true,
-				"uploadPerformance": {
-					accessname: '上传绩效数据',
-					perm: {resource:'performance', action: 'upload'},
-					url: '/performance/uploadperformance',
-					enable: true
-				},
-				"performanceDept": {
-					accessname: '部门对应',
-					perm: {resource:'performance', action: 'dept'},
-					url: '/performance/performancedept',
-					enable: true
-				}
-			}
+			//"performance":{
+			//	accessname: '绩效考核',
+			//	enable: true,
+			//	"uploadPerformance": {
+			//		accessname: '上传绩效数据',
+			//		perm: {resource:'performance', action: 'upload'},
+			//		url: '/performance/uploadperformance',
+			//		enable: true
+			//	},
+			//	"performanceDept": {
+			//		accessname: '部门对应',
+			//		perm: {resource:'performance', action: 'dept'},
+			//		url: '/performance/performancedept',
+			//		enable: true
+			//	}
+			//}
 		};
 		var _changeParentStatus = function(parent){
 			parent.enable = false;

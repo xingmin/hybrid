@@ -7,6 +7,7 @@ var _ = require('lodash');
 function BarCode(opt){
     opt = opt || {};
     this.barCode = opt.barCode;
+    this.materialName = opt.materialName;
     this.inpatientNo = opt.inpatientNo;
     this.times = opt.times;
     this.name = opt.name;    
@@ -26,7 +27,8 @@ BarCode.ConvertFromDB = function(record){
         chargeName: record["charge_name"],
         chargePrice: record["charge_price"],
         chargeAmount: record["charge_amount"],
-        inputOpera: record["input_opera"]
+        inputOpera: record["input_opera"],
+        materialName: record["material_name"]
     });
 };
 

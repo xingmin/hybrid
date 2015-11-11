@@ -1,5 +1,6 @@
-define(['./module', 'lodash', 'moment'],function(performance, _, moment){
+define(['angular', 'lodash'],function(performance, _){
 	'use strict';
+    var performance = angular.module("performance.dept.service",[]);
     performance.factory("performanceDeptService",['$http','$q' ,function($http, $q){
         var _service = {};
         var _deptList = null;
@@ -8,7 +9,7 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
             var params = {
                 py: py
             };
-            $http.get('/performance/',{params: params}).success(
+            $http.get('/performance/dept/',{params: params}).success(
                 function(data){
                     if(data.code === 0){
                         _deptList = data.value;
@@ -27,7 +28,7 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
         };
         var _createNew = function(deptName, pinYin, oaEmpId){
             var defered =$q.defer();
-            $http.post('/performance/',{
+            $http.post('/performance/dept/',{
                 'deptName':deptName,
                 'pinYin': pinYin,
                 'OAEmpId': oaEmpId
@@ -53,7 +54,7 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
 
         var _delete = function(id){
             var defered = $q.defer();
-            $http.delete('/performance/'+id).success(
+            $http.delete('/performance/dept/'+id).success(
                 function(data){
                     if(data.code !== 0) {
                         defered.reject(false);
@@ -72,7 +73,7 @@ define(['./module', 'lodash', 'moment'],function(performance, _, moment){
         };
         var _update = function(deptId, deptName, pinYin, oaEmpId){
             var defered =$q.defer();
-            $http.put('/performance/',{
+            $http.put('/performance/dept/',{
                 'deptId': deptId,
                 'deptName':deptName,
                 'pinYin': pinYin,

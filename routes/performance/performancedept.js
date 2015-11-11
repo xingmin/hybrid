@@ -9,7 +9,7 @@ var fs = require('fs');
 //var util = require('util');
 var path = require('path');
 var xlsx = require('node-xlsx');
-var PerformanceDept = require('../../models/performance/performance');
+var PerformanceDept = require('../../models/performance/performancedept');
 
 router.post('/:month/upload',
     //auth.passport.authenticate('bearer', { session: false }),

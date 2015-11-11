@@ -5,9 +5,9 @@
 <div class="modal-body" >
     <div class="row">
         <div class="col-md-12"><message></message></div>
-        <div class="col-md-4">
+        <div class="col-md-12">
             <form  role="form" novalidate>
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label class="control-label">送还人</label>
                 <div class=" controls">
                     <ui-select ng-model="returner.selected"
@@ -23,7 +23,7 @@
                     </ui-select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label class="control-label">记录人</label>
                 <div class="controls">
                     <ui-select ng-model="recycler.selected"
@@ -41,13 +41,14 @@
             </div>
             </form>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-12">
             <input type="text" class="form-control"
                    ng-model="barcodeCollecter"
                    ng-keypress="collectBarcode($event, barcodeCollecter)" placeholder="请扫描条码"/>
             <table class="table table-bordered table-hover">
                 <tr>
                     <th>条形码</th>
+                    <th>名称</th>
                     <th>使用情况(使用√)</th>
                     <th>收费</th>
                     <th></th>
@@ -55,6 +56,9 @@
                 <tr ng-repeat="detail in recycleDetails track by $index">
                     <td>
                         {{detail.barcode}}
+                    </td>
+                    <td>
+                       {{detail.chargeInfo.materialName}}
                     </td>
                     <td>
                         <input type="checkbox"  ng-model="detail.useFlag" ng-true-value="1" ng-false-value="0"/>

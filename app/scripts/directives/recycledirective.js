@@ -48,7 +48,7 @@ define(['./module', 'jquery','lodash'],function(directives, $,_){
 								event.preventDefault();
 								return;
 							}
-							$scope.recycleDetails.push({'barcode':barcode, 'useFlag':0});
+							$scope.recycleDetails.splice(0,0,{'barcode':barcode, 'useFlag':0});
 							hisService.getBarCodeChargeInfo(barcode).then(
 								function(chargeInfo){
 									if(!chargeInfo) return;

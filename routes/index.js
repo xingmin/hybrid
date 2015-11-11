@@ -7,8 +7,8 @@ module.exports = function(app){
 	var his = require('./external/his');
 	var oa = require('./external/oa');
 	var barcode = require('./opsupport/barcode');
-	var performanceDept = require('./performance/performancedept');
-	var performanceMonth = require('./performance/performancemonth');
+	//var performanceDept = require('./performance/performancedept');
+	//var performanceMonth = require('./performance/performancemonth');
 
 	auth(app);
 	app.use('/', home);
@@ -18,7 +18,7 @@ module.exports = function(app){
 	app.use('/his', his);
 	app.use('/oa', oa);
 	app.use('/barcode', barcode);
-	app.use('/performance/dept', performanceDept);
-	app.use('/performance/month', performanceMonth);
+	//app.use('/performance/dept', performanceDept);
+	//app.use('/performance/month', performanceMonth);
 
 }

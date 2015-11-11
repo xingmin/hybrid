@@ -47,14 +47,14 @@ define(["./appx"],
 							templateUrl:'/views/tpl/opsupport/oproom.html',
 							controller: 'oproomController'
 					})
-					.when('/performance/uploadperformance',{
-						templateUrl:'/scripts/performance-review/performance.html',
-						controller: 'performanceCtrl'
-					})
-					.when('/performance/performancedept',{
-						templateUrl:'/scripts/performance-review/performancedept.html',
-						controller: 'performanceDeptCtrl'
-					})
+					//.when('/performance/uploadperformance',{
+					//	templateUrl:'/scripts/performance-review/performance.html',
+					//	controller: 'performanceCtrl'
+					//})
+					//.when('/performance/performancedept',{
+					//	templateUrl:'/scripts/performance-review/performancedept.html',
+					//	controller: 'performanceDeptCtrl'
+					//})
 					.otherwise({
 						redirectTo:'/'
 					});

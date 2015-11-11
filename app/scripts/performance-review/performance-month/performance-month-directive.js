@@ -1,6 +1,6 @@
 define(['angular', "ng-file-upload"],function(angular){
     'use strict';
-	var performanceMonth = angular.module("performance.month",['ngFileUpload','template/performanceUpload.html']);
+	var performanceMonth = angular.module("performance.month.directive",['ngFileUpload','template/performanceUpload.html']);
 	performanceMonth.controller("performanceUploadControll",['$scope', '$element', '$attrs','Upload',function($scope, $element, $attrs, Upload){
 		var self = this;
 		$scope.files=null;

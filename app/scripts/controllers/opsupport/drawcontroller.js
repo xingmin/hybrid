@@ -132,7 +132,15 @@ define(['../module', "lodash", "moment"],function(controllers, _, moment){
                         event.preventDefault();
                         return;
                     };
-                    $scope.currentedit.newval.drawDetails.push({'barcode':barcode});
+                    var detail = {'barcode':barcode};
+                    $scope.currentedit.newval.drawDetails.push(detail);
+                    hisService.getBarCodeChargeInfo(barcode).then(
+                        function(chargeInfo){
+                            if(!chargeInfo) return;
+                            if(detail) {
+                                detail.chargeInfo = chargeInfo;
+                            }
+                        });
                     $scope.scanner.barcodeCollecter = '';
                     event.preventDefault();
                 }

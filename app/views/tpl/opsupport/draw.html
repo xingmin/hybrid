@@ -77,7 +77,7 @@
 
 		<ul class="list-inline col-md-6">
 			<li class="col-md-3">条形码</li>
-			<!--<li class="col-md-2">使用</li>-->
+			<li class="col-md-2">名称</li>
 			<li class="col-md-2">收费</li>
 			<li class="col-md-2">回收者</li>
 			<li class="col-md-2">送还人</li>
@@ -121,6 +121,9 @@
 					<!--<li class="col-md-2">-->
 						<!--{{drawDetail.useFlag | useTranFilter}}-->
 					<!--</li>-->
+					<li class="col-md-2">
+						{{drawDetail.chargeInfo.materialName}}
+					</li>
 					<li class="col-md-2">
 						<span tooltip-html-unsafe="{{drawDetail.chargeHtml}}">{{drawDetail.chargeInfo.inpatientNo}}</span>
 					</li>
@@ -252,6 +255,7 @@
 		<table class="table table-bordered table-hover">
 			<tr>
 				<th>条形码</th>
+				<th>名称</th>
 				<th>使用情况</th>
 				<th>回收者</th>
 				<th>回收时间</th>
@@ -260,6 +264,9 @@
 			<tr ng-repeat="drawDetail in currentedit.newval.drawDetails track by $index">
 		        <td>
 		        	{{drawDetail.barcode}}
+				</td>
+				<td>
+					{{drawDetail.chargeInfo.materialName}}
 				</td>
 				<td>
 					{{drawDetail.useFlag | useTranFilter}}

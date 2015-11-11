@@ -1,5 +1,6 @@
-define(['./module', 'lodash', './performancedeptservice'],function(performance, _){
+define(['angular', './performance-dept-service', 'oa/index'],function(angular, _){
     'use strict';
+	var performance = angular.module("performance.dept.directive",["performance.dept.service",  "oa"]);
 	performance.directive("cuPerformanceDept", ['$modal', '$filter','$rootScope','performanceDeptService','oaService',function($modal, $filter, $rootScope, performanceDeptService,oaService){
 		return{
 			restrict: 'AE',

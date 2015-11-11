@@ -1,5 +1,6 @@
-define(['./module', './performancedeptservice'],function(performance){
+define(['angular', './performance-dept-service', 'services/mainservice', 'oa/index'],function(performance){
     'use strict';
+    var performance = angular.module("performance.dept.directive",["performance.dept.service", "oa"]);
     performance.controller('performanceDeptCtrl', [
         '$scope','$timeout','oaService', 'performanceDeptService','messageService',
         function($scope, $timeout,oaService, performanceDeptService, messageService){

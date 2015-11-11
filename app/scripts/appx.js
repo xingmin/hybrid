@@ -8,7 +8,7 @@ define(["angular",
         'filters/mainfilter',
         'directives/maindirective',
         'controllers/maincontroller',
-        'performance-review/index'
+        //'performance-review/index'
        ],function(angular){
     return angular.module("webapp",['ngRoute',
                                     'angular-md5',
@@ -20,7 +20,7 @@ define(["angular",
                                     'webapp.filters',
                                     'webapp.directives',
                                     'webapp.controllers',
-                                    'performance'
+                                    //'performance'
                                     ]);
 })
 

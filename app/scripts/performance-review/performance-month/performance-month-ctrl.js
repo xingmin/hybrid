@@ -1,6 +1,7 @@
-define(['./module'],function(performance){
+define(['angular', './performance-month-service'],function(angular){
     'use strict';
-    performance.controller('performanceCtrl', [
+    var performanceMonth = angular.module("performance.month.controller",["performance.month.service"]);
+    performanceMonth.controller('performanceCtrl', [
         '$scope','$timeout','Upload',
         function($scope, $timeout, Upload){
             var self = this;
